@@ -1,0 +1,23 @@
+<template>
+    <nav class="navbar navbar-expand-lg bg-dark text-white">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <h3 class="text-white">
+                    TubeStream
+                </h3>
+            </a>
+            <div class="d-flex">
+                <p class="my-auto mx-2">Good Morning, XXX</p>
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                        class="rounded-circle img-fluid" style="width: 50px;">
+            </div>
+        </div>
+    </nav>
+</template>
+<script>
+export default {
+    mounted() {
+        console.log("navbar mounted too")
+    }
+}
+</script>
