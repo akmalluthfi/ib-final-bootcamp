@@ -19,8 +19,35 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="modal-body">...</div>
-                <div class="modal-footer">
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-5">
+                            <label for="invoiceTo" class="form-label"
+                                >Invoice To</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="invoiceTo"
+                                placeholder="Invoice To"
+                            />
+                        </div>
+
+                        <div class="mt-5 float-end">
+                            <button
+                                type="button"
+                                class="btn btn-light"
+                                data-dismiss="modal"
+                            >
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
                     <button
                         type="button"
                         class="btn btn-light"
@@ -31,7 +58,7 @@
                     <button type="button" class="btn btn-success">
                         Submit
                     </button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
