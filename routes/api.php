@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InstructionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/test', function () {
+    $text = '69764 Stokes Forges\nPredovichaven, PA 22784';
+
+    // $da = date('Y-m-d H:i:s');
+    dump($text);
+    dd(stripslashes($text));
+});
+
+Route::apiResource('/instructions', InstructionController::class)->except([
+    'destroy'
+]);
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Not Found.',
+    ], 404);
 });
