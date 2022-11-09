@@ -17,4 +17,9 @@ class InvoiceTargetService
     {
         return $this->invoiceTargetRepository->searchAndFind($search);
     }
+
+    public function storeInvoiceTarget($invoiceTarget)
+    {
+        $this->invoiceTargetRepository->storeInvoiceTarget($invoiceTarget);
+    }
 }

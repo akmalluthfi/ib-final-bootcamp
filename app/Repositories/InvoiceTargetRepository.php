@@ -16,4 +16,9 @@ class InvoiceTargetRepository
 
         return $vendors->get(['name']);
     }
+
+    public function storeInvoiceTarget($invoiceTarget)
+    {
+        InvoiceTarget::create($invoiceTarget);
+    }
 }

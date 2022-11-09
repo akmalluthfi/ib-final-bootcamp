@@ -8,4 +8,6 @@ use Jenssegers\Mongodb\Eloquent\Model;
 class InvoiceTarget extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name'];
 }
