@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InstructionController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,8 +28,11 @@ Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
 
-Route::fallback(function () {
+Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+
+// Handle route api doesn't exists
+Route::get('/{any}', function () {
     return response()->json([
-        'message' => 'Not Found.',
+        'message' => 'Not Found'
     ], 404);
 });
