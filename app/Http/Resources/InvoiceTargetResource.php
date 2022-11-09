@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VendorResource extends JsonResource
+class InvoiceTargetResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,7 @@ class VendorResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'address' => $this->address
+            'name' => $this->name
         ];
     }
 }
