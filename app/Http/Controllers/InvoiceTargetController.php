@@ -20,7 +20,7 @@ class InvoiceTargetController extends Controller
         $invoiceTargets =  $this->invoiceTargetService->getInvoiceTarget($request->query('search'));
 
         return response()->json([
-            'message' => 'Success get vendors',
+            'message' => 'Success get Invoice Targets',
             'data' => InvoiceTargetResource::collection($invoiceTargets),
             'errors' => null
         ]);

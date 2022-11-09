@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\VendorController;
@@ -31,6 +32,7 @@ Route::apiResource('/instructions', InstructionController::class)->except([
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
 // Handle route api doesn't exists
 Route::get('/{any}', function () {

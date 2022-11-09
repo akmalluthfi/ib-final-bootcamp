@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\InvoiceTarget;
+use App\Models\Customer;
 
-class InvoiceTargetRepository
+class CustomerRepository
 {
     public function searchAndFind($search)
     {
-        $vendors = InvoiceTarget::query();
+        $vendors = Customer::query();
 
         if (!is_null($search)) {
             $vendors->where('name', 'like', "%$search%");
