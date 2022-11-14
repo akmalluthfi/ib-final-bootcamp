@@ -10,44 +10,54 @@
             </p>
             <div class="card mt-5 p-5">
                 <div class="card-body">
-                    <div class="row justify-content-between">
-                        <div class="col-md-6">
-                            <div class="dropdown">
-                                <button
-                                    class="btn btn-light dropdown-toggle fw-bold"
-                                    type="button"
-                                    id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
+                    <form action="" method="post">
+                        <div class="row justify-content-between">
+                            <div class="col-md-3 justify-content-start">
+                                <select
+                                    class="form-select fs-4"
+                                    name="type"
+                                    v-if="
+                                        this.$route.params.type == 'LI' ||
+                                        this.$route.params.type == undefined
+                                    "
                                 >
-                                    <i
-                                        class="fa-solid fa-truck text-success"
-                                    ></i>
-                                    Logistic Instruction
+                                    <option value="LI" selected>
+                                        <i class="fa-solid fa-truck"></i>
+                                        Logistic Instruction
+                                    </option>
+                                    <option value="SI">
+                                        <i
+                                            class="fa fa-user"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Service Instruction
+                                    </option>
+                                </select>
+                                <select
+                                    class="form-select fs-4"
+                                    name="type"
+                                    v-else
+                                >
+                                    <option value="LI">
+                                        <i class="fa-solid fa-truck"></i>
+                                        Logistic Instruction
+                                    </option>
+                                    <option value="SI" selected>
+                                        <i
+                                            class="fa fa-user"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Service Instruction
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn-draft" disabled>
+                                    Draft
                                 </button>
-                                <ul
-                                    class="dropdown-menu"
-                                    aria-labelledby="dropdownMenuButton1"
-                                >
-                                    <li>
-                                        <router-link
-                                            class="dropdown-item"
-                                            to="#"
-                                            ><i
-                                                class="fa fa-user"
-                                                aria-hidden="true"
-                                            ></i>
-                                            Service Instruction</router-link
-                                        >
-                                    </li>
-                                </ul>
                             </div>
                         </div>
-                        <div class="col-md-6 text-end">
-                            <button class="btn-draft">Draft</button>
-                        </div>
-                    </div>
-                    <form action="" method="post">
+
                         <div class="form-group row mt-5">
                             <div class="col-3">
                                 <label for="" class="form-control-label"
@@ -453,8 +463,13 @@
 
                         <div class="form-group mt-5">
                             <div class="card">
-                                <div class="card-body d-flex justify-content-end">
-                                    <button type="button" class="btn btn-light me-3">
+                                <div
+                                    class="card-body d-flex justify-content-end"
+                                >
+                                    <button
+                                        type="button"
+                                        class="btn btn-light me-3"
+                                    >
                                         Cancel
                                     </button>
                                     <button
@@ -485,7 +500,14 @@ $(function () {
     $(".selectpicker").selectpicker();
 });
 
-export default {};
+export default {
+    props: ["type"],
+    mounted() {
+        if (this.$route.params.type == "LI") {
+            console.log("kontl");
+        }
+    },
+};
 </script>
 
 <style>
