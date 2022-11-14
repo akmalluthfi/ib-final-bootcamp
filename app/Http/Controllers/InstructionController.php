@@ -3,19 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Services\InstructionService;
-
+use App\Http\Resources\InstructionCollection;
+use App\Models\Instruction;
 use Illuminate\Http\Request;
 
 class InstructionController extends Controller
 {
-    private InstructionService $instructionService;
-
     public function __construct()
     {
         $this->instructionService = new InstructionService();
     }
 
-    public function detailInstruction($id)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        $instructions = Instruction::paginate(10, [
+            'instruction_id',
+            'instruction_type',
+            'link_to',
+            'assigned_vendor',
+            'attention_of',
+            'quotation_no',
+            'customer_po',
+            'status'
+        ]);
+
+        return new InstructionCollection($instructions);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Instruction  $instruction
+     * @return \Illuminate\Http\Response
+     */
+    public function show(/* Instruction $instruction */$id)
     {
         return response()->json([
             'status'   => 200,
@@ -24,7 +61,30 @@ class InstructionController extends Controller
         ]);
     }
 
-    public function terminateInstruction(Request $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Instruction  $instruction
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Instruction $instruction)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Instruction  $instruction
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Instruction $instruction)
+    {
+        //
+    }
+
+    public function terminate(Request $request, $id)
     {
         $request->validate([
             'reason'     => 'required|string',

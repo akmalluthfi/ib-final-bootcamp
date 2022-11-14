@@ -9,8 +9,23 @@ class Instruction extends Model
 {
     use HasFactory;
 
-    protected $connection = "mongodb";
-    protected $collection = 'instruction';
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'status' => 'In Progress',
+        'rev_count' => 0,
+        'is_draft' => false,
+    ];
+
+    /**
+     * The storage format of the model's date columns.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
 
     protected $fillable = ['status', 'activity_note', 'note', 'performed_by', 'date', 'cancellation', 'canceled_by', 'reason', 'attachment'];
 }
