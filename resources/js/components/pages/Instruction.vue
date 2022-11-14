@@ -21,11 +21,11 @@
                                         this.$route.params.type == undefined
                                     "
                                 >
-                                    <option selected>
+                                    <option value="LI" selected>
                                         <i class="fa-solid fa-truck"></i>
                                         Logistic Instruction
                                     </option>
-                                    <option>
+                                    <option value="SI">
                                         <i
                                             class="fa fa-user"
                                             aria-hidden="true"
@@ -38,11 +38,11 @@
                                     name="type"
                                     v-else
                                 >
-                                    <option>
+                                    <option value="LI">
                                         <i class="fa-solid fa-truck"></i>
                                         Logistic Instruction
                                     </option>
-                                    <option selected>
+                                    <option value="SI" selected>
                                         <i
                                             class="fa fa-user"
                                             aria-hidden="true"

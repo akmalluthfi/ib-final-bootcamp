@@ -30963,7 +30963,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("option", { attrs: { selected: "" } }, [
+    return _c("option", { attrs: { value: "LI", selected: "" } }, [
       _c("i", { staticClass: "fa-solid fa-truck" }),
       _vm._v(
         "\n                                    Logistic Instruction\n                                "
@@ -30974,7 +30974,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("option", [
+    return _c("option", { attrs: { value: "SI" } }, [
       _c("i", { staticClass: "fa fa-user", attrs: { "aria-hidden": "true" } }),
       _vm._v(
         "\n                                    Service Instruction\n                                "
@@ -30985,7 +30985,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("option", [
+    return _c("option", { attrs: { value: "LI" } }, [
       _c("i", { staticClass: "fa-solid fa-truck" }),
       _vm._v(
         "\n                                    Logistic Instruction\n                                "
@@ -30996,7 +30996,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("option", { attrs: { selected: "" } }, [
+    return _c("option", { attrs: { value: "SI", selected: "" } }, [
       _c("i", { staticClass: "fa fa-user", attrs: { "aria-hidden": "true" } }),
       _vm._v(
         "\n                                    Service Instruction\n                                "
