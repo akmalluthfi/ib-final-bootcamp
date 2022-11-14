@@ -26,7 +26,7 @@ class InstructionRepository
         $id = $this->getById($idInstruction);
         $activityNote = $id->activity_note;
         $activityNote[] = [
-            'note'         => $data['reason'],
+            'note'         => "Terminated",
             'performed_by' => $data['canceled_by'],
             'date'         => $date->toDateTimeString(),
         ];

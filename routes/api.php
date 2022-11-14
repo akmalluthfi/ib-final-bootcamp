@@ -31,7 +31,7 @@ Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
 
-Route::patch('instruction/{id}/terminate', [InstructionController::class, 'terminate']);
+Route::patch('instructions/{id}/terminate', [InstructionController::class, 'terminate']);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 
