@@ -12,13 +12,17 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li>
-                <router-link class="dropdown-item" to="/logistic-instruction"
+                <router-link
+                    class="dropdown-item"
+                    :to="{ name: 'Instruction', params: { type: 'LI' } }"
                     ><i class="fa-solid fa-truck"></i> Logistic
                     Instruction</router-link
                 >
             </li>
             <li>
-                <router-link class="dropdown-item" to="#"
+                <router-link
+                    class="dropdown-item"
+                    :to="{ name: 'Instruction', params: { type: 'SI' } }"
                     ><i class="fa fa-user" aria-hidden="true"></i> Service
                     Instruction</router-link
                 >
@@ -28,7 +32,22 @@
 </template>
 
 <script>
-export default {};
+export default {
+    data() {
+        return {
+            types: [
+                {
+                    id: 1,
+                    nama: "LI",
+                },
+                {
+                    id: 2,
+                    nama: "SI",
+                },
+            ],
+        };
+    },
+};
 </script>
 
 <style></style>
