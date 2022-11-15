@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\SearchNotFoundException;
 use App\Repositories\CustomerRepository;
 
 class CustomerService
@@ -15,6 +16,12 @@ class CustomerService
 
     public function getCustomer($search)
     {
-        return $this->customerRepository->searchAndFind($search);
+        if (is_null($search)) return $this->customerRepository->getAll();
+
+        $customers = $this->customerRepository->searchAndFind($search);
+
+        if ($customers->count() <= 0) throw new SearchNotFoundException('Customer not found');
+
+        return $customers;
     }
 }

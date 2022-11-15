@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Jenssegers\Mongodb\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    public function scopeForLogisticInstruction($query)
+    {
+        return $query->where('type', 'Transfer')->orWhere('type', 'Call Of');
+    }
 }

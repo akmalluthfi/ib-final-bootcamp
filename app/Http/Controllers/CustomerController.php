@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerCollection;
 use App\Http\Resources\CustomerResource;
 use App\Services\CustomerService;
 use Illuminate\Http\Request;
@@ -19,10 +20,6 @@ class CustomerController extends Controller
     {
         $customers = $this->customerService->getCustomer($request->query('search'));
 
-        return response()->json([
-            'message' => 'Success get Customers',
-            'data' => CustomerResource::collection($customers),
-            'errors' => null
-        ]);
+        return new CustomerCollection($customers);
     }
 }

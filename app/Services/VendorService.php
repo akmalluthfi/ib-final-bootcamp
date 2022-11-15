@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\SearchNotFoundException;
 use App\Repositories\VendorRepository;
 
 class VendorService
@@ -15,6 +16,17 @@ class VendorService
 
     public function getVendor($search)
     {
-        return $this->vendorRepository->searchAndFind($search);
+        if (is_null($search)) return $this->vendorRepository->getAll();
+
+        $vendors = $this->vendorRepository->searchAndFind($search);
+
+        if ($vendors->count() <= 0) throw new SearchNotFoundException("Vendor not found");
+
+        return $vendors;
+    }
+
+    public function addVendorAddress($vendor, $address)
+    {
+        return $this->vendorRepository->addAddress($vendor, $address);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\SearchNotFoundException;
 use App\Repositories\TransactionRepository;
 use Exception;
 
@@ -16,15 +17,22 @@ class TransactionService
 
     public function getTransaction($instructionType, $search)
     {
-        // if instructionType doesn't exist throw an exception
-        if (is_null($instructionType)) {
-            throw new Exception('Required instructionType parameters', 400);
+        $transactions = collect();
+
+        if ($instructionType === 'LI') {
+            if (is_null($search)) return $this->transactionRepository->getForLogisticInstruction();
+
+            $transactions = $this->transactionRepository->searchForLogisticInstruction($search);
         }
 
-        if (!in_array($instructionType, ['SI', 'LI'])) {
-            throw new Exception('Undefined instructionType parameters', 400);
+        if ($instructionType === 'SI') {
+            if (is_null($search)) return $this->transactionRepository->getAll();
+
+            $transactions = $this->transactionRepository->searchAndFind($search);
         }
 
-        return $this->transactionRepository->SearchAndFilter($instructionType, $search);
+        if ($transactions->count() <= 0) throw new SearchNotFoundException('Transaction not found');
+
+        return $transactions;
     }
 }

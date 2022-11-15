@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\TransactionResource;
+use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionCollection;
 use App\Services\TransactionService;
-use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -15,22 +15,13 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function index(Request $request)
+    public function index(TransactionRequest $request)
     {
-        try {
-            $transactions = $this->transactionService->getTransaction($request->query('instructionType'), $request->query('search'));
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Validation Error',
-                'data' => null,
-                'errors' => $e->getMessage()
-            ]);
-        }
+        $transactions = $this->transactionService->getTransaction(
+            $request->query('instructionType'),
+            $request->query('search')
+        );
 
-        return response()->json([
-            'message' => 'Success get Transaction',
-            'data' => TransactionResource::collection($transactions),
-            'errors' => null
-        ]);
+        return new TransactionCollection($transactions);
     }
 }

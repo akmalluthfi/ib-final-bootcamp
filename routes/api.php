@@ -20,11 +20,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $text = '69764 Stokes Forges\nPredovichaven, PA 22784';
+    $vendors = App\Models\Vendor::limit(3)->get(['name', 'address']);
 
-    // $da = date('Y-m-d H:i:s');
-    dump($text);
-    dd(stripslashes($text));
+    return new App\Http\Resources\VendorCollection($vendors);
+
+    die();
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
@@ -32,6 +32,7 @@ Route::apiResource('/instructions', InstructionController::class)->except([
 ]);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');

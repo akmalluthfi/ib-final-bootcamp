@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInvoiceTargetRequest;
+use App\Http\Resources\InvoiceTargetCollection;
 use App\Http\Resources\InvoiceTargetResource;
-use App\Models\InvoiceTarget;
 use App\Services\InvoiceTargetService;
 use Illuminate\Http\Request;
 
@@ -21,23 +21,16 @@ class InvoiceTargetController extends Controller
     {
         $invoiceTargets =  $this->invoiceTargetService->getInvoiceTarget($request->query('search'));
 
-        return response()->json([
-            'message' => 'Success get Invoice Targets',
-            'data' => InvoiceTargetResource::collection($invoiceTargets),
-            'errors' => null
-        ]);
+        return new InvoiceTargetCollection($invoiceTargets);
     }
 
     public function store(StoreInvoiceTargetRequest $request)
     {
-        $invoiceTarget = $request->validated();
-
-        $this->invoiceTargetService->storeInvoiceTarget($invoiceTarget);
+        $invoiceTarget = $this->invoiceTargetService->storeInvoiceTarget($request->validated());
 
         return response()->json([
-            'message' => 'Successfully created new invoice',
-            'data' => $invoiceTarget,
-            'errors' => null
-        ]);
+            'message' => 'Invoice target created successfully',
+            'data' => new InvoiceTargetResource($invoiceTarget),
+        ], 201);
     }
 }
