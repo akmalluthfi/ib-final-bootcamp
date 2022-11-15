@@ -1,6 +1,6 @@
 // import AppComp from './components/AppComp.vue';
 import Open from "./components/pages/Open.vue";
-import Instruction from "./components/pages/Instruction.vue";
+import LogisticInstruction from "./components/pages/LogisticInstruction.vue";
 
 export const routes = [
     {
@@ -13,9 +13,4 @@ export const routes = [
         name: "Instruction",
         component: Instruction,
     },
-    // {
-    //     path:"service-instruction",
-    //     name:"ServiceInstruction",
-    //     component: ServiceInstruction,
-    // }
 ];
