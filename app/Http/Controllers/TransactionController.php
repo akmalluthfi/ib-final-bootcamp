@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionCollection;
 use App\Services\TransactionService;
+use App\Exceptions\SearchNotFoundException;
 
 class TransactionController extends Controller
 {
@@ -21,6 +22,8 @@ class TransactionController extends Controller
             $request->query('instructionType'),
             $request->query('search')
         );
+
+        if ($transactions->count() <= 0) throw new SearchNotFoundException('Transaction not found');
 
         return new TransactionCollection($transactions);
     }

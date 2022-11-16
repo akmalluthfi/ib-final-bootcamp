@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\SearchNotFoundException;
 use App\Http\Requests\StoreInvoiceTargetRequest;
 use App\Http\Resources\InvoiceTargetCollection;
 use App\Http\Resources\InvoiceTargetResource;
@@ -20,6 +21,8 @@ class InvoiceTargetController extends Controller
     public function index(Request $request)
     {
         $invoiceTargets =  $this->invoiceTargetService->getInvoiceTarget($request->query('search'));
+
+        if ($invoiceTargets->count() <= 0) throw new SearchNotFoundException("Invoice target not found");
 
         return new InvoiceTargetCollection($invoiceTargets);
     }

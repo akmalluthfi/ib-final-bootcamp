@@ -8,6 +8,7 @@ use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
 use App\Services\VendorService;
 use Illuminate\Http\Request;
+use App\Exceptions\SearchNotFoundException;
 
 class VendorController extends Controller
 {
@@ -21,6 +22,8 @@ class VendorController extends Controller
     public function index(Request $request)
     {
         $vendors =  $this->vendorService->getVendor($request->query('search'));
+
+        if ($vendors->count() <= 0) throw new SearchNotFoundException("Vendor not found");
 
         return new VendorCollection($vendors);
     }

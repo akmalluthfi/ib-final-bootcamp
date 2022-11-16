@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\SearchNotFoundException;
 use App\Repositories\InvoiceTargetRepository;
 
 class InvoiceTargetService
@@ -18,11 +17,7 @@ class InvoiceTargetService
     {
         if (is_null($search)) return $this->invoiceTargetRepository->getAll();
 
-        $invoiceTargets = $this->invoiceTargetRepository->searchAndFind($search);
-
-        if ($invoiceTargets->count() <= 0) throw new SearchNotFoundException("Invoice target not found");
-
-        return $invoiceTargets;
+        return $this->invoiceTargetRepository->searchAndFind($search);
     }
 
     public function storeInvoiceTarget($invoiceTarget)

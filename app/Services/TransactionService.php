@@ -2,9 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\SearchNotFoundException;
 use App\Repositories\TransactionRepository;
-use Exception;
 
 class TransactionService
 {
@@ -17,8 +15,6 @@ class TransactionService
 
     public function getTransaction($instructionType, $search)
     {
-        $transactions = collect();
-
         if ($instructionType === 'LI') {
             if (is_null($search)) return $this->transactionRepository->getForLogisticInstruction();
 
@@ -30,8 +26,6 @@ class TransactionService
 
             $transactions = $this->transactionRepository->searchAndFind($search);
         }
-
-        if ($transactions->count() <= 0) throw new SearchNotFoundException('Transaction not found');
 
         return $transactions;
     }
