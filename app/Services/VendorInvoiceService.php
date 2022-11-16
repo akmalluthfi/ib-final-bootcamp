@@ -16,7 +16,8 @@ class VendorInvoiceService
         $this->vendorInvoiceRepository = $vendorInvoiceRepository;
     }
 
-    public function store($data, Instruction $instruction){
+    public function store($data, Instruction $instruction)
+    {
         $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
 
         if(isset($data['supporting_document'])){
@@ -30,7 +31,15 @@ class VendorInvoiceService
         return $vendorInvoice;
     }
 
-    public function storeFile(UploadedFile $file, $instructionId){
+    public function getVendorInvoice(Instruction $instruction, $vendorInvoice)
+    {
+        $vendorInvoice = $this->vendorInvoiceRepository->getById($instruction, $vendorInvoice);
+
+        return $vendorInvoice;
+    }
+
+    public function storeFile(UploadedFile $file, $instructionId)
+    {
         $path = Storage::putFile('instructions/' . $instructionId . '/vendor-invoices', $file);
 
         return $path;
