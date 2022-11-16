@@ -26,4 +26,9 @@ class Instruction extends Model
      * @var string
      */
     protected $dateFormat = 'Y-m-d H:i:s';
+
+    public function vendorInvoices()
+    {
+        return $this->embedsMany(VendorInvoice::class, 'vendor_invoices');
+    }
 }
