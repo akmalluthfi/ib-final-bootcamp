@@ -32,9 +32,6 @@ class VendorController extends Controller
     {
         $vendor = $this->vendorService->addVendorAddress($vendor, $request->post('address'));
 
-        return response()->json([
-            'message' => 'Add vendor address successfully',
-            'data' => new VendorResource($vendor),
-        ], 201);
+        return (new VendorResource($vendor))->response()->setStatusCode(201);
     }
 }

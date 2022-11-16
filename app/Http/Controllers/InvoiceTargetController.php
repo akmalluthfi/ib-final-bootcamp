@@ -31,9 +31,6 @@ class InvoiceTargetController extends Controller
     {
         $invoiceTarget = $this->invoiceTargetService->storeInvoiceTarget($request->validated());
 
-        return response()->json([
-            'message' => 'Invoice target created successfully',
-            'data' => new InvoiceTargetResource($invoiceTarget),
-        ], 201);
+        return (new InvoiceTargetResource($invoiceTarget))->response()->setStatusCode(201);
     }
 }

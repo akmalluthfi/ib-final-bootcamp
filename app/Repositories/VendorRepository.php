@@ -21,7 +21,7 @@ class VendorRepository
 
     public function addAddress($vendor, $addres)
     {
-        $vendor = $vendor->push('addresses', $addres, true);
+        $vendor->push('addresses', $addres, true);
 
         return $vendor;
     }

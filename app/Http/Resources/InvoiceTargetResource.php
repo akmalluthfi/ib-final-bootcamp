@@ -14,6 +14,16 @@ class InvoiceTargetResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($request->routeIs('invoice-target.store')) {
+            return [
+                'message' => 'Invoice target created successfully',
+                'data' => [
+                    'id' => $this->id,
+                    'name' => $this->name
+                ]
+            ];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name
