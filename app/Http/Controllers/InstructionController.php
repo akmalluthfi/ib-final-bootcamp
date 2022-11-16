@@ -7,6 +7,7 @@ use App\Services\InstructionService;
 use App\Http\Resources\InstructionCollection;
 use App\Models\Instruction;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class InstructionController extends Controller
 {
@@ -20,20 +21,20 @@ class InstructionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $instructions = Instruction::paginate(10, [
-            'instruction_id',
-            'instruction_type',
-            'link_to',
-            'assigned_vendor',
-            'attention_of',
-            'quotation_no',
-            'customer_po',
-            'status'
+        $data = $request->validate([
+            'page' => Rule::in(['Open', 'Completed'])
         ]);
 
-        return new InstructionCollection($instructions);
+        if ($request->page == "Open") {
+            $instruction = $this->instructionService->getInstructionsOpen();
+        } else if ($request->page == "Completed") {
+            $instruction = $this->instructionService->getInstructionsCompleted();
+        } else {
+            $instruction = $this->instructionService->getAllInstruction();
+        }
+        return new InstructionCollection($instruction);
     }
 
     /**

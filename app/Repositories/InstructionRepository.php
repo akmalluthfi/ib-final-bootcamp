@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\Instruction;
 
+use Illuminate\Support\Facades\DB;
+
 class InstructionRepository
 {
     private Instruction $instruction;
@@ -31,6 +33,54 @@ class InstructionRepository
         ];
 
         $instruction->update($data);
+        return $instruction;
+    }
+
+    public function getAll()
+    {
+        $instruction = $this->instruction->paginate(10, [
+            'instruction_id',
+            'instruction_type',
+            'link_to',
+            'assigned_vendor',
+            'attention_of',
+            'quotation_no',
+            'customer_po',
+            'status'
+        ]);
+
+        return $instruction;
+    }
+
+    public function getInstructionsOpen()
+    {
+        $instruction = $this->instruction->where('status', 'In Progress')->orWhere('status', 'Draft')->paginate(10, [
+            'instruction_id',
+            'instruction_type',
+            'link_to',
+            'assigned_vendor',
+            'attention_of',
+            'quotation_no',
+            'customer_po',
+            'status'
+        ]);
+
+        return $instruction;
+    }
+
+    public function getInstructionsCompleted()
+    {
+        $instruction = $this->instruction->where('status', 'Complete')->orWhere('status', 'Cancelled')->paginate(10, [
+            'instruction_id',
+            'instruction_type',
+            'link_to',
+            'assigned_vendor',
+            'attention_of',
+            'quotation_no',
+            'customer_po',
+            'status'
+        ]);
+
         return $instruction;
     }
 }
