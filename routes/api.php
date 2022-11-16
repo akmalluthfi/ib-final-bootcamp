@@ -31,11 +31,12 @@ Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
 
-Route::patch('instructions/{id}/terminate', [InstructionController::class, 'terminate']);
+Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');

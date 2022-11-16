@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Instruction;
-use Carbon\Carbon;
 
 class InstructionRepository
 {
@@ -14,36 +13,24 @@ class InstructionRepository
         $this->instruction = new Instruction();
     }
 
-    public function getById(string $id)
+    public function terminateInstruction(array $data, Instruction $instruction)
     {
-        $id = $this->instruction->find(['_id' => $id])->first();
-        return $id;
-    }
-
-    public function saveInstruction(array $data, $idInstruction)
-    {
-        $date = Carbon::now();
-        $id = $this->getById($idInstruction);
-        $activityNote = $id->activity_note;
-        $activityNote[] = [
+        $instruction->push('activity_note', [[
             'note'         => "Terminated",
-            'performed_by' => $data['canceled_by'],
-            'date'         => $date->toDateTimeString(),
-        ];
+            'performed_by' => 'Daffa Pratama A.S',
+            'date'         => now()->toDateTimeString(),
+        ]]);
 
         $data = [
             'status' => 'Cancelled',
-            'activity_note' => $activityNote,
             'cancellation' => [
                 'reason'      => $data['reason'],
-                'canceled_by' => $data['canceled_by'],
-                'attachment'  => [
-                    $data['attachment']
-                ]
+                'canceled_by' => 'Daffa Pratama A.S',
+                'attachment'  => $data['attachment']
             ]
         ];
 
-        $id->update($data);
-        return $id;
+        $instruction->update($data);
+        return $instruction;
     }
 }

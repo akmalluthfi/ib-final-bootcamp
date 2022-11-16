@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TerminateInstructionRequest;
 use App\Services\InstructionService;
 use App\Http\Resources\InstructionCollection;
 use App\Models\Instruction;
@@ -52,12 +53,12 @@ class InstructionController extends Controller
      * @param  \App\Models\Instruction  $instruction
      * @return \Illuminate\Http\Response
      */
-    public function show(/* Instruction $instruction */$id)
+    public function show(Instruction $instruction)
     {
         return response()->json([
             'status'   => 200,
             'message'  => 'Show Detail Instruction Successfully',
-            'data'     => $this->instructionService->getInstruction($id),
+            'data'     => $instruction,
         ]);
     }
 
@@ -84,33 +85,16 @@ class InstructionController extends Controller
         //
     }
 
-    public function terminate(Request $request, $id)
+    public function terminate(TerminateInstructionRequest $request, Instruction $instruction)
     {
-        $request->validate([
-            'reason'     => 'required|string',
-            'attachment' => 'required|file|mimes:png,jpg'
-        ]);
+        $data = $request->validated();
 
-        $data = [
-            'reason'     => $request->reason,
-            'attachment' => $request->attachment,
-        ];
-
-        $dataSaved = [
-            'canceled_by' => 'Daffa Pratama A.S',
-            'reason'      => $data['reason'],
-            'attachment'  => $data['attachment'],
-        ];
-
-        $fileName = time() . $request->file('attachment')->getClientOriginalName();
-        $path = $request->file('attachment')->storeAs('attachment', $fileName, 'public');
-        $dataSaved['attachment'] = $path;
-        $idInstruction = $this->instructionService->getById($id);
-        $instructionSave = $this->instructionService->updateInstruction($dataSaved, $idInstruction->id);
+        $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
         return response()->json([
             'status'  => 200,
             'message' => 'Terminate Instruction Successfully',
+            'data'    => $instructionSave
         ]);
     }
 }

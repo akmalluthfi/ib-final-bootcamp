@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
+use App\Models\Instruction;
 use App\Repositories\InstructionRepository;
 
 class InstructionService
@@ -13,21 +15,12 @@ class InstructionService
         $this->instructionRepository = new InstructionRepository();
     }
 
-    public function getInstruction($id)
+    public function terminateInstruction(array $data, Instruction $instruction)
     {
-        $instruction = $this->instructionRepository->getById($id);
-        return $instruction;
-    }
+        $path = Storage::putFile('public/instructions/' . $instruction->id . '/terminate', $data['attachment']);
+        $data['attachment'] = $path;
 
-    public function getById(string $id)
-    {
-        $instruction = $this->instructionRepository->getById($id);
-        return $instruction;
-    }
-
-    public function updateInstruction(array $data, $idInstruction)
-    {
-        $id = $this->instructionRepository->saveInstruction($data, $idInstruction);
-        return $id;
+        $vendor = $this->instructionRepository->terminateInstruction($data, $instruction);
+        return $vendor;
     }
 }
