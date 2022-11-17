@@ -20,13 +20,11 @@ class VendorInvoiceRepository
         return $vendorInvoice;
     }
 
-    public function getById(Instruction $instruction, $vendorInvoice)
+    public function getById(Instruction $instruction, $id)
     {
-        $vendorInvoice = $instruction->vendorInvoices->firstWhere('_id', '=', $vendorInvoice);
-        
-        if(empty($vendorInvoice)){
-            throw new ModelNotFoundException;
-        }
+        $vendorInvoice = $instruction->vendorInvoices->firstOrFail(function($value) use($id) {
+            return $value->id == $id;
+        });
 
         return $vendorInvoice;
     }

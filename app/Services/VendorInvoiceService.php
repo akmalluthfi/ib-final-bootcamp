@@ -31,9 +31,9 @@ class VendorInvoiceService
         return $vendorInvoice;
     }
 
-    public function getVendorInvoice(Instruction $instruction, $vendorInvoice)
+    public function getVendorInvoice(Instruction $instruction, $id)
     {
-        $vendorInvoice = $this->vendorInvoiceRepository->getById($instruction, $vendorInvoice);
+        $vendorInvoice = $this->vendorInvoiceRepository->getById($instruction, $id);
 
         return $vendorInvoice;
     }

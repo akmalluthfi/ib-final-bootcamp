@@ -41,9 +41,9 @@ class VendorInvoiceController extends Controller
      * @param  \App\Models\VendorInvoice  $vendorInvoice
      * @return \Illuminate\Http\Response
      */
-    public function show(Instruction $instruction, $vendorInvoice)
+    public function show(Instruction $instruction, $id)
     {
-        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $vendorInvoice);
+        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         return response()->json([
             'message' => 'Successfully got vendor invoice',
@@ -58,9 +58,9 @@ class VendorInvoiceController extends Controller
      * @param  \App\Models\VendorInvoice  $vendorInvoice
      * @return \Illuminate\Http\Response
      */
-    public function update(VendorInvoiceRequest $request, Instruction $instruction, $vendorInvoice)
+    public function update(VendorInvoiceRequest $request, Instruction $instruction, $id)
     {
-        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $vendorInvoice);
+        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         $data = $request->validated();
         $vendorInvoice = $this->vendorInvoiceService->updateVendorInvoice($data, $instruction, $vendorInvoice);
@@ -77,7 +77,7 @@ class VendorInvoiceController extends Controller
      * @param  \App\Models\VendorInvoice  $vendorInvoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy($vendorInvoice)
+    public function destroy(Instruction $instruction, $id)
     {
         //
     }
