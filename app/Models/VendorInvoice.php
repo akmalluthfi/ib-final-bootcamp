@@ -26,9 +26,4 @@ class VendorInvoice extends Model
      * @var bool
      */
     public $timestamps = false;
-
-    public function instruction()
-    {
-        return $this->belongsTo(Instruction::class, 'instruction');
-    }    
 }

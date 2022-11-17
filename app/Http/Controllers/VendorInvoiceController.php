@@ -58,9 +58,17 @@ class VendorInvoiceController extends Controller
      * @param  \App\Models\VendorInvoice  $vendorInvoice
      * @return \Illuminate\Http\Response
      */
-    public function update(VendorInvoiceRequest $request, $vendorInvoice)
+    public function update(VendorInvoiceRequest $request, Instruction $instruction, $vendorInvoice)
     {
-        //
+        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $vendorInvoice);
+
+        $data = $request->validated();
+        $vendorInvoice = $this->vendorInvoiceService->updateVendorInvoice($data, $instruction, $vendorInvoice);
+
+        return response()->json([
+            'message' => 'Successfully updated vendor invoice',
+            'data' => new VendorInvoiceResource($vendorInvoice)
+        ]);
     }
 
     /**

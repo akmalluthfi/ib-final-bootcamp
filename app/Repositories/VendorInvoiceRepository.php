@@ -30,4 +30,18 @@ class VendorInvoiceRepository
 
         return $vendorInvoice;
     }
+    
+    public function update($data, $vendorInvoice)
+    {
+        $vendorInvoice->update($data);
+        
+        return $vendorInvoice;
+    }
+    
+    public function pull(Instruction $instruction, $field, $data)
+    {
+        $vendorInvoice = $instruction->pull('vendor_invoices.'. $field, $data);
+        
+        return $vendorInvoice;
+    }
 }
