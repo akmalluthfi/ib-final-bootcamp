@@ -60,6 +60,23 @@ class VendorInvoiceService
         return $vendorInvoice;
     }
 
+    public function deleteVendorInvoice($vendorInvoice)
+    {
+        if(!empty($vendorInvoice->attachment)){
+            $this->deleteFile($vendorInvoice->attachment);
+        }
+
+        if(count($vendorInvoice->supporting_document) === 0){
+            foreach ($vendorInvoice->supporting_document as $supportingDocument) {
+                $this->deleteFile($supportingDocument);
+            }
+        }
+
+        $result = $this->vendorInvoiceRepository->delete($vendorInvoice);
+
+        return $result;
+    }
+
     public function storeFile(UploadedFile $file, $instructionId)
     {
         $path = Storage::putFile('instructions/' . $instructionId . '/vendor-invoices', $file);

@@ -35,6 +35,13 @@ class VendorInvoiceRepository
         
         return $vendorInvoice;
     }
+
+    public function delete($vendorInvoice)
+    {
+        $result = $vendorInvoice->delete();
+
+        return $result;
+    }
     
     public function pull(Instruction $instruction, $field, $data)
     {

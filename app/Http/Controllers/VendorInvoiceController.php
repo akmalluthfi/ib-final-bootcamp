@@ -79,6 +79,18 @@ class VendorInvoiceController extends Controller
      */
     public function destroy(Instruction $instruction, $id)
     {
-        //
+        $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
+
+        $result = $this->vendorInvoiceService->deleteVendorInvoice($vendorInvoice);
+
+        if($result){
+            return response()->json([
+                'message' => 'Successfully deleted vendor invoice',
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'failed to delete vendor invoice',
+            ], 400);
+        }
     }
 }
