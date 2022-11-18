@@ -16,14 +16,16 @@ class VendorInvoiceService
         $this->vendorInvoiceRepository = $vendorInvoiceRepository;
     }
 
-    public function store($data, Instruction $instruction)
+    public function storeVendorInvoice($data, Instruction $instruction)
     {
         $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
 
-        if(isset($data['supporting_document'])){
-            $data['supporting_document'] = [$this->storeFile($data['supporting_document'], $instruction->id)];
+        if(isset($data['supporting_documents'])){
+            foreach ($data['supporting_documents'] as $index => $supportingDocument) {
+                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
+            }
         } else {
-            $data['supporting_document'] = [];
+            $data['supporting_documents'] = [];
         }
 
         $vendorInvoice = $this->vendorInvoiceRepository->create($data, $instruction);

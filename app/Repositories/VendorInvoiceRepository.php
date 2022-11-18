@@ -12,9 +12,10 @@ class VendorInvoiceRepository
         $dataSaved = [
             'no' => $data['no'],
             'attachment' => $data['attachment'],
-            'supporting_document' => $data['supporting_document']
+            'supporting_documents' => $data['supporting_documents']
         ];
 
+        
         $vendorInvoice = $instruction->vendorInvoices()->create($dataSaved);
 
         return $vendorInvoice;

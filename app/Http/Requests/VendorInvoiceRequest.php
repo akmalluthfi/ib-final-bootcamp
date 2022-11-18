@@ -27,7 +27,8 @@ class VendorInvoiceRequest extends FormRequest
         return [
             'no' => [Rule::requiredIf($this->routeIs('vendor-invoices.index')) , 'string'],
             'attachment' => [Rule::requiredIf($this->routeIs('vendor-invoices.index')) ,'file'],
-            'supporting_documents' => ['file'],
+            'supporting_documents' => ['array'],
+            'supporting_documents.*' => ['file']
         ];
     }
 }

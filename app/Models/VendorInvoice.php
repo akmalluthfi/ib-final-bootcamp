@@ -17,7 +17,7 @@ class VendorInvoice extends Model
     protected $fillable = [
         'no',
         'attachment',
-        'supporting_document'
+        'supporting_documents'
     ];
 
     /**

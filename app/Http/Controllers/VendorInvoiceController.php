@@ -27,7 +27,7 @@ class VendorInvoiceController extends Controller
     {
         $data = $request->validated();
         
-        $vendorInvoice = $this->vendorInvoiceService->store($data, $instruction);
+        $vendorInvoice = $this->vendorInvoiceService->storeVendorInvoice($data, $instruction);
 
         return response()->json([
             'message' => 'Successfully created vendor invoices',

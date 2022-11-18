@@ -18,7 +18,7 @@ class VendorInvoiceResource extends JsonResource
             'id' => $this->id,
             'no' => $this->no,
             'attachment' => $this->attachment,
-            'supporting_document' => $this->supporting_document
+            'supporting_documents' => $this->supporting_documents
         ];
     }
 }
