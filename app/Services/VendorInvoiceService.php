@@ -68,8 +68,8 @@ class VendorInvoiceService
             $this->deleteFile($vendorInvoice->attachment);
         }
 
-        if(count($vendorInvoice->supporting_document) === 0){
-            foreach ($vendorInvoice->supporting_document as $supportingDocument) {
+        if(count($vendorInvoice->supporting_documents) !== 0){
+            foreach ($vendorInvoice->supporting_documents as $supportingDocument) {
                 $this->deleteFile($supportingDocument);
             }
         }
