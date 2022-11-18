@@ -29,10 +29,7 @@ class VendorInvoiceController extends Controller
         
         $vendorInvoice = $this->vendorInvoiceService->storeVendorInvoice($data, $instruction);
 
-        return response()->json([
-            'message' => 'Successfully created vendor invoices',
-            'data' => new VendorInvoiceResource($vendorInvoice)
-        ], 201);
+        return new VendorInvoiceResource($vendorInvoice, 'Successfully created vendor invoices');
     }
 
     /**
@@ -45,10 +42,7 @@ class VendorInvoiceController extends Controller
     {
         $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
-        return response()->json([
-            'message' => 'Successfully got vendor invoice',
-            'data' => new VendorInvoiceResource($vendorInvoice)
-        ]);
+        return new VendorInvoiceResource($vendorInvoice, 'Successfully got vendor invoice');
     }
 
     /**
@@ -65,10 +59,7 @@ class VendorInvoiceController extends Controller
         $data = $request->validated();
         $vendorInvoice = $this->vendorInvoiceService->updateVendorInvoice($data, $instruction, $vendorInvoice);
 
-        return response()->json([
-            'message' => 'Successfully updated vendor invoice',
-            'data' => new VendorInvoiceResource($vendorInvoice)
-        ]);
+        return new VendorInvoiceResource($vendorInvoice, 'Successfully updated vendor invoice');
     }
 
     /**
@@ -84,13 +75,9 @@ class VendorInvoiceController extends Controller
         $result = $this->vendorInvoiceService->deleteVendorInvoice($vendorInvoice);
 
         if($result){
-            return response()->json([
-                'message' => 'Successfully deleted vendor invoice',
-            ]);
+            return response()->json(['message' => 'Successfully deleted vendor invoice']);
         } else {
-            return response()->json([
-                'message' => 'failed to delete vendor invoice',
-            ], 400);
+            return response()->json(['message' => 'failed to delete vendor invoice'], 400);
         }
     }
 }
