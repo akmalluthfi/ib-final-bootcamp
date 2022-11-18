@@ -4,10 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\InstructionCollection;
 use App\Models\Instruction;
+use App\Services\InstructionService;
 use Illuminate\Http\Request;
 
 class InstructionController extends Controller
 {
+    private InstructionService $instructionService;
+
+    public function __construct(InstructionService $instructionService)
+    {
+        $this->instructionService = $instructionService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -72,5 +80,15 @@ class InstructionController extends Controller
     public function destroy(Instruction $instruction)
     {
         //
+    }
+
+    public function receive(Instruction $instruction)
+    {
+        $instruction = $this->instructionService->receiveInstruction($instruction);
+
+        return response()->json([
+            'message' => 'Successfully received instruction',
+            'data' => $instruction
+        ]);
     }
 }
