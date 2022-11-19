@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InstructionRequest;
 use App\Http\Requests\TerminateInstructionRequest;
-use App\Services\InstructionService;
+use App\Http\Requests\FilterInstructionRequest;
 use App\Http\Resources\InstructionCollection;
+use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
+use App\Services\InstructionService;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use App\Exceptions\SearchNotFoundException;
 
 class InstructionController extends Controller
 {
-    public function __construct()
+    protected $instructionService;
+
+    public function __construct(InstructionService $instructionService)
     {
-        $this->instructionService = new InstructionService();
+        $this->instructionService = $instructionService;
     }
 
     /**
@@ -21,31 +26,30 @@ class InstructionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(FilterInstructionRequest $request)
     {
-        $data = $request->validate([
-            'page' => Rule::in(['Open', 'Completed'])
-        ]);
+        $data = $request->validated();
 
-        if ($request->page == "Open") {
-            $instruction = $this->instructionService->getInstructionsOpen();
-        } else if ($request->page == "Completed") {
-            $instruction = $this->instructionService->getInstructionsCompleted();
-        } else {
-            $instruction = $this->instructionService->getAllInstruction();
-        }
+        $instruction = $this->instructionService->filterInstruction($data, $request);
+
         return new InstructionCollection($instruction);
     }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(InstructionRequest $request)
     {
-        //
+        $instruction = $this->instructionService->storeInstruction($request->validated());
+
+        if ($files = $request->file('attachments')) {
+            $instruction = $this->instructionService->storeAttachments($instruction, $files);
+        }
+
+        return (new InstructionResource($instruction, 'Created instruction successfully'))
+            ->response()->setStatusCode(201);
     }
 
     /**
@@ -97,5 +101,14 @@ class InstructionController extends Controller
             'message' => 'Terminate Instruction Successfully',
             'data'    => $instructionSave
         ]);
+    }
+
+    public function searchInstruction(Request $request)
+    {
+        $instruction = $this->instructionService->getInstruction($request->query('search'));
+
+        if ($instruction->count() <= 0) throw new SearchNotFoundException('Instruction Not Found');
+
+        return new InstructionCollection($instruction);
     }
 }

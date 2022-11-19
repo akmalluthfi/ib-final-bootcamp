@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\SearchNotFoundException;
 use App\Http\Requests\StoreInvoiceTargetRequest;
+use App\Http\Resources\InvoiceTargetCollection;
 use App\Http\Resources\InvoiceTargetResource;
-use App\Models\InvoiceTarget;
 use App\Services\InvoiceTargetService;
 use Illuminate\Http\Request;
 
@@ -21,23 +22,15 @@ class InvoiceTargetController extends Controller
     {
         $invoiceTargets =  $this->invoiceTargetService->getInvoiceTarget($request->query('search'));
 
-        return response()->json([
-            'message' => 'Success get Invoice Targets',
-            'data' => InvoiceTargetResource::collection($invoiceTargets),
-            'errors' => null
-        ]);
+        if ($invoiceTargets->count() <= 0) throw new SearchNotFoundException("Invoice target not found");
+
+        return new InvoiceTargetCollection($invoiceTargets);
     }
 
     public function store(StoreInvoiceTargetRequest $request)
     {
-        $invoiceTarget = $request->validated();
+        $invoiceTarget = $this->invoiceTargetService->storeInvoiceTarget($request->validated());
 
-        $this->invoiceTargetService->storeInvoiceTarget($invoiceTarget);
-
-        return response()->json([
-            'message' => 'Successfully created new invoice',
-            'data' => $invoiceTarget,
-            'errors' => null
-        ]);
+        return (new InvoiceTargetResource($invoiceTarget))->response()->setStatusCode(201);
     }
 }

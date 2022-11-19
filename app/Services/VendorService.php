@@ -15,6 +15,13 @@ class VendorService
 
     public function getVendor($search)
     {
+        if (is_null($search)) return $this->vendorRepository->getAll();
+
         return $this->vendorRepository->searchAndFind($search);
+    }
+
+    public function addVendorAddress($vendor, $address)
+    {
+        return $this->vendorRepository->addAddress($vendor, $address);
     }
 }

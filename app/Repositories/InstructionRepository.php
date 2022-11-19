@@ -4,8 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Instruction;
 
-use Illuminate\Support\Facades\DB;
-
 class InstructionRepository
 {
     private Instruction $instruction;
@@ -13,6 +11,34 @@ class InstructionRepository
     public function __construct()
     {
         $this->instruction = new Instruction();
+    }
+
+    public function storeInstruction($instruction)
+    {
+        $instruction['status'] = 'In Progress';
+        $instruction['attachments'] = null;
+        $instruction['cancellation'] = null;
+        $instruction['activity_notes'][] = [
+            'note' => 'Created Instruction',
+            'performed_by' => 'Alfi',
+            'date' => now()->format('d/m/y h:i A')
+        ];
+
+        return Instruction::create($instruction);
+    }
+
+    public function countForLogisticInstruction()
+    {
+        return Instruction::where('type', 'LI')->count();
+    }
+
+    public function updateAttachments($instruction, $attachments)
+    {
+        $instruction->update([
+            'attachments' => $attachments
+        ]);
+
+        return $instruction;
     }
 
     public function terminateInstruction(array $data, Instruction $instruction)
@@ -82,5 +108,27 @@ class InstructionRepository
         ]);
 
         return $instruction;
+    }
+
+    public function getAllInstruction()
+    {
+        return $this->instruction->latest()->limit(10)->get();
+    }
+
+    public function searchAndFind($search)
+    {
+        return $this->instruction->latest()
+            ->where('_id', 'like', "%$search%")
+            ->orWhere('instruction_id', 'like', "%$search%")
+            ->orWhere('instruction_type', 'like', "%$search%")
+            ->orWhere('customer', 'like', "%$search%")
+            ->orWhere('link_to', 'like', "%$search%")
+            ->orWhere('assigned_vendor', 'like', "%$search%")
+            ->orWhere('attention_of', 'like', "%$search%")
+            ->orWhere('quotation_no', 'like', "%$search%")
+            ->orWhere('status', 'like', "%$search%")
+            ->orWhere('customer_po_no', 'like', "%$search%")
+            ->limit(10)
+            ->get();
     }
 }

@@ -6,9 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class InstructionResource extends JsonResource
 {
-    public function __construct($instructions = null, string $message = null)
+    protected $message;
+
+    public function __construct($instruction, $message)
     {
-        parent::__construct($instructions);
+        parent::__construct($instruction);
         $this->message = $message;
     }
 
@@ -22,52 +24,49 @@ class InstructionResource extends JsonResource
     {
         if ($request->routeIs('instructions.index')) {
             return [
-                'id' => $this->_id,
-                'instruction_type' => $this->instruction_type,
+                'id' => $this->id,
+                'no' => $this->no,
                 'link_to' => $this->link_to,
+                'type' => $this->type,
                 'assigned_vendor' => $this->assigned_vendor,
                 'attention_of' => $this->attention_of,
                 'quotation_no' => $this->quotation_no,
-                'customer_po' => $this->customer_po,
-                'status' => $this->status
+                'customer_po_no' => $this->customer_po_no,
+                'status' => $this->status,
             ];
         } else {
-            return [
-                'message' => $this->message,
-                'data' => [
-                    'id' => $this->_id,
-                    'status' => $this->status,
-                    'rev_count' => $this->rev_count,
-                    'is_draft' => $this->is_draft,
-                    'instruction_id' => $this->instruction_id,
-                    'instruction_type' => $this->instruction_type,
-                    'assigned_vendor' => $this->assigned_vendor,
-                    'attention_of' => $this->attention_of,
-                    'quotation_no' => $this->quotation_no,
-                    'vendor_address' => $this->vendor_address,
-                    'vendor_invoice' => $this->vendor_invoice,
-                    'customer' => $this->customer,
-                    'customer_po_no' => $this->customer_po_no,
-                    'cost' => $this->cost,
-                    'attachments' => $this->attachments,
-                    'notes' => $this->notes,
-                    'link_to' => $this->link_to,
-                    'internal_only' => [
-                        'attachments' => $this->attachments,
-                        'internal_note' => $this->internal_note
-                    ],
-                    'activity_note' => [
-                        'note' => $this->note,
-                        'performed_by' => $this->performed_by,
-                        'date' => $this->date
-                    ],
-                    'cancellation' => [
-                        'reason' => $this->reason,
-                        'canceled_by' => $this->canceled_by,
-                        'attachment' => $this->attachment
-                    ],
-                ]
-            ];
+            return $this->toArrayAll();
         }
+    }
+
+    public function toArrayAll()
+    {
+        return [
+            'messsage' => $this->message,
+            'data' => [
+                'id' => $this->id,
+                'created_at' => $this->updated_at->format('d/m/y h:i A'),
+                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
+                'status' => $this->status,
+                'no' => $this->no,
+                'type' => $this->type,
+                'assigned_vendor' => $this->assigned_vendor,
+                'attention_of' => $this->attention_of,
+                'quotation_no' => $this->quotation_no,
+                'vendor_address' => $this->vendor_address,
+
+                'vendor_invoices' => $this->vendorInvoices,
+
+                'invoice_to' => $this->invoice_to,
+                'customer' => $this->customer,
+                'customer_po_no' => $this->customer_po_no,
+                'costs' => $this->costs,
+                'attachments' => $this->attachments,
+                'note' => $this->note,
+                'link_to' => $this->link_to,
+                'internal' => $this->internal,
+                'activity_notes' => $this->activity_notes,
+            ]
+        ];
     }
 }

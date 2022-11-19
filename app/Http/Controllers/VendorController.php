@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\VendorAddressRequest;
+use App\Http\Resources\VendorCollection;
 use App\Http\Resources\VendorResource;
+use App\Models\Vendor;
 use App\Services\VendorService;
 use Illuminate\Http\Request;
+use App\Exceptions\SearchNotFoundException;
 
 class VendorController extends Controller
 {
@@ -19,10 +23,15 @@ class VendorController extends Controller
     {
         $vendors =  $this->vendorService->getVendor($request->query('search'));
 
-        return response()->json([
-            'message' => 'Success get vendors',
-            'data' => VendorResource::collection($vendors),
-            'errors' => null
-        ]);
+        if ($vendors->count() <= 0) throw new SearchNotFoundException("Vendor not found");
+
+        return new VendorCollection($vendors);
+    }
+
+    public function addAddress(VendorAddressRequest $request, Vendor $vendor)
+    {
+        $vendor = $this->vendorService->addVendorAddress($vendor, $request->post('address'));
+
+        return (new VendorResource($vendor))->response()->setStatusCode(201);
     }
 }

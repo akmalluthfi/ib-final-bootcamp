@@ -25,10 +25,10 @@ class TransactionSeeder extends Seeder
                 $date = date('Y');
                 $index = str_pad($i, 4, "0", STR_PAD_LEFT);
 
-                $t = new Transaction();
-                $t->transaction_type = $transaction['type'];
-                $t->transaction_id = "{$transaction['id']}-$date-$index";
-                $t->save();
+                Transaction::create([
+                    'type' => $transaction['type'],
+                    'no' => "{$transaction['id']}-$date-$index"
+                ]);
             }
         }
     }
