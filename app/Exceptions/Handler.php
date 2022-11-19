@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -38,21 +38,28 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
-            if ($request->is('api/*')) {
+            if ($request->expectsJson()) {
                 return response()->json([
-                    'message' => 'Not Found',
-                    'data' => null,
-                    'errors' => 'Route Not Found'
-                ]);
+                    'message' => 'Route Not Found',
+                ], 404);
+            }
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Model Not Found',
+                ], 404);
             }
         });
 
         $this->renderable(function (ValidationException $e, $request) {
-            return response()->json([
-                'message' => 'Validation Error',
-                'data' => null,
-                'errors' => $e->errors()
-            ]);
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Validation Error',
+                    'errors' => $e->errors()
+                ], 422);
+            }
         });
 
         $this->reportable(function (Throwable $e) {

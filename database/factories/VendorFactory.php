@@ -15,7 +15,7 @@ class VendorFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
-            'address' => [
+            'addresses' => [
                 $this->faker->address(),
                 $this->faker->address(),
             ]
