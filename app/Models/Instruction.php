@@ -13,16 +13,7 @@ class Instruction extends Model
      */
     protected $attributes = [
         'status' => 'In Progress',
-        'rev_count' => 0,
-        'is_draft' => false,
     ];
-
-    /**
-     * The storage format of the model's date columns.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d H:i:s';
 
     /**
      * The attributes that are mass assignable.
@@ -40,11 +31,11 @@ class Instruction extends Model
         'invoice_to',
         'customer',
         'customer_po_no',
-        'cost',
+        'costs',
         'attachments',
-        'notes',
+        'note',
         'link_to',
-        'activity_note',
+        'activity_notes',
         'cancellation'
     ];
 

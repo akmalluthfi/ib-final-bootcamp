@@ -5,6 +5,7 @@ use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\VendorController;
+use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,11 +21,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $vendors = App\Models\Vendor::limit(3)->get(['name', 'address']);
+    $instruction = Instruction::firstOrFail();
 
-    return new App\Http\Resources\VendorCollection($vendors);
+    dd(str_pad('0123', 2, '0', STR_PAD_LEFT));
 
-    die();
+    return new App\Http\Resources\InstructionResource($instruction);
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([

@@ -29,16 +29,17 @@ class InstructionSeeder extends Seeder
                 'vendor_address' => $faker->address(),
                 'invoice_to' => $faker->firstName(),
                 'customer' => $faker->firstName(),
-                'customer_po_no' => null,
+                'customer_po_no' => $faker->randomNumber(4, true),
                 'costs' => $this->createCost(mt_rand(1, 5)),
-                'attachments' => [],
-                'notes' => $faker->text(100),
+                'attachments' => null,
+                'note' => $faker->text(100),
                 'link_to' => null,
                 'activity_notes' => [
                     [
                         'note' => 'Created',
                         'performed_by' => 'Alfi',
-                        'date' => (new \DateTime('now'))->format('Y-m-d H:i:s')
+                        // 'date' => (new \DateTime('now'))->format('d/m/y h:i A')
+                        'date' => now()->format('d/m/y h:i A')
                     ]
                 ],
                 'cancellation' => null
@@ -47,7 +48,7 @@ class InstructionSeeder extends Seeder
             $instruction->vendorInvoices()->createMany($this->createVendorInvoice(mt_rand(1, 3)));
 
             $internal = $instruction->internal()->create([
-                'attachments' => []
+                'attachments' => null
             ]);
 
             $internal->notes()->createMany($this->createInternalNote(mt_rand(1, 3)));
@@ -60,8 +61,8 @@ class InstructionSeeder extends Seeder
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
                 'no' => 'INV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
-                'attachments' => [],
-                'supporting_documents' => []
+                'attachment' => null,
+                'supporting_documents' => null
             ];
         }
 

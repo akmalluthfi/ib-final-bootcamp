@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddVendorAddressRequest;
+use App\Http\Requests\VendorAddressRequest;
 use App\Http\Resources\VendorCollection;
 use App\Http\Resources\VendorResource;
 use App\Models\Vendor;
@@ -28,7 +28,7 @@ class VendorController extends Controller
         return new VendorCollection($vendors);
     }
 
-    public function addAddress(AddVendorAddressRequest $request, Vendor $vendor)
+    public function addAddress(VendorAddressRequest $request, Vendor $vendor)
     {
         $vendor = $this->vendorService->addVendorAddress($vendor, $request->post('address'));
 
