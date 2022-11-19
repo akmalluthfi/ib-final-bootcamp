@@ -62,7 +62,7 @@ class InstructionSeeder extends Seeder
             $rows[] = [
                 'no' => 'INV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'attachment' => null,
-                'supporting_documents' => null
+                'supporting_documents' => []
             ];
         }
 

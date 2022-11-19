@@ -17,22 +17,14 @@ class InstructionService
     {
         $instruction['no'] = $this->generateNo($instruction['type']);
 
-        $costs = [];
-        foreach ($instruction['costs'] as $cost) {
-            $costs[] = [
-                "description" => $cost['description'],
-                "qty" => (int) $cost['qty'],
-                "uom" => $cost['uom'],
-                "unit_price" => (float) $cost['unit_price'],
-                "discount" => (int) $cost['discount'],
-                "vat" => (int) $cost['vat'],
-                "sub_total" => (float) $cost['sub_total'],
-                "total" => (float) $cost['total'],
-                "charge_to" => $cost['charge_to'],
-            ];
+        foreach ($instruction['costs'] as $key => $cost) {
+            $instruction['costs'][$key]['qty'] = (int) $cost['qty'];
+            $instruction['costs'][$key]['discount'] = (int) $cost['discount'];
+            $instruction['costs'][$key]['vat'] = (int) $cost['vat'];
+            $instruction['costs'][$key]['unit_price'] = round((int)$cost['unit_price'], 2);
+            $instruction['costs'][$key]['sub_total'] = (float) $cost['sub_total'];
+            $instruction['costs'][$key]['total'] = (float) $cost['total'];
         }
-
-        $instruction['costs'] = $costs;
 
         return $this->instructionRepository->storeInstruction($instruction);
     }

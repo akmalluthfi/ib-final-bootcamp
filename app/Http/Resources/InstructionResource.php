@@ -22,23 +22,20 @@ class InstructionResource extends JsonResource
      */
     public function toArray($request)
     {
-        if (!$request->routeIs('instructions.index')) {
-            return $this->toArrayAll();
-        } else {
+        if ($request->routeIs('instructions.index')) {
             return [
-                'message' => $this->message,
-                'data' => [
-                    'id' => $this->id,
-                    'no' => $this->no,
-                    'link_to' => $this->link_to,
-                    'type' => $this->type,
-                    'assigned_vendor' => $this->assigned_vendor,
-                    'attention_of' => $this->attention_of,
-                    'quotation_no' => $this->quotation_no,
-                    'customer_po_no' => $this->customer_po_no,
-                    'status' => $this->status,
-                ]
+                'id' => $this->id,
+                'no' => $this->no,
+                'link_to' => $this->link_to,
+                'type' => $this->type,
+                'assigned_vendor' => $this->assigned_vendor,
+                'attention_of' => $this->attention_of,
+                'quotation_no' => $this->quotation_no,
+                'customer_po_no' => $this->customer_po_no,
+                'status' => $this->status,
             ];
+        } else {
+            return $this->toArrayAll();
         }
     }
 

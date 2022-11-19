@@ -49,7 +49,10 @@ class InstructionRequest extends FormRequest
             'costs.*.vat' => 'required|numeric|min:0',
             'costs.*.sub_total' => 'required|numeric|min:0',
             'costs.*.total' => 'required|numeric|min:0',
-            'costs.*.charge_to' => 'required',
+            'costs.*.charge_to' => [
+                'required',
+                Rule::in(['Customer', 'Inosoft'])
+            ],
 
             'attachments' => 'array|nullable',
             'attachments.*' => 'file|mimes:docx,pdf',
