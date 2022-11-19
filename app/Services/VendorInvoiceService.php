@@ -81,7 +81,7 @@ class VendorInvoiceService
 
     public function storeFile(UploadedFile $file, $instructionId)
     {
-        $path = Storage::putFile('instructions/' . $instructionId . '/vendor-invoices', $file);
+        $path = $file->store('files/instructions/' . $instructionId . '/vendor-invoices');
 
         return $path;
     }
