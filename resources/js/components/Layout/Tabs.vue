@@ -1,11 +1,14 @@
 <template>
-  <nav class="nav">
-    <router-link class="nav-link pb-1 active" to="/">
-      <h5>Open</h5>
-    </router-link>
-    <router-link class="nav-link pb-1" to="/completed">
-      <h5>Completed</h5>
-    </router-link>
+  <nav class="nav d-flex">
+    <div class="d-flex">
+      <router-link class="nav-link pb-1 active" to="/">
+        <h5>Open</h5>
+      </router-link>
+      <router-link class="nav-link pb-1" to="/completed">
+        <h5>Completed</h5>
+      </router-link>
+    </div>
+    <create-button />
   </nav>
 </template>
 

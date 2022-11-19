@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
       <h2>3rd Party Instruction</h2>
       <p>
         Vendor Management

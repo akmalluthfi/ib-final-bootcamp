@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg bg-dark text-white">
+  <nav class="navbar navbar-expand-lg bg-black text-white">
     <div class="container-fluid justify-content-between">
       <a class="navbar-brand" href="#">
         <h3 class="text-white">TubeStream</h3>

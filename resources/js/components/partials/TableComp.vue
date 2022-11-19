@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-success table-hover">
+  <table class="table table-success table-hover fs-5">
     <thead>
       <tr>
         <th scope="col" class="hidden"></th>

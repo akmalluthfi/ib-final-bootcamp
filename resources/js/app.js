@@ -24,7 +24,18 @@ Vue.component(
     "ModalInvoice",
     require("./components/partials/ModalInvoice.vue").default
 );
-Vue.component("TableComp", require("./components/partials/TableComp.vue").default);
+Vue.component(
+    "Dropdown",
+    require("./components/partials/Dropdown.vue").default
+);
+Vue.component(
+    "TextInput",
+    require("./components/partials/TextInput.vue").default
+);
+Vue.component(
+    "TableComp",
+    require("./components/partials/TableComp.vue").default
+);
 
 Vue.use(VueRouter);
 const router = new VueRouter({
