@@ -8,12 +8,21 @@ class VendorRepository
 {
     public function searchAndFind($search)
     {
-        $vendors = Vendor::query();
+        return Vendor::latest()
+            ->where('name', 'like', "%$search%")
+            ->limit(10)
+            ->get(['name', 'addresses']);
+    }
 
-        if (!is_null($search)) {
-            $vendors->where('name', 'like', "%$search%");
-        }
+    public function getAll()
+    {
+        return Vendor::latest()->limit(10)->get(['name', 'addresses']);
+    }
 
-        return $vendors->get(['name', 'address']);
+    public function addAddress($vendor, $addres)
+    {
+        $vendor->push('addresses', $addres, true);
+
+        return $vendor;
     }
 }

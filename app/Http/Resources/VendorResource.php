@@ -14,10 +14,21 @@ class VendorResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($request->routeIs('vendor.add-address')) {
+            return [
+                'message' => 'Add vendor address successfully',
+                'data' => [
+                    'id' => $this->id,
+                    'name' => $this->name,
+                    'addresses' => $this->addresses
+                ]
+            ];
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address
+            'addresses' => $this->addresses
         ];
     }
 }

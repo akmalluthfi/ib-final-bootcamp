@@ -1,12 +1,12 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
-use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\VendorController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InvoiceTargetController;
+use App\Http\Controllers\VendorInvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,18 +20,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $text = '69764 Stokes Forges\nPredovichaven, PA 22784';
-
-    // $da = date('Y-m-d H:i:s');
-    dump($text);
-    dd(stripslashes($text));
+    // route for test
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
 
+Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
+
+Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
+    'index'
+])->parameters([
+    'vendor-invoices' => 'id'
+]);
+
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');

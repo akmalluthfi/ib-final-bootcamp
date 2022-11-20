@@ -8,17 +8,19 @@ class InvoiceTargetRepository
 {
     public function searchAndFind($search)
     {
-        $vendors = InvoiceTarget::query();
+        return InvoiceTarget::latest()
+            ->where('name', 'like', "%$search%")
+            ->limit(10)
+            ->get(['name']);
+    }
 
-        if (!is_null($search)) {
-            $vendors->where('name', 'like', "%$search%");
-        }
-
-        return $vendors->get(['name']);
+    public function getAll()
+    {
+        return InvoiceTarget::latest()->get(['name']);
     }
 
     public function storeInvoiceTarget($invoiceTarget)
     {
-        InvoiceTarget::create($invoiceTarget);
+        return InvoiceTarget::create($invoiceTarget);
     }
 }

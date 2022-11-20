@@ -15,11 +15,13 @@ class InvoiceTargetService
 
     public function getInvoiceTarget($search)
     {
+        if (is_null($search)) return $this->invoiceTargetRepository->getAll();
+
         return $this->invoiceTargetRepository->searchAndFind($search);
     }
 
     public function storeInvoiceTarget($invoiceTarget)
     {
-        $this->invoiceTargetRepository->storeInvoiceTarget($invoiceTarget);
+        return $this->invoiceTargetRepository->storeInvoiceTarget($invoiceTarget);
     }
 }

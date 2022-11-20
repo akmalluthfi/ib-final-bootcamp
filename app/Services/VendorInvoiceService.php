@@ -47,15 +47,9 @@ class VendorInvoiceService
             $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
         }
 
-        if(isset($data['supporting_document'])){
-            $this->deleteFile($vendorInvoice->supporting_document);
-            $data['supporting_document'] = [$this->storeFile($data['supporting_document'], $instruction->id)];
-        }
-
-        if(isset($data['delete'])){
-            $this->deleteFile($data['delete']);
-            $this->vendorInvoiceRepository->pull($instruction, 'supporting_document', $data['delete']);
-        }
+        /* 
+            Update for supporting document still under development, because I don't know the algorithm
+        */
 
         $vendorInvoice = $this->vendorInvoiceRepository->update($data, $vendorInvoice);
 

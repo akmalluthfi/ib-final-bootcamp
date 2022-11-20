@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Jenssegers\Mongodb\Eloquent\Model;
 
 class Instruction extends Model
 {
-    use HasFactory;
-
     /**
      * The model's default values for attributes.
      *
@@ -16,8 +13,6 @@ class Instruction extends Model
      */
     protected $attributes = [
         'status' => 'In Progress',
-        'rev_count' => 0,
-        'is_draft' => false,
     ];
 
     /**
@@ -26,15 +21,28 @@ class Instruction extends Model
      * @var array
      */
     protected $fillable = [
-        'status'
+        'status',
+        'no',
+        'type',
+        'assigned_vendor',
+        'attention_of',
+        'quotation_no',
+        'vendor_address',
+        'invoice_to',
+        'customer',
+        'customer_po_no',
+        'costs',
+        'attachments',
+        'note',
+        'link_to',
+        'activity_notes',
+        'cancellation'
     ];
 
-    /**
-     * The storage format of the model's date columns.
-     *
-     * @var string
-     */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    public function internal()
+    {
+        return $this->embedsOne(Internal::class);
+    }
 
     public function vendorInvoices()
     {

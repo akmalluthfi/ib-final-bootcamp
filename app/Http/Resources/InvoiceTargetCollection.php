@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TransactionResource extends JsonResource
+class InvoiceTargetCollection extends ResourceCollection
 {
     /**
-     * Transform the resource into an array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
@@ -15,9 +15,8 @@ class TransactionResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'no' => $this->no,
-            'type' => $this->type
+            'message' => 'Invoice target found successfully',
+            'data' => $this->collection
         ];
     }
 }
