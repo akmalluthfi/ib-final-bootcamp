@@ -36,12 +36,12 @@ class InstructionRepository
 
     public function updateStatusCompleted(Instruction $instruction)
     {
-        $instruction->push('activity_note', [[
-            'note' => 'Received',
-            'noted_by' => 'Ricko Haikal Y.K',
-            'date' => now()->toDateTimeString()
+        $instruction->push('activity_notes', [[
+            'note' => 'Received All Invoice 3rd Party Instruction',
+            'performed_by' => 'Ricko Haikal Y.K',
+            'date' => now()->format('d/m/y h:i A')
         ]]);
 
-        $instruction->update(['status' => 'Complete']);
+        $instruction->update(['status' => 'Completed']);
     }
 }
