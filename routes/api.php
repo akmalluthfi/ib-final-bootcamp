@@ -46,8 +46,10 @@ Route::get('/customers', [CustomerController::class, 'index'])->name('customer.i
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
 // Handle route api doesn't exists
-Route::get('/{any}', function () {
-    return response()->json([
-        'message' => 'Not Found'
-    ], 404);
+Route::get('/{any}', function (Request $request) {
+    if($request->expectsJson()){
+        return response()->json([
+            'message' => 'Not Found'
+        ], 404);
+    }
 });

@@ -3,7 +3,9 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -37,30 +39,31 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
-            if ($request->expectsJson()) {
+        if(request()->expectsJson() && request()->is('api/*')){
+            $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
                 return response()->json([
-                    'message' => 'Route Not Found',
-                ], 404);
-            }
-        });
+                    'message' => 'Method Not Allowed'
+                ], 405);
+            });
 
-        $this->renderable(function (NotFoundHttpException $e, $request) {
-            if ($request->expectsJson()) {
+            $this->renderable(function (NotFoundHttpException $e, $request) {
                 return response()->json([
-                    'message' => 'Model Not Found',
+                    'message' => 'Resource Not Found',
                 ], 404);
-            }
-        });
+            });
 
-        $this->renderable(function (ValidationException $e, $request) {
-            if ($request->expectsJson()) {
+            $this->renderable(function (ValidationException $e, $request) {
                 return response()->json([
                     'message' => 'Validation Error',
                     'errors' => $e->errors()
                 ], 422);
-            }
-        });
+            });
+
+            // handle exception when embedded/nested document not found using firstOrFail
+            $this->renderable(function (ItemNotFoundException $e, $request) {
+                throw new NotFoundHttpException;
+            });
+        }
 
         $this->reportable(function (Throwable $e) {
             //
