@@ -60,4 +60,14 @@ class Instruction extends Model
             ->orWhere('status', 'like', "%$keyword%")
             ->orWhere('customer_po_no', 'like', "%$keyword%");
     }
+
+    public function scopeTabOpen($query)
+    {
+        return $query->where('status', 'In Progress')->orWhere('status', 'Draft');
+    }
+
+    public function scopeTabCompleted($query)
+    {
+        return $query->where('status', 'Complete')->orWhere('status', 'Cancelled');
+    }
 }

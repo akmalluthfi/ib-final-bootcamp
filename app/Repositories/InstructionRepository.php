@@ -38,7 +38,7 @@ class InstructionRepository
     public function terminateInstruction(array $data, Instruction $instruction)
     {
         $instruction->push('activity_notes', [[
-            'note'         => "Terminated",
+            'note'         => "Cancel 3rd Party Instruction",
             'performed_by' => 'Daffa Pratama A.S',
             'date'         => now()->format('d/m/y h:i A'),
         ]]);
@@ -57,7 +57,7 @@ class InstructionRepository
 
     public function getInstructionsOpen($search)
     {
-        $query = Instruction::latest()->where('status', 'In Progress')->orWhere('status', 'Draft');
+        $query = Instruction::latest()->TabOpen();
 
         if (isset($search) && $search) {
             $query->search($search);
@@ -70,7 +70,7 @@ class InstructionRepository
 
     public function getInstructionsCompleted($search)
     {
-        $query = Instruction::latest()->where('status', 'Complete')->orWhere('status', 'Cancelled');
+        $query = Instruction::latest()->TabCompleted();
 
         if (isset($search) && $search) {
             $query->search($search);
