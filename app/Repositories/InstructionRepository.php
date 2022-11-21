@@ -57,22 +57,26 @@ class InstructionRepository
 
     public function getInstructionsOpen($search)
     {
-        $instruction = Instruction::latest()->where('status', 'In Progress')->orWhere('status', 'Draft')->paginate(10);
+        $query = Instruction::latest()->where('status', 'In Progress')->orWhere('status', 'Draft');
 
         if (isset($search) && $search) {
-            $instruction->search($search);
+            $query->search($search);
         }
+
+        $instruction = $query->paginate(10);
 
         return $instruction;
     }
 
     public function getInstructionsCompleted($search)
     {
-        $instruction = Instruction::latest()->where('status', 'Complete')->orWhere('status', 'Cancelled')->paginate(10);
+        $query = Instruction::latest()->where('status', 'Complete')->orWhere('status', 'Cancelled');
 
         if (isset($search) && $search) {
-            $instruction->search($search);
+            $query->search($search);
         }
+
+        $instruction = $query->paginate(10);
 
         return $instruction;
     }

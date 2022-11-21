@@ -25,7 +25,7 @@ class TerminateInstructionRequest extends FormRequest
     {
         return [
             'reason'        => 'required|string',
-            'attachments'   => 'array',
+            'attachments'   => 'array|nullable',
             'attachments.*' => 'file|mimes:docx,pdf',
         ];
     }

@@ -51,10 +51,8 @@ class Instruction extends Model
 
     public function scopeSearch($query, $keyword)
     {
-        return $query->where('_id', 'like', "%$keyword%")
-            ->orWhere('no', 'like', "%$keyword%")
+        return $query->where('no', 'like', "%$keyword%")
             ->orWhere('type', 'like', "%$keyword%")
-            ->orWhere('customer', 'like', "%$keyword%")
             ->orWhere('link_to', 'like', "%$keyword%")
             ->orWhere('assigned_vendor', 'like', "%$keyword%")
             ->orWhere('attention_of', 'like', "%$keyword%")
