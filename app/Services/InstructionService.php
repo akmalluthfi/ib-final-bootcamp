@@ -51,16 +51,20 @@ class InstructionService
 
     public function terminateInstruction(array $data, Instruction $instruction)
     {
+        $data['attachments'] = isset($data['attachments']) ? $data['attachments'] : [];
+
         $paths = [];
 
-        foreach ($data['attachments'] as $attachment) {
-            $path = Storage::putFile('instructions/' . $instruction->id . '/terminate', $attachment);
-            $paths[] = $path;
+        if ($data['attachments']) {
+            foreach ($data['attachments'] as $attachment) {
+                $path = Storage::putFile('instructions/' . $instruction->id . '/terminate', $attachment);
+                $paths[] = $path;
+            }
+            $data['attachments'] = $paths;
         }
 
-        $data['attachments'] = $paths;
-
         $vendor = $this->instructionRepository->terminateInstruction($data, $instruction);
+
         return $vendor;
     }
 

@@ -62,7 +62,7 @@ class InstructionResource extends JsonResource
                 'internal' => $this->internal,
                 'activity_notes' => $this->activity_notes,
                 'link_to' => $this->link_to,
-                'cancelation' => $this->cancelation,
+                'cancellation' => $this->cancellation,
                 'created_at' => $this->updated_at->format('d/m/y h:i A'),
                 'updated_at' => $this->updated_at->format('d/m/y h:i A'),
             ]
