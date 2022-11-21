@@ -55,45 +55,25 @@ class InstructionRepository
         return $instruction;
     }
 
-    public function getAll()
+    public function getInstructionsOpen($search)
     {
-        $instruction = Instruction::paginate(10);
+        $instruction = Instruction::latest()->where('status', 'In Progress')->orWhere('status', 'Draft')->paginate(10);
+
+        if (isset($search) && $search) {
+            $instruction->search($search);
+        }
 
         return $instruction;
     }
 
-    public function getInstructionsOpen()
+    public function getInstructionsCompleted($search)
     {
-        $instruction = Instruction::where('status', 'In Progress')->orWhere('status', 'Draft')->paginate(10);
+        $instruction = Instruction::latest()->where('status', 'Complete')->orWhere('status', 'Cancelled')->paginate(10);
+
+        if (isset($search) && $search) {
+            $instruction->search($search);
+        }
 
         return $instruction;
-    }
-
-    public function getInstructionsCompleted()
-    {
-        $instruction = Instruction::where('status', 'Complete')->orWhere('status', 'Cancelled')->paginate(10);
-
-        return $instruction;
-    }
-
-    public function getAllInstruction()
-    {
-        return Instruction::latest()->paginate(10);
-    }
-
-    public function searchAndFind($search)
-    {
-        return $this->instruction->latest()
-            ->where('_id', 'like', "%$search%")
-            ->orWhere('instruction_id', 'like', "%$search%")
-            ->orWhere('instruction_type', 'like', "%$search%")
-            ->orWhere('customer', 'like', "%$search%")
-            ->orWhere('link_to', 'like', "%$search%")
-            ->orWhere('assigned_vendor', 'like', "%$search%")
-            ->orWhere('attention_of', 'like', "%$search%")
-            ->orWhere('quotation_no', 'like', "%$search%")
-            ->orWhere('status', 'like', "%$search%")
-            ->orWhere('customer_po_no', 'like', "%$search%")
-            ->paginate(10);
     }
 }

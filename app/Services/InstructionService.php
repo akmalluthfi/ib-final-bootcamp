@@ -67,38 +67,11 @@ class InstructionService
     public function filterInstruction(array $data)
     {
         if ($data['tab'] == "open") {
-            $instruction = $this->getInstructionsOpen();
+            $instruction = $this->instructionRepository->getInstructionsOpen($data['search']);
         } else if ($data['tab'] == "completed") {
-            $instruction = $this->getInstructionsCompleted();
-        } else {
-            $instruction = $this->getAllInstruction();
+            $instruction = $this->instructionRepository->getInstructionsCompleted($data['search']);
         }
 
-        return $instruction;
-    }
-
-    public function getInstruction($search)
-    {
-        if (is_null($search)) return $this->instructionRepository->getAllInstruction();
-
-        return $this->instructionRepository->searchAndFind($search);
-    }
-
-    public function getAllInstruction()
-    {
-        $instruction = $this->instructionRepository->getAll();
-        return $instruction;
-    }
-
-    public function getInstructionsOpen()
-    {
-        $instruction = $this->instructionRepository->getInstructionsOpen();
-        return $instruction;
-    }
-
-    public function getInstructionsCompleted()
-    {
-        $instruction = $this->instructionRepository->getInstructionsCompleted();
         return $instruction;
     }
 }

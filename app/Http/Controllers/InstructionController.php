@@ -30,7 +30,6 @@ class InstructionController extends Controller
     public function index(FilterInstructionRequest $request)
     {
         $data = $request->validated();
-        // dd($request->query('search'));
 
         $instruction = $this->instructionService->filterInstruction($data);
 
@@ -63,8 +62,7 @@ class InstructionController extends Controller
      */
     public function show(Instruction $instruction)
     {
-        return (new InstructionResource($instruction, 'Show instruction successfully'))
-            ->response()->setStatusCode(201);
+        return (new InstructionResource($instruction, 'Show instruction successfully'));
     }
 
     /**
@@ -96,16 +94,6 @@ class InstructionController extends Controller
 
         $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
-        return (new InstructionResource($instructionSave, 'Terminate instruction successfully'))
-            ->response()->setStatusCode(201);
-    }
-
-    public function searchInstruction(Request $request)
-    {
-        $instruction = $this->instructionService->getInstruction($request->query('search'));
-
-        if ($instruction->count() <= 0) throw new SearchNotFoundException('Instruction Not Found');
-
-        return new InstructionCollection($instruction);
+        return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
     }
 }
