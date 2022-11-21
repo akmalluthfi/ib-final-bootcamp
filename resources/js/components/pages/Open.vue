@@ -9,16 +9,31 @@
       </p>
       <div class="card mt-4">
         <div class="card-body">
-          <Tabs setActive="open"></Tabs>
+          <Tabs setActive="open"></Tabs>  
         </div>
       </div>
-      <table-comp statusMsg="progress"></table-comp>
+      <table-comp
+        v-if="!!instructions"
+        :instructions="instructions"
+      ></table-comp>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      instructions: null,
+    };
+  },
+
+  async created() {
+    const response = await axios.get("http://127.0.0.1:8000/api/instructions");
+    this.instructions = response.data.data;
+    console.log(response.data.data);
+  },
+};
 </script>
 <style>
 a {
