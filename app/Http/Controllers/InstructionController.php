@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\InstructionRequest;
-use App\Http\Resources\InstructionCollection;
-use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
-use App\Services\InstructionService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Services\InstructionService;
+use App\Http\Requests\InstructionRequest;
+use App\Http\Resources\InstructionResource;
+use App\Http\Resources\InstructionCollection;
+use Illuminate\Validation\ValidationException;
 
 class InstructionController extends Controller
 {
@@ -93,11 +95,12 @@ class InstructionController extends Controller
 
     public function receive(Instruction $instruction)
     {
-        $instruction = $this->instructionService->receiveInstruction($instruction);
+        if($instruction->status === 'In Progress'){
+            $instruction = $this->instructionService->receiveInstruction($instruction);
+        } else {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
 
-        return response()->json([
-            'message' => 'Successfully received instruction',
-            'data' => $instruction
-        ]);
+        return new InstructionResource($instruction, 'Received instruction successfully');
     }
 }

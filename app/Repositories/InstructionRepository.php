@@ -43,5 +43,7 @@ class InstructionRepository
         ]]);
 
         $instruction->update(['status' => 'Completed']);
+
+        return $instruction;
     }
 }
