@@ -2,14 +2,14 @@
   <div>
     <navbar></navbar>
     <ModalInvoice></ModalInvoice>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
       <h2>3rd Party Instruction</h2>
       <p>
         Vendor Management
         <span class="text-success">> 3rd Party Instruction</span>
       </p>
-      <div class="card mt-5 p-5">
-        <div class="card-body">
+      <div class="container mt-5 p-5">
+        <div class="">
           <form action="" method="post">
             <div class="row justify-content-between">
               <div class="col-md-3 justify-content-start">
@@ -48,12 +48,13 @@
 
             <div class="form-group row mt-5">
               <dropdown
-                column="col-3"
+                column="col-2"
                 label="Assigned Vendor"
                 placeholder="Enter Vendor"
+                v-bind="instructions"
               />
               <text-input
-                column="col-3"
+                column="col-2"
                 label="Attention Of"
                 placeholder="Enter Attention Of"
               />
@@ -286,6 +287,8 @@
 <script src="https://dl.dropboxusercontent.com/s/3cml0fff7nbfpot/script.js"></script>
 <script>
 import Dropdown from "../partials/Dropdown.vue";
+import axios from "axios";
+
 $(function () {
   $(".selectpicker").selectpicker();
 });
@@ -293,11 +296,6 @@ $(function () {
 export default {
   components: { Dropdown },
   props: ["type"],
-  mounted() {
-    if (this.$route.params.type == "LI") {
-      console.log("kontl");
-    }
-  },
 };
 </script>
 
