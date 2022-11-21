@@ -29,7 +29,7 @@ class VendorInvoiceController extends Controller
         
         $vendorInvoice = $this->vendorInvoiceService->storeVendorInvoice($data, $instruction);
 
-        return new VendorInvoiceResource($vendorInvoice, 'Successfully created vendor invoices');
+        return (new VendorInvoiceResource($vendorInvoice, 'Successfully created vendor invoices'))->response()->setStatusCode(201);
     }
 
     /**

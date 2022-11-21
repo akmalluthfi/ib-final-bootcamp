@@ -30,18 +30,4 @@ class VendorInvoiceResource extends JsonResource
             ]
         ];
     }
-
-    /**
-     * Customize the outgoing response for the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response  $response
-     * @return void
-     */
-    public function withResponse($request, $response)
-    {
-        if($request->routeIs('instructions.vendor-invoices.store')){
-            $response->setStatusCode(201);
-        }   
-    }
 }
