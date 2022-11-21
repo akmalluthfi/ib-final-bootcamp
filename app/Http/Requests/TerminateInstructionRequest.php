@@ -24,8 +24,9 @@ class TerminateInstructionRequest extends FormRequest
     public function rules()
     {
         return [
-            'reason'     => 'required|string',
-            'attachment' => 'required|file|mimes:png,jpg'
+            'reason'        => 'required|string',
+            'attachments'   => 'array',
+            'attachments.*' => 'file|mimes:docx,pdf',
         ];
     }
 }

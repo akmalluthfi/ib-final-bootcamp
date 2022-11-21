@@ -51,18 +51,24 @@ class InstructionService
 
     public function terminateInstruction(array $data, Instruction $instruction)
     {
-        $path = Storage::putFile('instructions/' . $instruction->id . '/terminate', $data['attachment']);
-        $data['attachment'] = $path;
+        $paths = [];
+
+        foreach ($data['attachments'] as $attachment) {
+            $path = Storage::putFile('instructions/' . $instruction->id . '/terminate', $attachment);
+            $paths[] = $path;
+        }
+
+        $data['attachments'] = $paths;
 
         $vendor = $this->instructionRepository->terminateInstruction($data, $instruction);
         return $vendor;
     }
 
-    public function filterInstruction(array $data, FilterInstructionRequest $request)
+    public function filterInstruction(array $data)
     {
-        if ($request->tab == "Open") {
+        if ($data['tab'] == "open") {
             $instruction = $this->getInstructionsOpen();
-        } else if ($request->tab == "Completed") {
+        } else if ($data['tab'] == "completed") {
             $instruction = $this->getInstructionsCompleted();
         } else {
             $instruction = $this->getAllInstruction();

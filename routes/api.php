@@ -34,9 +34,8 @@ Route::apiResource('/instructions', InstructionController::class)->except([
 
 Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
 
-Route::get('/instructions', [InstructionController::class, 'searchInstruction']);
-
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');

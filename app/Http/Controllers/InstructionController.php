@@ -11,6 +11,7 @@ use App\Models\Instruction;
 use App\Services\InstructionService;
 use Illuminate\Http\Request;
 use App\Exceptions\SearchNotFoundException;
+use Illuminate\Validation\Rule;
 
 class InstructionController extends Controller
 {
@@ -29,11 +30,13 @@ class InstructionController extends Controller
     public function index(FilterInstructionRequest $request)
     {
         $data = $request->validated();
+        // dd($request->query('search'));
 
-        $instruction = $this->instructionService->filterInstruction($data, $request);
+        $instruction = $this->instructionService->filterInstruction($data);
 
         return new InstructionCollection($instruction);
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -60,11 +63,8 @@ class InstructionController extends Controller
      */
     public function show(Instruction $instruction)
     {
-        return response()->json([
-            'status'   => 200,
-            'message'  => 'Show Detail Instruction Successfully',
-            'data'     => $instruction,
-        ]);
+        return (new InstructionResource($instruction, 'Show instruction successfully'))
+            ->response()->setStatusCode(201);
     }
 
     /**
@@ -96,11 +96,8 @@ class InstructionController extends Controller
 
         $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
-        return response()->json([
-            'status'  => 200,
-            'message' => 'Terminate Instruction Successfully',
-            'data'    => $instructionSave
-        ]);
+        return (new InstructionResource($instructionSave, 'Terminate instruction successfully'))
+            ->response()->setStatusCode(201);
     }
 
     public function searchInstruction(Request $request)

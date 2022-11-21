@@ -45,27 +45,26 @@ class InstructionResource extends JsonResource
             'messsage' => $this->message,
             'data' => [
                 'id' => $this->id,
-                'created_at' => $this->updated_at->format('d/m/y h:i A'),
-                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
                 'status' => $this->status,
-                'no' => $this->no,
                 'type' => $this->type,
+                'no' => $this->no,
                 'assigned_vendor' => $this->assigned_vendor,
                 'attention_of' => $this->attention_of,
                 'quotation_no' => $this->quotation_no,
                 'vendor_address' => $this->vendor_address,
-
-                'vendor_invoices' => $this->vendorInvoices,
-
                 'invoice_to' => $this->invoice_to,
                 'customer' => $this->customer,
                 'customer_po_no' => $this->customer_po_no,
                 'costs' => $this->costs,
                 'attachments' => $this->attachments,
                 'note' => $this->note,
-                'link_to' => $this->link_to,
+                'vendor_invoices' => $this->vendorInvoices,
                 'internal' => $this->internal,
                 'activity_notes' => $this->activity_notes,
+                'link_to' => $this->link_to,
+                'cancelation' => $this->cancelation,
+                'created_at' => $this->updated_at->format('d/m/y h:i A'),
+                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
             ]
         ];
     }

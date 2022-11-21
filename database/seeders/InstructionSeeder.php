@@ -21,6 +21,7 @@ class InstructionSeeder extends Seeder
             $type = $faker->randomElement(['LI', 'SI']);
 
             $instruction = Instruction::create([
+                'status' => 'In Progress',
                 'no' => $type . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'type' => $type,
                 'assigned_vendor' => $faker->company(),

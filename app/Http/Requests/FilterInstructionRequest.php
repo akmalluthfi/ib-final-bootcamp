@@ -26,7 +26,7 @@ class FilterInstructionRequest extends FormRequest
     public function rules()
     {
         return [
-            'tab' => Rule::in(['Open', 'Completed'])
+            'tab' => Rule::in(['open', 'completed']),
         ];
     }
 }
