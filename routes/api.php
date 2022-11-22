@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\InstructionController;
-use App\Http\Controllers\InvoiceTargetController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\VendorController;
-use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InstructionController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\InvoiceTargetController;
+use App\Http\Controllers\VendorInvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,15 +21,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $instruction = Instruction::firstOrFail();
-
-    dd(str_pad('0123', 2, '0', STR_PAD_LEFT));
-
-    return new App\Http\Resources\InstructionResource($instruction);
+    // route for test
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
+]);
+
+Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
+
+Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
+    'index'
+])->parameters([
+    'vendor-invoices' => 'id'
 ]);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
@@ -43,8 +47,10 @@ Route::get('/customers', [CustomerController::class, 'index'])->name('customer.i
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
 // Handle route api doesn't exists
-Route::get('/{any}', function () {
-    return response()->json([
-        'message' => 'Not Found'
-    ], 404);
+Route::get('/{any}', function (Request $request) {
+    if($request->expectsJson()){
+        return response()->json([
+            'message' => 'Not Found'
+        ], 404);
+    }
 });

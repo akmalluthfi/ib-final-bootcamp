@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Models\Instruction;
 use App\Repositories\InstructionRepository;
 
 class InstructionService
 {
-    protected $instructionRepository;
+    private InstructionRepository $instructionRepository;
 
     public function __construct(InstructionRepository $instructionRepository)
     {
@@ -44,5 +45,12 @@ class InstructionService
     {
         $total = $this->instructionRepository->countForLogisticInstruction();
         return "$type-" . date('Y') . '-' . str_pad($total + 1, 4, '0', STR_PAD_LEFT);
+    }
+
+    public function receiveInstruction(Instruction $instruction)
+    {
+        $instruction = $this->instructionRepository->updateStatusCompleted($instruction);
+
+        return $instruction;
     }
 }
