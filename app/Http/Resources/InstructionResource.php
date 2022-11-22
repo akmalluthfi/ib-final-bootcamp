@@ -45,9 +45,11 @@ class InstructionResource extends JsonResource
             'messsage' => $this->message,
             'data' => [
                 'id' => $this->id,
+                'created_at' => $this->updated_at->format('d/m/y h:i A'),
+                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
                 'status' => $this->status,
-                'type' => $this->type,
                 'no' => $this->no,
+                'type' => $this->type,
                 'assigned_vendor' => $this->assigned_vendor,
                 'attention_of' => $this->attention_of,
                 'quotation_no' => $this->quotation_no,
@@ -59,13 +61,9 @@ class InstructionResource extends JsonResource
                 'costs' => $this->costs,
                 'attachments' => $this->attachments,
                 'note' => $this->note,
-                'vendor_invoices' => $this->vendorInvoices,
+                'link_to' => $this->link_to,
                 'internal' => $this->internal,
                 'activity_notes' => $this->activity_notes,
-                'link_to' => $this->link_to,
-                'cancellation' => $this->cancellation,
-                'created_at' => $this->updated_at->format('d/m/y h:i A'),
-                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
             ]
         ];
     }

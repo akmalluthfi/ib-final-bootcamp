@@ -6,7 +6,6 @@ use App\Models\Instruction;
 
 class InstructionRepository
 {
-
     public function storeInstruction($instruction)
     {
         $instruction['status'] = 'In Progress';
@@ -57,7 +56,7 @@ class InstructionRepository
 
     public function getInstructionsOpen($search)
     {
-        $query = Instruction::latest()->TabOpen();
+        $query = Instruction::latest()->Open();
 
         if (isset($search) && $search) {
             $query->search($search);
@@ -70,7 +69,7 @@ class InstructionRepository
 
     public function getInstructionsCompleted($search)
     {
-        $query = Instruction::latest()->TabCompleted();
+        $query = Instruction::latest()->Completed();
 
         if (isset($search) && $search) {
             $query->search($search);

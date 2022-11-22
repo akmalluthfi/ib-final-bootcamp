@@ -32,6 +32,8 @@ class InstructionController extends Controller
 
         $instruction = $this->instructionService->filterInstruction($data);
 
+        if ($instruction->count() <= 0) throw new SearchNotFoundException('Instruction not found');
+
         return new InstructionCollection($instruction);
     }
 
@@ -102,7 +104,11 @@ class InstructionController extends Controller
     {
         $data = $request->validated();
 
-        $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
+        if ($instruction->status == "In Progress") {
+            $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
+        } else {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
 
         return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
     }

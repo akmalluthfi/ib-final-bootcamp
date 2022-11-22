@@ -69,9 +69,9 @@ class InstructionService
 
     public function filterInstruction(array $data)
     {
-        $search = isset($data['search']) ? $data['search'] : null;
+        $search = $data['search'] ?? null;
 
-        $data['tab'] = isset($data['tab']) ? $data['tab'] : null;
+        $data['tab'] = $data['tab'] ?? null;
         if ($data['tab'] == "open" || !$data['tab']) {
             $instruction = $this->instructionRepository->getInstructionsOpen($search);
         } else if ($data['tab'] == "completed") {
