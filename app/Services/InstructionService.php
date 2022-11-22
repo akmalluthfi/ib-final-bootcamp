@@ -2,14 +2,13 @@
 
 namespace App\Services;
 
-use App\Http\Requests\FilterInstructionRequest;
 use App\Models\Instruction;
 use App\Repositories\InstructionRepository;
 use Illuminate\Support\Facades\Storage;
 
 class InstructionService
 {
-    protected $instructionRepository;
+    private InstructionRepository $instructionRepository;
 
     public function __construct(InstructionRepository $instructionRepository)
     {
@@ -77,6 +76,13 @@ class InstructionService
         } else if ($data['tab'] == "completed") {
             $instruction = $this->instructionRepository->getInstructionsCompleted($search);
         }
+
+        return $instruction;
+    }
+
+    public function receiveInstruction(Instruction $instruction)
+    {
+        $instruction = $this->instructionRepository->updateStatusCompleted($instruction);
 
         return $instruction;
     }

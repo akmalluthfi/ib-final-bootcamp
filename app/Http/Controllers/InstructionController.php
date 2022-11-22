@@ -11,11 +11,10 @@ use App\Models\Instruction;
 use App\Services\InstructionService;
 use Illuminate\Http\Request;
 use App\Exceptions\SearchNotFoundException;
-use Illuminate\Validation\Rule;
 
 class InstructionController extends Controller
 {
-    protected $instructionService;
+    private InstructionService $instructionService;
 
     public function __construct(InstructionService $instructionService)
     {
@@ -30,6 +29,8 @@ class InstructionController extends Controller
     public function index(FilterInstructionRequest $request)
     {
         $data = $request->validated();
+
+        $instruction = $this->instructionService->filterInstruction($data);
 
         $instruction = $this->instructionService->filterInstruction($data);
 
@@ -86,6 +87,17 @@ class InstructionController extends Controller
     public function destroy(Instruction $instruction)
     {
         //
+    }
+
+    public function receive(Instruction $instruction)
+    {
+        if($instruction->status === 'In Progress'){
+            $instruction = $this->instructionService->receiveInstruction($instruction);
+        } else {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
+        return new InstructionResource($instruction, 'Received instruction successfully');
     }
 
     public function terminate(TerminateInstructionRequest $request, Instruction $instruction)

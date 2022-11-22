@@ -52,6 +52,7 @@ class InstructionResource extends JsonResource
                 'attention_of' => $this->attention_of,
                 'quotation_no' => $this->quotation_no,
                 'vendor_address' => $this->vendor_address,
+                'vendor_invoices' => VendorInvoiceResource::collection($this->vendorInvoices),
                 'invoice_to' => $this->invoice_to,
                 'customer' => $this->customer,
                 'customer_po_no' => $this->customer_po_no,

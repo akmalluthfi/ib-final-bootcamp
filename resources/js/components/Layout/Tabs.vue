@@ -1,5 +1,5 @@
 <template>
-  <nav class="nav d-flex">
+  <nav class="nav d-flex border-bottom border-black">
     <div class="d-flex">
       <router-link class="nav-link pb-1 active" to="/">
         <h5>Open</h5>
