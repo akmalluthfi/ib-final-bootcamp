@@ -100,7 +100,6 @@ class InstructionSeeder extends Seeder
         $rows = [];
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
-                '_id' => new \MongoDB\BSON\ObjectId(),
                 'no' => 'INV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'attachment' => null,
                 'supporting_documents' => []
@@ -116,7 +115,6 @@ class InstructionSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
-                '_id' => new \MongoDB\BSON\ObjectId(),
                 'note' => $this->faker->text(50),
                 'noted_by' => $this->faker->firstName(),
             ];
