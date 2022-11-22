@@ -71,7 +71,8 @@ class InstructionService
     {
         $search = isset($data['search']) ? $data['search'] : null;
 
-        if ($data['tab'] == "open") {
+        $data['tab'] = isset($data['tab']) ? $data['tab'] : null;
+        if ($data['tab'] == "open" || !$data['tab']) {
             $instruction = $this->instructionRepository->getInstructionsOpen($search);
         } else if ($data['tab'] == "completed") {
             $instruction = $this->instructionRepository->getInstructionsCompleted($search);

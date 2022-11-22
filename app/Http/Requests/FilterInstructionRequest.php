@@ -26,7 +26,7 @@ class FilterInstructionRequest extends FormRequest
     public function rules()
     {
         return [
-            'tab'    => ['required', Rule::in(['open', 'completed'])],
+            'tab'    => [Rule::in(['open', 'completed']), 'nullable'],
             'search' => 'string|nullable'
         ];
     }

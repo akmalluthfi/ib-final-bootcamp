@@ -32,8 +32,6 @@ class InstructionController extends Controller
 
         $instruction = $this->instructionService->filterInstruction($data);
 
-        $instruction = $this->instructionService->filterInstruction($data);
-
         return new InstructionCollection($instruction);
     }
 
@@ -91,7 +89,7 @@ class InstructionController extends Controller
 
     public function receive(Instruction $instruction)
     {
-        if($instruction->status === 'In Progress'){
+        if ($instruction->status === 'In Progress') {
             $instruction = $this->instructionService->receiveInstruction($instruction);
         } else {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);

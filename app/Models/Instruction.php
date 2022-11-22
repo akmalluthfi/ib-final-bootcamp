@@ -68,6 +68,6 @@ class Instruction extends Model
 
     public function scopeTabCompleted($query)
     {
-        return $query->where('status', 'Complete')->orWhere('status', 'Cancelled');
+        return $query->where('status', 'Completed')->orWhere('status', 'Cancelled');
     }
 }
