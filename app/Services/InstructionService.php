@@ -56,7 +56,7 @@ class InstructionService
 
         if ($data['attachments']) {
             foreach ($data['attachments'] as $attachment) {
-                $path = Storage::putFile('instructions/' . $instruction->id . '/terminate', $attachment);
+                $path = Storage::putFile('files/instructions/' . $instruction->id . '/terminate', $attachment);
                 $paths[] = $path;
             }
             $data['attachments'] = $paths;

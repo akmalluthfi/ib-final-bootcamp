@@ -104,7 +104,7 @@ class InstructionController extends Controller
     {
         $data = $request->validated();
 
-        if ($instruction->status == "In Progress") {
+        if ($instruction->status === "In Progress") {
             $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
         } else {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
