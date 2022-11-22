@@ -48,4 +48,26 @@ class Instruction extends Model
     {
         return $this->embedsMany(VendorInvoice::class, 'vendor_invoices');
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('no', 'like', "%$keyword%")
+            ->orWhere('type', 'like', "%$keyword%")
+            ->orWhere('link_to', 'like', "%$keyword%")
+            ->orWhere('assigned_vendor', 'like', "%$keyword%")
+            ->orWhere('attention_of', 'like', "%$keyword%")
+            ->orWhere('quotation_no', 'like', "%$keyword%")
+            ->orWhere('status', 'like', "%$keyword%")
+            ->orWhere('customer_po_no', 'like', "%$keyword%");
+    }
+
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'In Progress')->orWhere('status', 'Draft');
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'Completed')->orWhere('status', 'Cancelled');
+    }
 }

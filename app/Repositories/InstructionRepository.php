@@ -34,6 +34,52 @@ class InstructionRepository
         return $instruction;
     }
 
+    public function terminateInstruction(array $data, Instruction $instruction)
+    {
+        $instruction->push('activity_notes', [[
+            'note'         => "Cancel 3rd Party Instruction",
+            'performed_by' => 'Daffa Pratama A.S',
+            'date'         => now()->format('d/m/y h:i A'),
+        ]]);
+
+        $instruction->update([
+            'status' => 'Cancelled',
+            'cancellation' => [
+                'reason'      => $data['reason'],
+                'canceled_by' => 'Daffa Pratama A.S',
+                'attachments' => $data['attachments']
+            ]
+        ]);
+
+        return $instruction;
+    }
+
+    public function getInstructionsOpen($search)
+    {
+        $query = Instruction::latest()->Open();
+
+        if (isset($search) && $search) {
+            $query->search($search);
+        }
+
+        $instruction = $query->paginate(10);
+
+        return $instruction;
+    }
+
+    public function getInstructionsCompleted($search)
+    {
+        $query = Instruction::latest()->Completed();
+
+        if (isset($search) && $search) {
+            $query->search($search);
+        }
+
+        $instruction = $query->paginate(10);
+
+        return $instruction;
+    }
+
     public function updateStatusCompleted(Instruction $instruction)
     {
         $instruction->push('activity_notes', [[
