@@ -20,6 +20,15 @@ class VendorInvoiceResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($request->routeIs('instructions.show')){
+            return [
+                'id' => $this->_id,
+                'no' => $this->no,
+                'attachment' => $this->attachment,
+                'supporting_documents' => $this->supporting_documents
+            ];
+        }
+
         return [
             'message' => $this->message,
             'data' => [
