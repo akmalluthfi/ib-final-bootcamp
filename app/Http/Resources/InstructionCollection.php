@@ -14,6 +14,9 @@ class InstructionCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'message' => 'Successfully Get All Instruction',
+            'data'    =>  parent::toArray($request)
+        ];
     }
 }

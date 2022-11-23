@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InstructionService
 {
-    protected $instructionRepository;
+    private InstructionRepository $instructionRepository;
 
     public function __construct(InstructionRepository $instructionRepository)
     {
@@ -145,7 +145,52 @@ class InstructionService
 
     public function generateNo($type)
     {
-        $total = $this->instructionRepository->countForLogisticInstruction();
+        if ($type === 'LI') {
+            $total = $this->instructionRepository->countForLogisticInstruction();
+        } else {
+            $total = $this->instructionRepository->countForServiceInstruction();
+        }
+
         return "$type-" . date('Y') . '-' . str_pad($total + 1, 4, '0', STR_PAD_LEFT);
+    }
+
+    public function terminateInstruction(array $data, Instruction $instruction)
+    {
+        $data['attachments'] = isset($data['attachments']) ? $data['attachments'] : [];
+
+        $paths = [];
+
+        if ($data['attachments']) {
+            foreach ($data['attachments'] as $attachment) {
+                $path = Storage::putFile('files/instructions/' . $instruction->id . '/terminate', $attachment);
+                $paths[] = $path;
+            }
+            $data['attachments'] = $paths;
+        }
+
+        $vendor = $this->instructionRepository->terminateInstruction($data, $instruction);
+
+        return $vendor;
+    }
+
+    public function filterInstruction(array $data)
+    {
+        $search = $data['search'] ?? null;
+
+        $data['tab'] = $data['tab'] ?? null;
+        if ($data['tab'] == "open" || !$data['tab']) {
+            $instruction = $this->instructionRepository->getInstructionsOpen($search);
+        } else if ($data['tab'] == "completed") {
+            $instruction = $this->instructionRepository->getInstructionsCompleted($search);
+        }
+
+        return $instruction;
+    }
+
+    public function receiveInstruction(Instruction $instruction)
+    {
+        $instruction = $this->instructionRepository->updateStatusCompleted($instruction);
+
+        return $instruction;
     }
 }

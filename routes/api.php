@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\InstructionController;
-use App\Http\Controllers\InvoiceTargetController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\VendorController;
-use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VendorController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InstructionController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\InvoiceTargetController;
+use App\Models\Instruction;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,29 +21,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    if ([]) {
-        dd('true');
-    } else {
-        dd('false');
-    }
-
-    $instruction = Instruction::firstOrFail();
-
-    $instruction->push('activity_notes', [
-        'testing' => 'tet'
-    ]);
-
-    dd($instruction->activity_notes);
+    // Test 
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
 
+Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
+
+Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
+    'index'
+])->parameters([
+    'vendor-invoices' => 'id'
+]);
+
+Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
+
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');

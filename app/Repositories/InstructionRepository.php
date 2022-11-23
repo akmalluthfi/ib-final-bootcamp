@@ -41,6 +41,11 @@ class InstructionRepository
         return Instruction::where('type', 'LI')->count();
     }
 
+    public function countForServiceInstruction()
+    {
+        return Instruction::where('type', 'SI')->count();
+    }
+
     public function updateInstructionAttachments(Instruction $instruction, $attachments)
     {
         $instruction->update([
@@ -62,6 +67,65 @@ class InstructionRepository
         $newInstruction['activity_notes'] = $activity_notes;
 
         $instruction->update($newInstruction);
+
+        return $instruction;
+    }
+    public function terminateInstruction(array $data, Instruction $instruction)
+    {
+        $instruction->push('activity_notes', [[
+            'note'         => "Cancel 3rd Party Instruction",
+            'performed_by' => 'Daffa Pratama A.S',
+            'date'         => now()->format('d/m/y h:i A'),
+        ]]);
+
+        $instruction->update([
+            'status' => 'Cancelled',
+            'cancellation' => [
+                'reason'      => $data['reason'],
+                'canceled_by' => 'Daffa Pratama A.S',
+                'attachments' => $data['attachments']
+            ]
+        ]);
+
+        return $instruction;
+    }
+
+    public function getInstructionsOpen($search)
+    {
+        $query = Instruction::latest()->Open();
+
+        if (isset($search) && $search) {
+            $query->search($search);
+        }
+
+        $instruction = $query->paginate(10);
+
+        return $instruction;
+    }
+
+    public function getInstructionsCompleted($search)
+    {
+        $query = Instruction::latest()->Completed();
+
+        if (isset($search) && $search) {
+            $query->search($search);
+        }
+
+        $instruction = $query->paginate(10);
+
+        return $instruction;
+    }
+
+    public function updateStatusCompleted(Instruction $instruction)
+    {
+        $instruction->push('activity_notes', [[
+            'note' => 'Received All Invoice 3rd Party Instruction',
+            'performed_by' => 'Ricko Haikal Y.K',
+            'date' => now()->format('d/m/y h:i A')
+        ]]);
+
+        $instruction->update(['status' => 'Completed']);
+
         return $instruction;
     }
 }

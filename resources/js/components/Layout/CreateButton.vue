@@ -1,7 +1,7 @@
 <template>
-  <div class="dropdown mt-4 ms-auto">
+  <div class="dropdown mt-4 mb-2 ms-auto">
     <button
-      class="btn btn-success dropdown-toggle float-end"
+      class="btn btn-info dropdown-toggle float-end"
       type="button"
       id="dropdownMenuButton1"
       data-bs-toggle="dropdown"

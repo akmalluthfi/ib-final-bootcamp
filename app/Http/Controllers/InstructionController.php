@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\InstructionRequest;
+use App\Http\Requests\TerminateInstructionRequest;
+use App\Http\Requests\FilterInstructionRequest;
 use App\Http\Resources\InstructionCollection;
 use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
 use App\Services\InstructionService;
 use Illuminate\Http\Request;
+use App\Exceptions\SearchNotFoundException;
 
 class InstructionController extends Controller
 {
-    protected $instructionService;
+    private InstructionService $instructionService;
 
     public function __construct(InstructionService $instructionService)
     {
@@ -23,20 +26,15 @@ class InstructionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(FilterInstructionRequest $request)
     {
-        $instructions = Instruction::paginate(10, [
-            'instruction_id',
-            'instruction_type',
-            'link_to',
-            'assigned_vendor',
-            'attention_of',
-            'quotation_no',
-            'customer_po',
-            'status'
-        ]);
+        $data = $request->validated();
 
-        return new InstructionCollection($instructions);
+        $instruction = $this->instructionService->filterInstruction($data);
+
+        if ($instruction->count() <= 0) throw new SearchNotFoundException('Instruction not found');
+
+        return new InstructionCollection($instruction);
     }
 
     /**
@@ -61,7 +59,7 @@ class InstructionController extends Controller
      */
     public function show(Instruction $instruction)
     {
-        //
+        return (new InstructionResource($instruction, 'Show instruction successfully'));
     }
 
     /**
@@ -82,5 +80,29 @@ class InstructionController extends Controller
         $instruction = $this->instructionService->updateInstruction($instruction, $validatedData);
 
         return new InstructionResource($instruction, 'Edited instruction successfully');
+    }
+
+    public function receive(Instruction $instruction)
+    {
+        if ($instruction->status === 'In Progress') {
+            $instruction = $this->instructionService->receiveInstruction($instruction);
+        } else {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
+        return new InstructionResource($instruction, 'Received instruction successfully');
+    }
+
+    public function terminate(TerminateInstructionRequest $request, Instruction $instruction)
+    {
+        $data = $request->validated();
+
+        if ($instruction->status === "In Progress") {
+            $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
+        } else {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
+        return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
     }
 }
