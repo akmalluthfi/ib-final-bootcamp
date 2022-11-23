@@ -9,7 +9,7 @@
       </p>
       <div class="card mt-4">
         <div class="card-body">
-          <Tabs setActive="open"></Tabs>  
+          <Tabs setActive="open"></Tabs>
         </div>
       </div>
       <table-comp
@@ -21,17 +21,57 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       instructions: null,
+      page: 1,
+      lastPage: null,
     };
   },
 
-  async created() {
-    const response = await axios.get("http://127.0.0.1:8000/api/instructions");
-    this.instructions = response.data.data;
-    console.log(response.data.data);
+  methods: {
+    // infinite scroll methods
+    getInitialInstructions() {
+      axios
+        .get("/api/instructions?tab=open&page=1")
+        .then((response) => {
+          this.instructions = response.data.data;
+          this.page = this.page + 1;
+          this.lastPage = response.data.meta.last_page;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getNextInstruction() {
+      window.onscroll = () => {
+        let bottomOfWindow =
+          document.documentElement.scrollTop + window.innerHeight ===
+          document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
+          if (this.page > this.lastPage) {
+            return;
+          }
+          axios
+            .get(`/api/instructions?tab=open&page=${this.page}`)
+            .then((response) => {
+              this.instructions = this.instructions.concat(response.data.data);
+              this.page = this.page + 1;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      };
+    },
+  },
+  mounted() {
+    this.getNextInstruction();
+  },
+  beforeMount() {
+    this.getInitialInstructions();
   },
 };
 </script>

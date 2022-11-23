@@ -33,4 +33,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.active {
+  color: cyan !important;
+  border-color: cyan !important;
+}
+</style>
