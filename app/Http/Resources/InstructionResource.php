@@ -41,8 +41,6 @@ class InstructionResource extends JsonResource
 
     public function toArrayAll()
     {
-        // dd($this->vendorInvoices);
-
         return [
             'messsage' => $this->message,
             'data' => [

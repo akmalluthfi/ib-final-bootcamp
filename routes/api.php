@@ -7,7 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
-use App\Http\Controllers\VendorInvoiceController;
+use App\Models\Instruction;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +21,11 @@ use App\Http\Controllers\VendorInvoiceController;
 */
 
 Route::get('/test', function () {
-    // route for test
+    $instruction = Instruction::firstOrFail();
+
+    dd(str_pad('0123', 2, '0', STR_PAD_LEFT));
+
+    return new App\Http\Resources\InstructionResource($instruction, 'Successfully Get All Instruction');
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
@@ -36,10 +40,14 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
     'vendor-invoices' => 'id'
 ]);
 
+Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
+
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
