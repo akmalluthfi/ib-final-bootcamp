@@ -44,9 +44,9 @@ class VendorInvoiceRepository
         return $result;
     }
     
-    public function pull(Instruction $instruction, $field, $data)
+    public function pull($vendorInvoice, $field, $data)
     {
-        $vendorInvoice = $instruction->pull('vendor_invoices.'. $field, $data);
+        $vendorInvoice = $vendorInvoice->pull($field, $data);
         
         return $vendorInvoice;
     }

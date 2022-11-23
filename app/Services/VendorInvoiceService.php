@@ -47,9 +47,19 @@ class VendorInvoiceService
             $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
         }
 
-        /* 
-            Update for supporting document still under development, because I don't know the algorithm
-        */
+        if(isset($data['supporting_documents'])){
+            foreach ($data['supporting_documents'] as $index => $supportingDocument) {
+                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
+            }
+        }
+
+        if(isset($data['deleted_files'])){
+            foreach ($data['deleted_files'] as $deletedFile) {
+                $this->deleteFile($deletedFile);
+                $this->vendorInvoiceRepository->pull($vendorInvoice, 'supporting_documents', $deletedFile);           
+            }
+            unset($data['deleted_files']);
+        }
 
         $vendorInvoice = $this->vendorInvoiceRepository->update($data, $vendorInvoice);
 
