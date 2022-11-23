@@ -81,7 +81,7 @@ a {
 }
 
 .active {
-  color: #28a745 !important;
-  border-bottom: 3px solid #28a745 !important;
+  color: cyan !important;
+  border-bottom: 3px solid cyan !important;
 }
 </style>
