@@ -204,7 +204,7 @@
                           <td colspan="2">
                             <div id="button" class="float-end">
                               <div id="button_container_1">
-                                <button type="button" class="btn btn-success">
+                                <button type="button" class="btn btn-info">
                                   <i class="fa fa-plus" aria-hidden="true"></i>
                                 </button>
                               </div>
@@ -218,7 +218,7 @@
                     <div class="row mt-5">
                       <div class="col-md-6">
                         <label class="form-label fs-3">Attachment</label><br />
-                        <label class="btn btn-success">
+                        <label class="btn btn-info">
                           <i class="fa fa-plus" aria-hidden="true"></i>
                           Add Attachment
                           <input type="file" hidden />
@@ -273,7 +273,7 @@
                   <button type="button" class="btn btn-secondary me-3">
                     Save as Draft
                   </button>
-                  <button type="submit" class="btn btn-success">Submit</button>
+                  <button type="submit" class="btn btn-info">Submit</button>
                 </div>
               </div>
             </div>
