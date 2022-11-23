@@ -42,16 +42,12 @@ class InstructionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\InstructionRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(InstructionRequest $request)
     {
-        $instruction = $this->instructionService->storeInstruction($request->validated());
-
-        if ($files = $request->file('attachments')) {
-            $instruction = $this->instructionService->storeAttachments($instruction, $files);
-        }
+        $instruction = $this->instructionService->storeInstruction($request->validated(), $request->file('attachments'));
 
         return (new InstructionResource($instruction, 'Created instruction successfully'))
             ->response()->setStatusCode(201);
@@ -71,23 +67,20 @@ class InstructionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\InstructionRequest  $request
      * @param  \App\Models\Instruction  $instruction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Instruction $instruction)
+    public function update(InstructionRequest $request, Instruction $instruction)
     {
-        //
-    }
+        $validatedData = $request->safe()->except(['deleted_attachments']);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Instruction  $instruction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Instruction $instruction)
-    {
-        //
+        $attachments = $this->instructionService->updateAttachments($instruction, $request->post('deleted_attachments'), $request->file('attachments'));
+
+        $validatedData['attachments'] = $attachments;
+
+        $instruction = $this->instructionService->updateInstruction($instruction, $validatedData);
+
+        return new InstructionResource($instruction, 'Edited instruction successfully');
     }
 }

@@ -2,13 +2,14 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Instruction;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InstructionResource extends JsonResource
 {
     protected $message;
 
-    public function __construct($instruction, $message)
+    public function __construct(Instruction $instruction, $message)
     {
         parent::__construct($instruction);
         $this->message = $message;

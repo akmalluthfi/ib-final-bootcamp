@@ -21,11 +21,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
+    if ([]) {
+        dd('true');
+    } else {
+        dd('false');
+    }
+
     $instruction = Instruction::firstOrFail();
 
-    dd(str_pad('0123', 2, '0', STR_PAD_LEFT));
+    $instruction->push('activity_notes', [
+        'testing' => 'tet'
+    ]);
 
-    return new App\Http\Resources\InstructionResource($instruction);
+    dd($instruction->activity_notes);
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([
@@ -43,8 +51,10 @@ Route::get('/customers', [CustomerController::class, 'index'])->name('customer.i
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
 // Handle route api doesn't exists
-Route::get('/{any}', function () {
-    return response()->json([
-        'message' => 'Not Found'
-    ], 404);
+Route::get('/{any}', function (Request $request) {
+    if ($request->expectsJson()) {
+        return response()->json([
+            'message' => 'Not Found'
+        ], 404);
+    }
 });

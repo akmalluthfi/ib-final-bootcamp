@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Instruction;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +25,7 @@ class InstructionRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rules = [
             'type' => [
                 'required',
                 Rule::in(['LI', 'SI'])
@@ -59,5 +60,12 @@ class InstructionRequest extends FormRequest
             'note' => 'nullable',
             'link_to' => 'nullable'
         ];
+
+        if ($this->routeIs('instructions.update')) {
+            $rules['deleted_attachments'] = 'array|min:0';
+            $rules['deleted_attachments.*'] = 'required|min:0';
+        }
+
+        return $rules;
     }
 }
