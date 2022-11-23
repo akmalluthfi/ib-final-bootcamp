@@ -25,6 +25,10 @@ class VendorInvoiceController extends Controller
      */
     public function store(VendorInvoiceRequest $request, Instruction $instruction)
     {
+        if($instruction->status !== 'In Progress'){
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $data = $request->validated();
         
         $vendorInvoice = $this->vendorInvoiceService->storeVendorInvoice($data, $instruction);
@@ -54,6 +58,10 @@ class VendorInvoiceController extends Controller
      */
     public function update(VendorInvoiceRequest $request, Instruction $instruction, $id)
     {
+        if($instruction->status !== 'In Progress'){
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         $data = $request->validated();
@@ -70,6 +78,10 @@ class VendorInvoiceController extends Controller
      */
     public function destroy(Instruction $instruction, $id)
     {
+        if($instruction->status !== 'In Progress'){
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         $result = $this->vendorInvoiceService->deleteVendorInvoice($vendorInvoice);
