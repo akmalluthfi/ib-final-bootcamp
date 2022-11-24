@@ -9,7 +9,6 @@ use App\Http\Resources\InstructionCollection;
 use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
 use App\Services\InstructionService;
-use Illuminate\Http\Request;
 use App\Exceptions\SearchNotFoundException;
 
 class InstructionController extends Controller
@@ -71,6 +70,12 @@ class InstructionController extends Controller
      */
     public function update(InstructionRequest $request, Instruction $instruction)
     {
+        if (!($instruction->status === 'In Progress' || $instruction->status === 'Draft')) {
+            return response()->json([
+                'message' => 'The instruction.status must be In Progress or Draft'
+            ], 400);
+        }
+
         $validatedData = $request->validated();
 
         $attachments = $this->instructionService->updateAttachments($instruction, $validatedData['deleted_attachments'], $request->file('attachments'));
@@ -89,7 +94,7 @@ class InstructionController extends Controller
         }
 
         $instruction = $this->instructionService->receiveInstruction($instruction);
-        
+
         return new InstructionResource($instruction, 'Received instruction successfully');
     }
 
@@ -100,7 +105,7 @@ class InstructionController extends Controller
         }
 
         $data = $request->validated();
-        
+
         $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
         return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
