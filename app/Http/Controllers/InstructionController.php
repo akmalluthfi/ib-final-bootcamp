@@ -84,24 +84,24 @@ class InstructionController extends Controller
 
     public function receive(Instruction $instruction)
     {
-        if ($instruction->status === 'In Progress') {
-            $instruction = $this->instructionService->receiveInstruction($instruction);
-        } else {
+        if ($instruction->status !== 'In Progress') {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
         }
 
+        $instruction = $this->instructionService->receiveInstruction($instruction);
+        
         return new InstructionResource($instruction, 'Received instruction successfully');
     }
 
     public function terminate(TerminateInstructionRequest $request, Instruction $instruction)
     {
-        $data = $request->validated();
-
-        if ($instruction->status === "In Progress") {
-            $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
-        } else {
+        if ($instruction->status !== "In Progress") {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
         }
+
+        $data = $request->validated();
+        
+        $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
         return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
     }
