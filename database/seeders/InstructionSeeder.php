@@ -68,8 +68,8 @@ class InstructionSeeder extends Seeder
 
             $instruction = Instruction::create([
                 'status' => $status,
-                'no' => $type . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'type' => $type,
+                'no' => $type . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'assigned_vendor' => $this->faker->company(),
                 'attention_of' => $this->faker->firstName(),
                 'quotation_no' => $this->faker->randomNumber(5, true),
@@ -80,18 +80,15 @@ class InstructionSeeder extends Seeder
                 'costs' => $this->createCost(mt_rand(1, 5)),
                 'attachments' => [],
                 'note' => $this->faker->text(100),
+                'vendor_invoices' => $this->createVendorInvoice(mt_rand(1, 3)),
+                'internal' => [
+                    'attachments' => [],
+                    'notes' => $this->createInternalNote(mt_rand(1, 3))
+                ],
                 'link_to' => null,
-                'activity_notes' => $activityNotes,
-                'cancellation' => null
+                'cancellation' => null,
+                'activity_notes' => $activityNotes
             ]);
-
-            $instruction->vendorInvoices()->createMany($this->createVendorInvoice(mt_rand(1, 3)));
-
-            $internal = $instruction->internal()->create([
-                'attachments' => []
-            ]);
-
-            $internal->notes()->createMany($this->createInternalNote(mt_rand(1, 3)));
         }
     }
 
@@ -100,6 +97,7 @@ class InstructionSeeder extends Seeder
         $rows = [];
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
+                '_id' => new \MongoDB\BSON\ObjectId(),
                 'no' => 'INV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'attachment' => null,
                 'supporting_documents' => []
@@ -115,6 +113,7 @@ class InstructionSeeder extends Seeder
 
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
+                '_id' => new \MongoDB\BSON\ObjectId(),
                 'note' => $this->faker->text(50),
                 'noted_by' => $this->faker->firstName(),
             ];

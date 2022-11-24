@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
@@ -7,7 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
-use App\Models\Instruction;
+use App\Http\Controllers\VendorInvoiceController;
 
 /*
 |--------------------------------------------------------------------------
