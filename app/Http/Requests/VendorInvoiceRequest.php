@@ -26,7 +26,7 @@ class VendorInvoiceRequest extends FormRequest
     {
         $rules = [
             'no' => ['string'],
-            'attachment' => ['file'],
+            'attachment' => ['file', 'mimes:docx,pdf'],
             'supporting_documents' => ['array'],
             'supporting_documents.*' => ['file', 'mimes:docx,pdf'],
             
