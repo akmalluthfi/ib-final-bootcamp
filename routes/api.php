@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -29,31 +30,39 @@ Route::get('/test', function () {
     return new App\Http\Resources\InstructionResource($instruction, 'Successfully Get All Instruction');
 });
 
-Route::apiResource('/instructions', InstructionController::class)->except([
-    'destroy'
-]);
+Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
-Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
-
-Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
-    'index'
-])->parameters([
-    'vendor-invoices' => 'id'
-]);
-
-Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
-
-Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
-
-Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
-
-Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
-
-Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
-
-Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
-
-Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
+/**
+ * if you want to activate middleware auth uncomment it 
+ */
+// Route::middleware(['auth'])->group(function () {
+    Route::apiResource('/instructions', InstructionController::class)->except([
+        'destroy'
+    ]);
+    
+    Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
+    
+    Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
+        'index'
+    ])->parameters([
+        'vendor-invoices' => 'id'
+    ]);
+    
+    Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
+    
+    Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+    
+    Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
+    
+    Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+    
+    Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
+    
+    Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
+    
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
+// });
 
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {
