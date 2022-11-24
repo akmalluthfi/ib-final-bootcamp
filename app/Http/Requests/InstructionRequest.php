@@ -55,7 +55,7 @@ class InstructionRequest extends FormRequest
                 Rule::in(['Customer', 'Inosoft'])
             ],
 
-            'attachments' => 'array|nullable',
+            'attachments' => 'array',
             'attachments.*' => 'file|mimes:docx,pdf|nullable',
             'note' => 'nullable',
             'link_to' => 'nullable'
@@ -63,7 +63,7 @@ class InstructionRequest extends FormRequest
 
         if ($this->routeIs('instructions.update')) {
             unset($rules['type']);
-            $rules['deleted_attachments'] = 'array|nullable';
+            $rules['deleted_attachments'] = 'array';
             $rules['deleted_attachments.*'] = 'nullable';
         }
 

@@ -22,7 +22,14 @@ use App\Http\Controllers\VendorInvoiceController;
 */
 
 Route::get('/test', function () {
-    // Test 
+    // Test \
+    $collection = collect([1, 2, 3, 4, 5]);
+
+    // $collection->do
+
+    // $diff = $collection->diff([2, 4, 6, 8]);
+
+    // dd($collection->collapse());
 });
 
 Route::apiResource('/instructions', InstructionController::class)->except([

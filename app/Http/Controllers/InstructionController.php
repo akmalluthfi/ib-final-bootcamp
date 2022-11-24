@@ -76,13 +76,7 @@ class InstructionController extends Controller
             ], 400);
         }
 
-        $validatedData = $request->validated();
-
-        $attachments = $this->instructionService->updateAttachments($instruction, $validatedData['deleted_attachments'], $request->file('attachments'));
-
-        $validatedData['attachments'] = $attachments;
-
-        $instruction = $this->instructionService->updateInstruction($instruction, $validatedData);
+        $instruction = $this->instructionService->updateInstruction($instruction,  $request->validated());
 
         return new InstructionResource($instruction, 'Edited instruction successfully');
     }

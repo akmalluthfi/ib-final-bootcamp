@@ -50,86 +50,51 @@ class InstructionService
         $attachments = [];
 
         foreach ($files as $file) {
+            if (!$file) continue;
             $attachments[] = $file->store('files/instructions/' . $instruction_id);
         }
 
         return $attachments;
     }
 
-    public function updateAttachments(Instruction $instruction, $deleted_attachments, $attachments)
+    public function updateAttachments(Instruction $instruction, $deleted_attachments, $newAttachments)
     {
-        // dd($deleted_attachments);
-        // prepare container to save new attachments for instruction
-        $attachments_container = [];
+        $attachments = [];
 
-        /**
-         * check if instruction have attachments
-         * if instruction don't have attachments, continue to store new attachments
-         *
-         */
         if ($instruction->attachments) {
-            /**
-             * if instruction have attachments
-             * check if deleted attachments contain array
-             */
             if ($deleted_attachments) {
-                /**
-                 * if deleted attachments contain array
-                 * loop instruction attachments to check which files are same with deleted attachments
-                 */
-                foreach ($instruction->attachments as $attachment) {
-                    // state to determine whether the file is still stored in database or not 
-                    $keepAttachment = false;
-                    foreach ($deleted_attachments as $deleted_attachment) {
-                        // check which files are same with deleted attachments
-                        if ($deleted_attachment === $attachment) {
-                            /**
-                             * if same, delete the files
-                             * set state to true to prevent file not store in database
-                             * break the program to stop loop
-                             */
-                            // Storage::delete($attachment);
-                            $keepAttachment = false;
-                            break;
-                        }
-                        $keepAttachment = true;
-                    }
 
-                    /**
-                     * check if state true
-                     * save the keep attachment store in database
-                     */
-                    if ($keepAttachment) {
-                        $attachments_container[] = $attachment;
-                    }
+                foreach ($deleted_attachments as $deleted_attachment) {
+                    Storage::delete($deleted_attachment);
                 }
+
+                $attachments = array_diff($instruction->attachments, $deleted_attachments);
             } else {
-                /**
-                 * if deleted attachments contains empty array
-                 * fill the attachments container with old attachments
-                 */
-                $attachments_container = $instruction->attachments;
+                $attachments = $instruction->attachments;
             }
         }
 
-        // check if any attachments are uploaded
-        if ($attachments) {
-            // store attachments
-            $newAttachments = $this->storeAttachments($instruction->id, $attachments);
-            $attachments_container = array_merge($attachments_container, $newAttachments);
+        if ($newAttachments) {
+            $newAttachments = $this->storeAttachments($instruction->id, $newAttachments);
+            $attachments = array_merge($attachments, $newAttachments);
         }
 
-        return $attachments_container;
+        return $attachments;
     }
 
-    public function updateInstruction(Instruction $instruction, $newInstruction)
+    public function updateInstruction(Instruction $instruction, $validatedData)
     {
-        $newInstruction['no'] = $this->generateNoRev($instruction->no);
-        $newInstruction = $this->bindInstructionCosts($newInstruction);
+        $validatedData['attachments'] = $this->updateAttachments(
+            $instruction,
+            $validatedData['deleted_attachments'] ?? null,
+            $validatedData['attachments'] ?? null
+        );
 
-        $instruction = $this->instructionRepository->updateInstruction($instruction, $newInstruction);
+        unset($validatedData['deleted_attachments']);
+        $validatedData['no'] = $this->generateNoRev($instruction->no);
+        $validatedData = $this->bindInstructionCosts($validatedData);
 
-        return $instruction;
+        return $this->instructionRepository->updateInstruction($instruction, $validatedData);
     }
 
     public function generateNoRev($no)
