@@ -51,13 +51,15 @@ class VendorInvoiceService
             foreach ($data['supporting_documents'] as $index => $supportingDocument) {
                 $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
             }
+            $data['supporting_documents'] = array_merge($data['supporting_documents'], $vendorInvoice->supporting_documents);
         }
 
         if(isset($data['deleted_files'])){
             foreach ($data['deleted_files'] as $deletedFile) {
                 $this->deleteFile($deletedFile);
-                $this->vendorInvoiceRepository->pull($vendorInvoice, 'supporting_documents', $deletedFile);           
             }
+
+            $data['supporting_documents'] = array_diff($data['supporting_documents'] ?? $vendorInvoice->supporting_documents, $data['deleted_files']);
             unset($data['deleted_files']);
         }
 
@@ -92,7 +94,7 @@ class VendorInvoiceService
 
     public function deleteFile($data)
     {
-        if(!empty($data)){
+        if($data){
             return Storage::delete($data);
         }
 

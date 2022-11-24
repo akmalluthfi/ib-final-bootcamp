@@ -39,7 +39,7 @@ class VendorInvoiceRequest extends FormRequest
 
         if($this->routeIs('instructions.vendor-invoices.update')){
             $rules['deleted_files'] = ['array'];
-            $rules['deleted_files.*'] = ['string'];
+            $rules['deleted_files.*'] = ['string', 'nullable'];
         }
 
         return $rules;
