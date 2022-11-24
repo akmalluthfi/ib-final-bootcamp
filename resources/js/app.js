@@ -2,14 +2,18 @@ import store from "./store";
 import VueRouter from "vue-router";
 import { routes } from "./routes";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBell, faTruck } from "@fortawesome/free-solid-svg-icons";
+import {
+    faBell,
+    faTruck,
+    faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import Vue from "vue";
 
 require("./bootstrap");
 
 window.Vue = require("vue").default;
-library.add(faBell, faTruck);
+library.add(faBell, faTruck, faInfoCircle);
 
 Vue.component("app-comp", require("./components/AppComp.vue").default);
 Vue.component("Navbar", require("./components/Layout/Navbar.vue").default);
