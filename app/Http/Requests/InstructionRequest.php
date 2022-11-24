@@ -56,14 +56,15 @@ class InstructionRequest extends FormRequest
             ],
 
             'attachments' => 'array|nullable',
-            'attachments.*' => 'file|mimes:docx,pdf',
+            'attachments.*' => 'file|mimes:docx,pdf|nullable',
             'note' => 'nullable',
             'link_to' => 'nullable'
         ];
 
         if ($this->routeIs('instructions.update')) {
-            $rules['deleted_attachments'] = 'array|min:0';
-            $rules['deleted_attachments.*'] = 'required|min:0';
+            unset($rules['type']);
+            $rules['deleted_attachments'] = 'array|nullable';
+            $rules['deleted_attachments.*'] = 'nullable';
         }
 
         return $rules;

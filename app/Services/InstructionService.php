@@ -24,7 +24,7 @@ class InstructionService
         $instruction =  $this->instructionRepository->storeInstruction($instruction);
 
         if ($attachments) {
-            $attachments = $this->storeAttachments($instruction, $attachments);
+            $attachments = $this->storeAttachments($instruction->id, $attachments);
             $instruction = $this->instructionRepository->updateInstructionAttachments($instruction, $attachments);
         }
 
@@ -45,12 +45,12 @@ class InstructionService
         return $instruction;
     }
 
-    public function storeAttachments(Instruction $instruction, $files)
+    public function storeAttachments($instruction_id, $files)
     {
         $attachments = [];
 
         foreach ($files as $file) {
-            $attachments[] = $file->store('files/instructions/' . $instruction->id);
+            $attachments[] = $file->store('files/instructions/' . $instruction_id);
         }
 
         return $attachments;
@@ -58,6 +58,7 @@ class InstructionService
 
     public function updateAttachments(Instruction $instruction, $deleted_attachments, $attachments)
     {
+        // dd($deleted_attachments);
         // prepare container to save new attachments for instruction
         $attachments_container = [];
 
@@ -75,7 +76,6 @@ class InstructionService
                 /**
                  * if deleted attachments contain array
                  * loop instruction attachments to check which files are same with deleted attachments
-                 * 
                  */
                 foreach ($instruction->attachments as $attachment) {
                     // state to determine whether the file is still stored in database or not 
@@ -88,7 +88,7 @@ class InstructionService
                              * set state to true to prevent file not store in database
                              * break the program to stop loop
                              */
-                            Storage::delete($attachment);
+                            // Storage::delete($attachment);
                             $keepAttachment = false;
                             break;
                         }
@@ -115,7 +115,7 @@ class InstructionService
         // check if any attachments are uploaded
         if ($attachments) {
             // store attachments
-            $newAttachments = $this->storeAttachments($instruction, $attachments);
+            $newAttachments = $this->storeAttachments($instruction->id, $attachments);
             $attachments_container = array_merge($attachments_container, $newAttachments);
         }
 

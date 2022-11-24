@@ -71,9 +71,9 @@ class InstructionController extends Controller
      */
     public function update(InstructionRequest $request, Instruction $instruction)
     {
-        $validatedData = $request->safe()->except(['deleted_attachments']);
+        $validatedData = $request->validated();
 
-        $attachments = $this->instructionService->updateAttachments($instruction, $request->post('deleted_attachments'), $request->file('attachments'));
+        $attachments = $this->instructionService->updateAttachments($instruction, $validatedData['deleted_attachments'], $request->file('attachments'));
 
         $validatedData['attachments'] = $attachments;
 
