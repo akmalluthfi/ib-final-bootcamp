@@ -2,12 +2,14 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,6 +41,18 @@ class Handler extends ExceptionHandler
     public function register()
     {
         if(request()->expectsJson() && request()->is('api/*')){
+            $this->renderable(function (TokenBlacklistedException $e, $request){
+                return response()->json([
+                    'message' => $e->getMessage()
+                ]);
+            });
+            
+            $this->renderable(function (AuthenticationException $e, $request){
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 401);
+            });
+            
             $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
                 return response()->json([
                     'message' => 'Method Not Allowed'
