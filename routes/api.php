@@ -21,15 +21,10 @@ use App\Http\Controllers\VendorInvoiceController;
 */
 
 Route::get('/test', function () {
-    // Test \
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    // $collection->do
-
-    // $diff = $collection->diff([2, 4, 6, 8]);
-
-    // dd($collection->collapse());
+    // Test 
 });
+
+Route::get('/instructions/export', [InstructionController::class, 'export'])->name('instructions.export');
 
 Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
@@ -42,8 +37,6 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
 ])->parameters([
     'vendor-invoices' => 'id'
 ]);
-
-// Route::get('/instructions/export', [InstructionController::class, 'export']);
 
 Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
 

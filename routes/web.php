@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InstructionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +12,6 @@ use App\Http\Controllers\InstructionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/instructions/export', [InstructionController::class, 'export']);
 
 Route::get('/{any?}', function () {
     return view('app');
