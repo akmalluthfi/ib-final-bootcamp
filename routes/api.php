@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -23,14 +23,7 @@ use App\Http\Controllers\VendorInvoiceController;
 */
 
 Route::get('/test', function () {
-    // Test \
-    $collection = collect([1, 2, 3, 4, 5]);
-
-    // $collection->do
-
-    // $diff = $collection->diff([2, 4, 6, 8]);
-
-    // dd($collection->collapse());
+    // Test 
 });
 
 Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
@@ -64,6 +57,10 @@ Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
     Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
     
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
+    
+    // Report route
+    Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
+    Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
 // });
 
 // Handle route api doesn't exists
