@@ -30,18 +30,21 @@ Route::get('/test', function () {
     return new App\Http\Resources\InstructionResource($instruction, 'Successfully Get All Instruction');
 });
 
-Route::post('/register', [UserController::class, 'register'])->name('register');
-Route::post('/login', [UserController::class, 'login'])->name('login');
+Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
+Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
 /**
  * if you want to activate middleware auth uncomment it 
  */
 // Route::middleware(['auth'])->group(function () {
-    Route::apiResource('/instructions', InstructionController::class)->except([
+    Route::post('auth/refresh', [UserController::class, 'refresh'])->name('auth.refresh');
+    Route::post('auth/logout', [UserController::class, 'logout'])->name('auth.logout');
+
+    Route::apiResource('instructions', InstructionController::class)->except([
         'destroy'
     ]);
-    
-    Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive']);
+    Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive'])->name('instructions.receive');
+    Route::patch('/instructions/{instruction}/terminate', [InstructionController::class, 'terminate'])->name('instructions.terminate');
     
     Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
         'index'
@@ -49,14 +52,10 @@ Route::post('/login', [UserController::class, 'login'])->name('login');
         'vendor-invoices' => 'id'
     ]);
     
-    Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
-    
     Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
-    
     Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
     
     Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
-    
     Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
     
     Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
