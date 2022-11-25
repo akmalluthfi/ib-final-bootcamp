@@ -10,8 +10,6 @@ use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
 use App\Services\InstructionService;
 use App\Exceptions\SearchNotFoundException;
-use App\Exports\InstructionsExport;
-use Maatwebsite\Excel\Facades\Excel;
 
 class InstructionController extends Controller
 {
@@ -105,10 +103,5 @@ class InstructionController extends Controller
         $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
         return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
-    }
-
-    public function export()
-    {
-        return Excel::download(new InstructionsExport, 'instructions.xlsx');
     }
 }

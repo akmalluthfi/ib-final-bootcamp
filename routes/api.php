@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -24,8 +25,6 @@ Route::get('/test', function () {
     // Test 
 });
 
-Route::get('/instructions/export', [InstructionController::class, 'export'])->name('instructions.export');
-
 Route::apiResource('/instructions', InstructionController::class)->except([
     'destroy'
 ]);
@@ -40,6 +39,7 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
 
 Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
 
+// Route master data
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
@@ -51,6 +51,10 @@ Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
+
+// Report route
+Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
+Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
 
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {
