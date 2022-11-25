@@ -2,12 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\Instruction;
 use Faker\Factory;
+use App\Models\Instruction;
 use Illuminate\Database\Seeder;
 
 class InstructionSeeder extends Seeder
 {
+    /**
+     * The current Faker instance.
+     *
+     * @var \Faker\Generator
+     */
+    protected $faker;
+
+    /**
+     * Create a new seeder instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->faker = Factory::create();
+    }
+
     /**
      * Run the database seeds.
      *
@@ -15,43 +32,63 @@ class InstructionSeeder extends Seeder
      */
     public function run()
     {
-        $faker = Factory::create();
-
         for ($i = 0; $i < 50; $i++) {
-            $type = $faker->randomElement(['LI', 'SI']);
+            $type = $this->faker->randomElement(['LI', 'SI']);
+            $status = $this->faker->randomElement(['In Progress', 'Draft', 'Completed', 'Cancelled']);
+            $activityNotes = [];
+            $activityNotes[] = [
+                'note' => 'Create 3rd Party Instruction',
+                'performed_by' => 'Alfi',
+                'date' => now()->format('d/m/y h:i A')
+            ];
+
+            if($status === 'Draft'){
+                $activityNotes[] = [
+                    'note' => 'Create Draft ' . ucwords($type),
+                    'performed_by' => 'Ricko',
+                    'date' => now()->format('d/m/y h:i A')
+                ];
+            }
+
+            if($status === 'Completed'){
+                $activityNotes[] = [
+                    'note' => 'Received All Invoice 3rd Party Instruction',
+                    'performed_by' => 'Ricko',
+                    'date' => now()->format('d/m/y h:i A')
+                ];
+            }
+
+            if($status === 'Cancelled'){
+                $activityNotes[] = [
+                    'note' => 'Cancel 3rd Party Instruction',
+                    'performed_by' => 'Ricko',
+                    'date' => now()->format('d/m/y h:i A')
+                ];
+            }
 
             $instruction = Instruction::create([
-                'no' => $type . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
+                'status' => $status,
                 'type' => $type,
-                'assigned_vendor' => $faker->company(),
-                'attention_of' => $faker->firstName(),
-                'quotation_no' => $faker->randomNumber(5, true),
-                'vendor_address' => $faker->address(),
-                'invoice_to' => $faker->firstName(),
-                'customer' => $faker->firstName(),
-                'customer_po_no' => $faker->randomNumber(4, true),
+                'no' => $type . '-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
+                'assigned_vendor' => $this->faker->company(),
+                'attention_of' => $this->faker->firstName(),
+                'quotation_no' => $this->faker->randomNumber(5, true),
+                'vendor_address' => $this->faker->address(),
+                'invoice_to' => $this->faker->firstName(),
+                'customer' => $this->faker->firstName(),
+                'customer_po_no' => $this->faker->randomNumber(4, true),
                 'costs' => $this->createCost(mt_rand(1, 5)),
-                'attachments' => null,
-                'note' => $faker->text(100),
-                'link_to' => null,
-                'activity_notes' => [
-                    [
-                        'note' => 'Created',
-                        'performed_by' => 'Alfi',
-                        // 'date' => (new \DateTime('now'))->format('d/m/y h:i A')
-                        'date' => now()->format('d/m/y h:i A')
-                    ]
+                'attachments' => [],
+                'note' => $this->faker->text(100),
+                'vendor_invoices' => $this->createVendorInvoice(mt_rand(1, 3)),
+                'internal' => [
+                    'attachments' => [],
+                    'notes' => $this->createInternalNote(mt_rand(1, 3))
                 ],
-                'cancellation' => null
+                'link_to' => null,
+                'cancellation' => null,
+                'activity_notes' => $activityNotes
             ]);
-
-            $instruction->vendorInvoices()->createMany($this->createVendorInvoice(mt_rand(1, 3)));
-
-            $internal = $instruction->internal()->create([
-                'attachments' => null
-            ]);
-
-            $internal->notes()->createMany($this->createInternalNote(mt_rand(1, 3)));
         }
     }
 
@@ -60,6 +97,7 @@ class InstructionSeeder extends Seeder
         $rows = [];
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
+                '_id' => new \MongoDB\BSON\ObjectId(),
                 'no' => 'INV-' . date('Y') . '-' . str_pad($i + 1, 4, '0', STR_PAD_LEFT),
                 'attachment' => null,
                 'supporting_documents' => []
@@ -71,13 +109,13 @@ class InstructionSeeder extends Seeder
 
     public function createInternalNote($count)
     {
-        $faker = Factory::create();
         $rows = [];
 
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
-                'note' => $faker->text(50),
-                'noted_by' => $faker->firstName(),
+                '_id' => new \MongoDB\BSON\ObjectId(),
+                'note' => $this->faker->text(50),
+                'noted_by' => $this->faker->firstName(),
             ];
         }
 
@@ -86,8 +124,6 @@ class InstructionSeeder extends Seeder
 
     public function createCost($count)
     {
-        $faker = Factory::create();
-
         $qty = mt_rand(1, 5);
         $price = mt_rand(100, 500);
         $discount = mt_rand(5, 15);
@@ -98,15 +134,15 @@ class InstructionSeeder extends Seeder
         $rows = [];
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
-                'description' => $faker->sentence(),
+                'description' => $this->faker->sentence(),
                 'qty' => $qty,
-                'uom' => $faker->randomElement(['SHP', 'BILL', 'HRS', 'MEN', 'PCS', 'TRIP', 'MT']),
+                'uom' => $this->faker->randomElement(['SHP', 'BILL', 'HRS', 'MEN', 'PCS', 'TRIP', 'MT']),
                 'unit_price' => $price,
                 'discount' => $discount,
                 'vat' => $vat,
                 'sub_total' =>  $sub_total,
                 'total' => $sub_total + ($sub_total * $vat / 100),
-                'charge_to' => $faker->randomElement(['Customer', 'Inosoft'])
+                'charge_to' => $this->faker->randomElement(['Customer', 'Inosoft'])
             ];
         }
 
