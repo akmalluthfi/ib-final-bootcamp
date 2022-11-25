@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
@@ -39,6 +40,12 @@ class Handler extends ExceptionHandler
     public function register()
     {
         if(request()->expectsJson() && request()->is('api/*')){
+            $this->renderable(function (AuthenticationException $e, $request){
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], 401);
+            });
+            
             $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
                 return response()->json([
                     'message' => 'Method Not Allowed'
