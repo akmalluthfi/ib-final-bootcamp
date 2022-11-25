@@ -23,11 +23,14 @@ use App\Http\Controllers\VendorInvoiceController;
 */
 
 Route::get('/test', function () {
-    $instruction = Instruction::firstOrFail();
+    // Test \
+    $collection = collect([1, 2, 3, 4, 5]);
 
-    dd(str_pad('0123', 2, '0', STR_PAD_LEFT));
+    // $collection->do
 
-    return new App\Http\Resources\InstructionResource($instruction, 'Successfully Get All Instruction');
+    // $diff = $collection->diff([2, 4, 6, 8]);
+
+    // dd($collection->collapse());
 });
 
 Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
@@ -65,7 +68,7 @@ Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {
-    if($request->expectsJson()){
+    if ($request->expectsJson()) {
         return response()->json([
             'message' => 'Not Found'
         ], 404);
