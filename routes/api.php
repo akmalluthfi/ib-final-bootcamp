@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Instruction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VendorController;
@@ -43,6 +42,8 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
 ])->parameters([
     'vendor-invoices' => 'id'
 ]);
+
+// Route::get('/instructions/export', [InstructionController::class, 'export']);
 
 Route::patch('instructions/{instruction}/terminate', [InstructionController::class, 'terminate']);
 
