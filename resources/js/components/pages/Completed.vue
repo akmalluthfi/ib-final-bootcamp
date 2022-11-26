@@ -25,14 +25,14 @@ export default {
     data() {
         return {
             instructions: null,
-            limit: 10,
+            page: 1,
         };
     },
 
     methods: {
         getInitialInstructions() {
             axios
-                .get("/api/instructions?tab=completed")
+                .get("/api/instructions?tab=completed&page=1")
                 .then((response) => {
                     this.instructions = response.data.data;
                     this.limit = limit + 1;
@@ -48,7 +48,7 @@ export default {
                     document.documentElement.offsetHeight;
                 if (bottomOfWindow) {
                     axios
-                        .get(`/api/instructions?tab=completed`)
+                        .get(`/api/instructions?tab=completed&page=${this.page}`)
                         .then((response) => {
                             this.instructions = this.instructions.concat(
                                 response.data.data
