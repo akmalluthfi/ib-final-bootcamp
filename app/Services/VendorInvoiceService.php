@@ -6,6 +6,7 @@ use App\Models\Instruction;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Repositories\VendorInvoiceRepository;
+use MongoDB\BSON\ObjectId;
 
 class VendorInvoiceService
 {
@@ -18,11 +19,13 @@ class VendorInvoiceService
 
     public function storeVendorInvoice($data, Instruction $instruction)
     {
-        $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
+        $data['id'] = new ObjectId();
+
+        $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id, $data['id']);
 
         if(isset($data['supporting_documents'])){
             foreach ($data['supporting_documents'] as $index => $supportingDocument) {
-                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
+                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id, $data['id']);
             }
         } else {
             $data['supporting_documents'] = [];
@@ -44,12 +47,12 @@ class VendorInvoiceService
     {
         if(isset($data['attachment'])){
             $this->deleteFile($vendorInvoice->attachment);
-            $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
+            $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id, $vendorInvoice->id);
         }
 
         if(isset($data['supporting_documents'])){
             foreach ($data['supporting_documents'] as $index => $supportingDocument) {
-                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
+                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id, $vendorInvoice->id);
             }
             $data['supporting_documents'] = array_merge($data['supporting_documents'], $vendorInvoice->supporting_documents);
         }
@@ -85,9 +88,9 @@ class VendorInvoiceService
         return $result;
     }
 
-    public function storeFile(UploadedFile $file, $instructionId)
+    public function storeFile(UploadedFile $file, $instructionId, $vendorInvoiceId)
     {
-        $path = $file->store('files/instructions/' . $instructionId . '/vendor-invoices');
+        $path = $file->store('files/instructions/' . $instructionId . '/vendor-invoices/' . $vendorInvoiceId);
 
         return $path;
     }
