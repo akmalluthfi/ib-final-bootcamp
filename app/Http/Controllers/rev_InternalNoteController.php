@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\InternalNoteService;
 use App\Http\Resources\InternalNoteResource;
 
-class InternalNoteController extends Controller
+class rev_InternalNoteController extends Controller
 {
     private InternalNoteService $internalNoteService;
 
