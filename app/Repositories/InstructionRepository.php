@@ -82,7 +82,7 @@ class InstructionRepository
             'status' => 'Cancelled',
             'cancellation' => [
                 'reason'      => $data['reason'],
-                'canceled_by' => auth()->user()->name ?? 'Daffa Pratama A.S',
+                'cancelled_by' => auth()->user()->name ?? 'Daffa Pratama A.S',
                 'attachments' => $data['attachments']
             ]
         ]);
