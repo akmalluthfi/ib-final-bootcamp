@@ -92,7 +92,7 @@ class InstructionRepository
 
     public function getInstructionsOpen($search)
     {
-        $query = Instruction::latest()->Open();
+        $query = Instruction::latest()->open();
 
         if (isset($search) && $search) {
             $query->search($search);
@@ -105,7 +105,7 @@ class InstructionRepository
 
     public function getInstructionsCompleted($search)
     {
-        $query = Instruction::latest()->Completed();
+        $query = Instruction::latest()->completed();
 
         if (isset($search) && $search) {
             $query->search($search);
