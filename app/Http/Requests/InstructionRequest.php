@@ -47,6 +47,7 @@ class InstructionRequest extends FormRequest
             'costs.*.unit_price' => 'required|numeric|min:0',
             'costs.*.discount' => 'required|numeric|min:0',
             'costs.*.vat' => 'required|numeric|min:0',
+            'costs.*.vat_ammount' => 'required|numeric|min:0',
             'costs.*.sub_total' => 'required|numeric|min:0',
             'costs.*.total' => 'required|numeric|min:0',
             'costs.*.charge_to' => [
