@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\InstructionsExport;
 use App\Models\Instruction;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -15,6 +16,10 @@ class ReportController extends Controller
 
     public function exportToPdf(Instruction $instruction)
     {
-        # code...
+        $pdf = Pdf::loadView('pdf.instructions.show', [
+            'instruction' => $instruction
+        ]);
+
+        return $pdf->stream();
     }
 }

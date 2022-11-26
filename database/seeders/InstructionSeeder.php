@@ -42,7 +42,7 @@ class InstructionSeeder extends Seeder
                 'date' => now()->format('d/m/y h:i A')
             ];
 
-            if($status === 'Draft'){
+            if ($status === 'Draft') {
                 $activityNotes[] = [
                     'note' => 'Create Draft ' . ucwords($type),
                     'performed_by' => 'Ricko',
@@ -50,7 +50,7 @@ class InstructionSeeder extends Seeder
                 ];
             }
 
-            if($status === 'Completed'){
+            if ($status === 'Completed') {
                 $activityNotes[] = [
                     'note' => 'Received All Invoice 3rd Party Instruction',
                     'performed_by' => 'Ricko',
@@ -58,7 +58,7 @@ class InstructionSeeder extends Seeder
                 ];
             }
 
-            if($status === 'Cancelled'){
+            if ($status === 'Cancelled') {
                 $activityNotes[] = [
                     'note' => 'Cancel 3rd Party Instruction',
                     'performed_by' => 'Ricko',
