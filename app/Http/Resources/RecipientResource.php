@@ -24,12 +24,10 @@ class RecipientResource extends JsonResource
     {
         if ($request->routeIs('recipients.index')) {
             return [
-                'data' => [
-                    'id' => $this->id,
-                    'created_at' => $this->updated_at->format('d/m/y h:i A'),
-                    'updated_at' => $this->updated_at->format('d/m/y h:i A'),
-                    'email' => $this->email
-                ]
+                'id' => $this->id,
+                'created_at' => $this->updated_at->format('d/m/y h:i A'),
+                'updated_at' => $this->updated_at->format('d/m/y h:i A'),
+                'email' => $this->email
             ];
         } else {
             return $this->toArrayAll();
