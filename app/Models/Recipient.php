@@ -14,7 +14,7 @@ class Recipient extends Model
      * @var array
      */
     protected $fillable = [
-        'nama',
+        'name',
         'email',
     ];
 }

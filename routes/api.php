@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
+use App\Http\Controllers\RecipientController;
 use App\Models\Instruction;
 
 /*
@@ -54,9 +55,13 @@ Route::get('/customers', [CustomerController::class, 'index'])->name('customer.i
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
+Route::apiResource('/recipients', RecipientController::class)->except([
+    'destroy'
+]);
+
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {
-    if($request->expectsJson()){
+    if ($request->expectsJson()) {
         return response()->json([
             'message' => 'Not Found'
         ], 404);
