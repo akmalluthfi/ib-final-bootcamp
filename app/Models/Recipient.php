@@ -14,7 +14,11 @@ class Recipient extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
         'email',
     ];
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->Where('email', 'like', "%$keyword%");
+    }
 }

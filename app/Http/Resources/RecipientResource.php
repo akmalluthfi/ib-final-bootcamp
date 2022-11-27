@@ -22,13 +22,28 @@ class RecipientResource extends JsonResource
      */
     public function toArray($request)
     {
+        if ($request->routeIs('recipients.index')) {
+            return [
+                'data' => [
+                    'id' => $this->id,
+                    'created_at' => $this->updated_at->format('d/m/y h:i A'),
+                    'updated_at' => $this->updated_at->format('d/m/y h:i A'),
+                    'email' => $this->email
+                ]
+            ];
+        } else {
+            return $this->toArrayAll();
+        }
+    }
+
+    public function toArrayAll()
+    {
         return [
             'messsage' => $this->message,
             'data' => [
                 'id' => $this->id,
                 'created_at' => $this->updated_at->format('d/m/y h:i A'),
                 'updated_at' => $this->updated_at->format('d/m/y h:i A'),
-                'name' => $this->name,
                 'email' => $this->email
             ]
         ];

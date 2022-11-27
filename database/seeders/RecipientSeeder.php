@@ -34,9 +34,8 @@ class RecipientSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             Recipient::create([
-                'name' => $this->faker->firstName(),
                 'email' => $this->faker->email()
             ]);
         }

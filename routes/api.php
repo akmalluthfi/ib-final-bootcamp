@@ -8,6 +8,7 @@ use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\VendorInvoiceController;
 use App\Models\Instruction;
 
 /*
