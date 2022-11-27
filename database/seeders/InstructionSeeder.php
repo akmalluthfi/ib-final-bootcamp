@@ -65,7 +65,7 @@ class InstructionSeeder extends Seeder
                     'date' => now()->format('d/m/y h:i A')
                 ];
 
-                $cancellation[] = [
+                $cancellation = [
                     'reason' => $this->faker->sentence(),
                     'attachments' => null,
                     'cancelled_by' => 'Ricko'
