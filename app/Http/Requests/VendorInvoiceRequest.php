@@ -24,11 +24,24 @@ class VendorInvoiceRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'no' => [Rule::requiredIf($this->routeIs('instructions.vendor-invoices.store')) , 'string'],
-            'attachment' => [Rule::requiredIf($this->routeIs('instructions.vendor-invoices.store')) ,'file'],
+        $rules = [
+            'no' => ['string'],
+            'attachment' => ['file', 'mimes:docx,pdf'],
             'supporting_documents' => ['array'],
-            'supporting_documents.*' => ['file', 'mimes:docx,pdf']
+            'supporting_documents.*' => ['file', 'mimes:docx,pdf'],
+            
         ];
+
+        if($this->routeIs('instructions.vendor-invoices.store')){
+            $rules['no'][] = 'required';
+            $rules['attachment'][] = 'required';
+        }
+
+        if($this->routeIs('instructions.vendor-invoices.update')){
+            $rules['deleted_files'] = ['array'];
+            $rules['deleted_files.*'] = ['string', 'nullable'];
+        }
+
+        return $rules;
     }
 }

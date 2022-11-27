@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Instruction;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VendorInvoiceRepository
 {
@@ -15,7 +14,7 @@ class VendorInvoiceRepository
             'supporting_documents' => $data['supporting_documents']
         ];
 
-        
+
         $vendorInvoice = $instruction->vendorInvoices()->create($dataSaved);
 
         return $vendorInvoice;
@@ -23,17 +22,17 @@ class VendorInvoiceRepository
 
     public function getById(Instruction $instruction, $id)
     {
-        $vendorInvoice = $instruction->vendorInvoices->firstOrFail(function($value) use($id) {
+        $vendorInvoice = $instruction->vendorInvoices->firstOrFail(function ($value) use ($id) {
             return $value->id == $id;
         });
 
         return $vendorInvoice;
     }
-    
+
     public function update($data, $vendorInvoice)
     {
         $vendorInvoice->update($data);
-        
+
         return $vendorInvoice;
     }
 
@@ -42,12 +41,5 @@ class VendorInvoiceRepository
         $result = $vendorInvoice->delete();
 
         return $result;
-    }
-    
-    public function pull(Instruction $instruction, $field, $data)
-    {
-        $vendorInvoice = $instruction->pull('vendor_invoices.'. $field, $data);
-        
-        return $vendorInvoice;
     }
 }

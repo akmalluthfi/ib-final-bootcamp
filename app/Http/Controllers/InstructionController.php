@@ -9,7 +9,6 @@ use App\Http\Resources\InstructionCollection;
 use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
 use App\Services\InstructionService;
-use Illuminate\Http\Request;
 use App\Exceptions\SearchNotFoundException;
 
 class InstructionController extends Controller
@@ -40,16 +39,12 @@ class InstructionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\InstructionRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(InstructionRequest $request)
     {
-        $instruction = $this->instructionService->storeInstruction($request->validated());
-
-        if ($files = $request->file('attachments')) {
-            $instruction = $this->instructionService->storeAttachments($instruction, $files);
-        }
+        $instruction = $this->instructionService->storeInstruction($request->validated(), $request->file('attachments'));
 
         return (new InstructionResource($instruction, 'Created instruction successfully'))
             ->response()->setStatusCode(201);
@@ -69,46 +64,43 @@ class InstructionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\InstructionRequest  $request
      * @param  \App\Models\Instruction  $instruction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Instruction $instruction)
+    public function update(InstructionRequest $request, Instruction $instruction)
     {
-        //
-    }
+        if (!($instruction->status === 'In Progress' || $instruction->status === 'Draft')) {
+            return response()->json([
+                'message' => 'The instruction.status must be In Progress or Draft'
+            ], 400);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Instruction  $instruction
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Instruction $instruction)
-    {
-        //
+        $instruction = $this->instructionService->updateInstruction($instruction,  $request->validated());
+
+        return new InstructionResource($instruction, 'Edited instruction successfully');
     }
 
     public function receive(Instruction $instruction)
     {
-        if ($instruction->status === 'In Progress') {
-            $instruction = $this->instructionService->receiveInstruction($instruction);
-        } else {
+        if ($instruction->status !== 'In Progress') {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
         }
+
+        $instruction = $this->instructionService->receiveInstruction($instruction);
 
         return new InstructionResource($instruction, 'Received instruction successfully');
     }
 
     public function terminate(TerminateInstructionRequest $request, Instruction $instruction)
     {
-        $data = $request->validated();
-
-        if ($instruction->status === "In Progress") {
-            $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
-        } else {
+        if ($instruction->status !== "In Progress") {
             return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
         }
+
+        $data = $request->validated();
+
+        $instructionSave = $this->instructionService->terminateInstruction($data, $instruction);
 
         return (new InstructionResource($instructionSave, 'Terminate instruction successfully'));
     }

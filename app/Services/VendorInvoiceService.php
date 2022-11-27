@@ -47,9 +47,21 @@ class VendorInvoiceService
             $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
         }
 
-        /* 
-            Update for supporting document still under development, because I don't know the algorithm
-        */
+        if(isset($data['supporting_documents'])){
+            foreach ($data['supporting_documents'] as $index => $supportingDocument) {
+                $data['supporting_documents'][$index] = $this->storeFile($supportingDocument, $instruction->id);
+            }
+            $data['supporting_documents'] = array_merge($data['supporting_documents'], $vendorInvoice->supporting_documents);
+        }
+
+        if(isset($data['deleted_files'])){
+            foreach ($data['deleted_files'] as $deletedFile) {
+                $this->deleteFile($deletedFile);
+            }
+
+            $data['supporting_documents'] = array_diff($data['supporting_documents'] ?? $vendorInvoice->supporting_documents, $data['deleted_files']);
+            unset($data['deleted_files']);
+        }
 
         $vendorInvoice = $this->vendorInvoiceRepository->update($data, $vendorInvoice);
 
@@ -82,7 +94,7 @@ class VendorInvoiceService
 
     public function deleteFile($data)
     {
-        if(!empty($data)){
+        if($data){
             return Storage::delete($data);
         }
 

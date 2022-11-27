@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\VendorInvoiceRequest;
 use App\Http\Resources\VendorInvoiceResource;
 use App\Models\Instruction;
-use App\Models\VendorInvoice;
 use App\Services\VendorInvoiceService;
 
 class VendorInvoiceController extends Controller
@@ -25,8 +24,12 @@ class VendorInvoiceController extends Controller
      */
     public function store(VendorInvoiceRequest $request, Instruction $instruction)
     {
+        if ($instruction->status !== 'In Progress') {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $data = $request->validated();
-        
+
         $vendorInvoice = $this->vendorInvoiceService->storeVendorInvoice($data, $instruction);
 
         return (new VendorInvoiceResource($vendorInvoice, 'Successfully created vendor invoices'))->response()->setStatusCode(201);
@@ -54,6 +57,10 @@ class VendorInvoiceController extends Controller
      */
     public function update(VendorInvoiceRequest $request, Instruction $instruction, $id)
     {
+        if ($instruction->status !== 'In Progress') {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         $data = $request->validated();
@@ -70,11 +77,15 @@ class VendorInvoiceController extends Controller
      */
     public function destroy(Instruction $instruction, $id)
     {
+        if ($instruction->status !== 'In Progress') {
+            return response()->json(['message' => 'The instruction.status must be In Progress'], 400);
+        }
+
         $vendorInvoice = $this->vendorInvoiceService->getVendorInvoice($instruction, $id);
 
         $result = $this->vendorInvoiceService->deleteVendorInvoice($vendorInvoice);
 
-        if($result){
+        if ($result) {
             return response()->json(['message' => 'Successfully deleted vendor invoice']);
         } else {
             return response()->json(['message' => 'failed to delete vendor invoice'], 400);

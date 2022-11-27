@@ -1,9 +1,11 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-black text-white">
     <div class="container-fluid justify-content-between">
-      <a class="navbar-brand" href="#">
-        <h3 class="text-white">TubeStream</h3>
-      </a>
+      <router-link to="/">
+        <a class="navbar-brand">
+          <h3 class="text-white">TubeStream</h3>
+        </a>
+      </router-link>
       <div class="d-flex ms-auto">
         <p class="my-auto mx-2">Good Morning, XXX</p>
         <img
