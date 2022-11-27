@@ -26,6 +26,10 @@ Route::get('/test', function () {
     // Test
 });
 
+Route::get('instructions/exported-excel', [ReportController::class, 'exportToExcel']);
+Route::get('instructions/{instruction}/exported-pdf', [ReportController::class, 'exportToPdf']);
+Route::post('instructions/{instruction}/send-email', [ReportController::class, 'sendEmail']);
+
 Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
@@ -57,10 +61,6 @@ Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
-
-// Report route
-Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
-Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
 
 // activate this to
 // });
