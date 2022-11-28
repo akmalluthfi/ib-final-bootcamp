@@ -27,6 +27,10 @@ Route::get('/test', function () {
     // Test
 });
 
+Route::get('instructions/exported-excel', [ReportController::class, 'exportToExcel']);
+Route::get('instructions/{instruction}/exported-pdf', [ReportController::class, 'exportToPdf']);
+Route::post('instructions/{instruction}/send-email', [ReportController::class, 'sendEmail']);
+
 Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
@@ -35,12 +39,15 @@ Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
  */
 // Route::middleware(['auth'])->group(function () {
 Route::post('auth/refresh', [UserController::class, 'refresh'])->name('auth.refresh');
+
 Route::post('auth/logout', [UserController::class, 'logout'])->name('auth.logout');
 
 Route::apiResource('instructions', InstructionController::class)->except([
     'destroy'
 ]);
+
 Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive'])->name('instructions.receive');
+
 Route::patch('/instructions/{instruction}/terminate', [InstructionController::class, 'terminate'])->name('instructions.terminate');
 
 Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
@@ -53,18 +60,21 @@ Route::post('/instructions/{instruction}/internal/attachments', [InternalControl
 Route::delete('/instructions/{instruction}/internal/attachments', [InternalController::class, 'destroy']);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
+
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
 Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
+
 Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
 
 Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
 Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
-// Report route
-Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
-Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
+Route::apiResource('/recipients', RecipientController::class)->except([
+    'destroy',
+    'update'
+]);
 
 // activate this to
 // });
