@@ -29,7 +29,7 @@ class VendorInvoiceRequest extends FormRequest
             'attachment' => ['file', 'mimes:docx,pdf'],
             'supporting_documents' => ['array'],
             'supporting_documents.*' => ['file', 'mimes:docx,pdf'],
-            
+
         ];
 
         if($this->routeIs('instructions.vendor-invoices.store')){
@@ -38,8 +38,9 @@ class VendorInvoiceRequest extends FormRequest
         }
 
         if($this->routeIs('instructions.vendor-invoices.update')){
+            $regex = '/^files\/instructions\/\w+\/vendor-invoices\/\w+\/\w+\.(docx|pdf)$/';
             $rules['deleted_files'] = ['array'];
-            $rules['deleted_files.*'] = ['string', 'nullable'];
+            $rules['deleted_files.*'] = ['regex:' . $regex, 'nullable'];
         }
 
         return $rules;
