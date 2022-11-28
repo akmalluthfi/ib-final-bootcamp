@@ -21,15 +21,9 @@ class InternalController extends Controller
     {
         $data = $request->validated();
 
-        if(!$instruction->internal){
-            $internal = $this->internalService->storeInternal($data, $instruction);
-            $code = 201;
-        } else {
-            $internal = $this->internalService->addAttachment($data, $instruction, $instruction->internal);
-            $code = 200;
-        }
+        $internal = $this->internalService->addAttachment($data, $instruction, $instruction->internal);
 
-        return (new InternalResource($internal, "Successfully added internal attachment"))->response()->setStatusCode($code);
+        return new InternalResource($internal, "Successfully added internal attachment");
     }
 
     public function destroy(DeleteInternalAttachmentRequest $request, Instruction $instruction)

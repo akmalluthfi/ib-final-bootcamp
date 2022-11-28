@@ -16,15 +16,6 @@ class InternalService
         $this->internalRepository = $internalRepository;
     }
 
-    public function storeInternal($data ,Instruction $instruction)
-    {
-        $data['attachment'] = $this->storeFile($data['attachment'], $instruction->id);
-
-        $internal = $this->internalRepository->create($data, $instruction);
-
-        return $internal;
-    }
-
     public function addAttachment($data, Instruction $instruction, $internal)
     {
         $attachment = $this->storeFile($data['attachment'], $instruction->id);
@@ -39,8 +30,11 @@ class InternalService
 
     public function deleteAttachment($data, $internal)
     {
-        $this->deleteFile($data['deleted_attachment']);
-        $data['attachments'] = array_diff($internal->attachments, [$data['deleted_attachment']]);
+        // to make sure deleted attachment didn't delete another instruction internal attachment
+        if(in_array($data['deleted_attachment'], $internal->attachments)){
+            $this->deleteFile($data['deleted_attachment']);
+            $data['attachments'] = array_diff($internal->attachments, [$data['deleted_attachment']]);
+        }
 
         $internal = $this->internalRepository->update($data, $internal);
 
