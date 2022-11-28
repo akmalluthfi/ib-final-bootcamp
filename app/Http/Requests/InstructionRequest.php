@@ -63,8 +63,9 @@ class InstructionRequest extends FormRequest
 
         if ($this->routeIs('instructions.update')) {
             unset($rules['type']);
+            $regex = '/^files\/instructions\/\w+\/\w+\.(docx|pdf)$/';
             $rules['deleted_attachments'] = 'array';
-            $rules['deleted_attachments.*'] = 'nullable';
+            $rules['deleted_attachments.*'] = ['regex:' . $regex ,'nullable'];
         }
 
         return $rules;
