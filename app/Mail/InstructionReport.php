@@ -30,9 +30,7 @@ class InstructionReport extends Mailable
     public function build()
     {
         return $this->from('team2@inosoftweb.com', 'Team 2')
-            ->markdown('mail.index', [
-                'url' => env('APP_URL') . '/api/reports/pdf/{instruction}'
-            ])
+            ->markdown('mail.index')
             ->attachFromStorage($this->pathAttachment);
     }
 }

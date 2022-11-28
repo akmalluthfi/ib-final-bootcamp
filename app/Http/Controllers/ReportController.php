@@ -46,5 +46,9 @@ class ReportController extends Controller
             }
             Mail::to($recipient)->send(new InstructionReport("files/instructions/$instructionId/pdf/output.pdf"));
         }
+
+        return response()->json([
+            'message' => 'Send email successfully'
+        ]);
     }
 }
