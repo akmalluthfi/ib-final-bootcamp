@@ -19,6 +19,6 @@ class Recipient extends Model
 
     public function scopeSearch($query, $keyword)
     {
-        return $query->Where('email', 'like', "%$keyword%");
+        return $query->where('email', 'like', "%$keyword%");
     }
 }

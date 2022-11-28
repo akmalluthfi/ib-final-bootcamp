@@ -27,6 +27,10 @@ Route::get('/test', function () {
     // Test
 });
 
+Route::get('instructions/exported-excel', [ReportController::class, 'exportToExcel']);
+Route::get('instructions/{instruction}/exported-pdf', [ReportController::class, 'exportToPdf']);
+Route::post('instructions/{instruction}/send-email', [ReportController::class, 'sendEmail']);
+
 Route::post('auth/register', [UserController::class, 'register'])->name('auth.register');
 Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
@@ -68,10 +72,6 @@ Route::apiResource('/recipients', RecipientController::class)->except([
     'destroy',
     'update'
 ]);
-
-// Report route
-Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
-Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
 
 // activate this to
 // });
