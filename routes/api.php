@@ -2,14 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InternalController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InvoiceTargetController;
-use App\Http\Controllers\RecipientController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -35,7 +35,7 @@ Route::post('auth/register', [UserController::class, 'register'])->name('auth.re
 Route::post('auth/login', [UserController::class, 'login'])->name('auth.login');
 
 /**
- * if you want to activate middleware auth uncomment it 
+ * if you want to activate middleware auth uncomment it
  */
 // Route::middleware(['auth'])->group(function () {
 Route::post('auth/refresh', [UserController::class, 'refresh'])->name('auth.refresh');
@@ -55,6 +55,9 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
 ])->parameters([
     'vendor-invoices' => 'id'
 ]);
+
+Route::post('/instructions/{instruction}/internal/attachments', [InternalController::class, 'store']);
+Route::delete('/instructions/{instruction}/internal/attachments', [InternalController::class, 'destroy']);
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 

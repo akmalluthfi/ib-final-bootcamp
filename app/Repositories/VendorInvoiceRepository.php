@@ -9,11 +9,11 @@ class VendorInvoiceRepository
     public function create($data, Instruction $instruction)
     {
         $dataSaved = [
+            '_id' => $data['id'],
             'no' => $data['no'],
             'attachment' => $data['attachment'],
             'supporting_documents' => $data['supporting_documents']
         ];
-
 
         $vendorInvoice = $instruction->vendorInvoices()->create($dataSaved);
 

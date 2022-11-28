@@ -26,7 +26,7 @@ class InstructionRepository
             'activity_notes' => [
                 [
                     'note' => 'Created 3rd Party Instruction',
-                    'performed_by' => 'Alfi',
+                    'performed_by' => auth()->user()->name ?? 'Alfi',
                     'date' => now()->format('d/m/y h:i A')
                 ]
             ],
@@ -60,7 +60,7 @@ class InstructionRepository
         $activity_notes = $instruction->activity_notes;
         $activity_notes[] = [
             'note' => 'Edited 3rd Party Instruction',
-            'performed_by' => 'Alfi',
+            'performed_by' => auth()->user()->name ?? 'Alfi',
             'date' => now()->format('d/m/y h:i A')
         ];
 
@@ -74,7 +74,7 @@ class InstructionRepository
     {
         $instruction->push('activity_notes', [[
             'note'         => "Cancel 3rd Party Instruction",
-            'performed_by' => 'Daffa Pratama A.S',
+            'performed_by' => auth()->user()->name ?? 'Daffa Pratama A.S',
             'date'         => now()->format('d/m/y h:i A'),
         ]]);
 
@@ -82,7 +82,7 @@ class InstructionRepository
             'status' => 'Cancelled',
             'cancellation' => [
                 'reason'      => $data['reason'],
-                'canceled_by' => 'Daffa Pratama A.S',
+                'cancelled_by' => auth()->user()->name ?? 'Daffa Pratama A.S',
                 'attachments' => $data['attachments']
             ]
         ]);
@@ -92,7 +92,7 @@ class InstructionRepository
 
     public function getInstructionsOpen($search)
     {
-        $query = Instruction::latest()->Open();
+        $query = Instruction::latest()->open();
 
         if (isset($search) && $search) {
             $query->search($search);
@@ -105,7 +105,7 @@ class InstructionRepository
 
     public function getInstructionsCompleted($search)
     {
-        $query = Instruction::latest()->Completed();
+        $query = Instruction::latest()->completed();
 
         if (isset($search) && $search) {
             $query->search($search);
@@ -120,7 +120,7 @@ class InstructionRepository
     {
         $instruction->push('activity_notes', [[
             'note' => 'Received All Invoice 3rd Party Instruction',
-            'performed_by' => 'Ricko Haikal Y.K',
+            'performed_by' => auth()->user()->name ?? 'Ricko Haikal Y.K',
             'date' => now()->format('d/m/y h:i A')
         ]]);
 
