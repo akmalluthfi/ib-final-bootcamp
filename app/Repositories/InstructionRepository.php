@@ -22,6 +22,9 @@ class InstructionRepository
             'costs' => $instruction['costs'],
             'attachments' => [],
             'note' => $instruction['note'],
+            'internal' => [
+                'attachments' => [],
+            ],
             'link_to' => $instruction['link_to'],
             'activity_notes' => [
                 [
