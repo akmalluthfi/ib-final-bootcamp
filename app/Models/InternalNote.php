@@ -17,5 +17,6 @@ class InternalNote extends Model
     protected $fillable = [
         'note',
         'noted_by',
+        'user_id'
     ];
 }

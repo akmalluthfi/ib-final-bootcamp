@@ -14,30 +14,30 @@ class InternalNoteService
         $this->internalNoteRepository = $internalNoteRepository;
     }
 
-    public function getInternalNote(Instruction $instruction, $id)
+    public function getNote(Instruction $instruction, $noteId)
     {
-        $vendorInvoice = $instruction->vendorInvoices->firstOrFail(function ($value) use ($id) {
-            return $value->id == $id;
-        });
-
-        return $vendorInvoice;
+        return $this->internalNoteRepository->getById($instruction, $noteId);
     }
 
-    public function storeInternalNote($data, Instruction $instruction)
+    public function storeInternalNote($note, Instruction $instruction)
     {
-        $internalNote = $this->internalNoteRepository->create($data, $instruction);
-        return $internalNote;
+        return $this->internalNoteRepository->create($note, $instruction);
     }
 
-    public function updateInternalNote($data, Instruction $instruction, $id)
+    public function updateInternalNote($newNote, Instruction $instruction, $noteId)
     {
-        $internalNote = $this->internalNoteRepository->update($data, $instruction, $id);
-        return $internalNote;
+        return $this->internalNoteRepository->update($newNote, $instruction, $noteId);
     }
 
-    public function deleteInternalNote($user, Instruction $instruction, $id)
+    public function deleteInternalNote(Instruction $instruction,  $noteId)
     {
-        $internalNote = $this->internalNoteRepository->delete($user, $instruction, $id);
-        return $internalNote;
+        $note = $this->internalNoteRepository->getById($instruction, $noteId);
+        // $user = auth()->user()->id;
+        $user = '6383898895512a62ee06d389-tes';
+
+        if($user == $note->user_id) {
+            return $this->internalNoteRepository->delete($instruction,  $noteId);
+        }
+        return 'Failed, the note is not yours';
     }
 }

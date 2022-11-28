@@ -114,6 +114,7 @@ class InstructionSeeder extends Seeder
         for ($i = 0; $i < $count; $i++) {
             $rows[] = [
                 '_id' => new \MongoDB\BSON\ObjectId(),
+                'user_id' => $this->faker->randomNumber(5,true),
                 'note' => $this->faker->text(50),
                 'noted_by' => $this->faker->firstName(),
             ];

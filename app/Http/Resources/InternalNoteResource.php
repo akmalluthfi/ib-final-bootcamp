@@ -6,6 +6,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class InternalNoteResource extends JsonResource
 {
+    public function __construct($resource, $message)
+    {
+        parent::__construct($resource);
+        $this->message = $message;
+    }
     /**
      * Transform the resource into an array.
      *
@@ -14,21 +19,25 @@ class InternalNoteResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($request->routeIs('instruction.internal.delete-note')){
+        if($request->routeIs('instructions.internal-note.destroy') ){
             return [
-                'message' => 'Successfully deleted internal note'
+                'message' => $this->message,
+                'data' => [
+
+                ]
             ];
         }
 
-
         return [
-            'message' => 'Successfully created internal note',
+            'message' => $this->message,
             'data' => [
                 'id' => $this->_id,
                 'note' => $this->note,
                 'noted_by' => $this->noted_by,
+                'user_id' => $this->user_id,
                 'updated_at' => $this->updated_at
             ],
         ];
+
     }
 }

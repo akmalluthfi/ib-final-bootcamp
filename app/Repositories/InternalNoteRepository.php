@@ -6,53 +6,42 @@ use App\Models\Instruction;
 
 class InternalNoteRepository
 {
-    public function create($data, Instruction $instruction)
+    public function create($note, Instruction $instruction)
     {
         $noteSaved = [
 			'_id'=> (string) new \MongoDB\BSON\ObjectId(),
-            'note' => $data['note'],
-            'noted_by' => $data['noted_by']
-		];
+            'note' => $note['note'],
+            'noted_by' => 'whisnoo',
+            'user_id' => '6383898895512a62ee06d389'
+            // 'noted_by' => auth()->user()->name,
+            // 'user_id' => auth()->user()->id
+        ];
 
         $internal = $instruction->internal;
-        $note = $internal->notes()->create($noteSaved);
-        $note->save();
-
-        return $note;
+        return $internal->notes()->create($noteSaved);
     }
 
-    public function getById(Instruction $instruction, $id)
+    public function getById(Instruction $instruction, $noteId)
     {
         $internal = $instruction->internal;
-        $note = $internal->notes->firstOrFail(function ($value) use ($id) {
-            return $value->id == $id;
+        $note = $internal->notes->firstOrFail(function ($value) use ($noteId) {
+            return $value->id == $noteId;
         });
 
         return $note;
     }
 
-    public function update($data, Instruction $instruction, $id)
+    public function update($newNote, Instruction $instruction, $noteId)
     {
-        $note = $this->getById($instruction, $id);
-
-        if($data['user'] == $note->noted_by) {
-            $note->note = $data['note'];
-            $note->save();
-            return $note;
-        } else {
-            return 'Failed, the note is not yours';
-        }
+        $note = $this->getById($instruction, $noteId);
+        $note->note = $newNote['note'];
+        $note->save();
+        return $note;
     }
 
-    public function delete($user, Instruction $instruction, $id)
+    public function delete(Instruction $instruction, $id)
     {
         $note = $this->getById($instruction, $id);
-
-        if($user == $note->noted_by) {
-            $note->delete();
-            return response()->json(['message' => 'Successfully deleted internal note']);
-        } else {
-            return response()->json(['message' => 'Failed, the note is not yours']);
-        }
+        return $note->delete();
     }
 }

@@ -167,6 +167,7 @@ return [
          */
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
         /*
          * Application Service Providers...

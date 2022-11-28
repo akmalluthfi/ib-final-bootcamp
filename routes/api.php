@@ -2,13 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\InternalNoteController;
 use App\Http\Controllers\InvoiceTargetController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -73,6 +74,7 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
     'vendor-invoices' => 'id'
 ]);
 
+
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
@@ -92,7 +94,9 @@ Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf'
 
 
 // Route Internal Note
-Route::apiResource('instructions/{instruction}/internal/notes/{id}')->except(['index', 'show']);
+Route::apiResource('instructions.internal-note', InternalNoteController::class)->except([
+    'index', 'show'
+]);
 
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {
@@ -107,5 +111,6 @@ Route::get('/{any}', function (Request $request) {
 // Route::post('/instruction/{instruction}/internal/note', [InternalNoteController::class, 'addInternalNote'])->name('instruction.internal.add-note');
 // Route::post('/instruction/{instruction}/internal/note/{id}', [InternalNoteController::class, 'editInternalNote'])->name('instruction.internal.edit-note');
 // Route::get('/instruction/{instruction}/internal/note/{id}', [InternalNoteController::class, 'deleteInternalNote'])->name('instruction.internal.delete-note');
+
 
 
