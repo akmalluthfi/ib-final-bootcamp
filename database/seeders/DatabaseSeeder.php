@@ -5,10 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Models\Customer;
-use App\Models\Instruction;
-use App\Models\InternalNote;
-use App\Models\Transaction;
-use App\Models\InternalOnly;
 use App\Models\InvoiceTarget;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TransactionSeeder;
@@ -29,7 +25,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             InstructionSeeder::class,
-            TransactionSeeder::class
+            TransactionSeeder::class,
+            RecipientSeeder::class
         ]);
     }
 }
