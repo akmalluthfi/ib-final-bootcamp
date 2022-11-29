@@ -2,15 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\InternalController;
 use App\Http\Controllers\InstructionController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\InternalNoteController;
 use App\Http\Controllers\InvoiceTargetController;
 use App\Http\Controllers\RecipientController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VendorInvoiceController;
 
 /*
@@ -81,7 +82,6 @@ Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::clas
 ])->parameters([
     'vendor-invoices' => 'id'
 ]);
-
 
 Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
 
