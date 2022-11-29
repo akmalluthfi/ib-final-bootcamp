@@ -35,7 +35,7 @@ export default {
                 .get("/api/instructions?tab=completed&page=1")
                 .then((response) => {
                     this.instructions = response.data.data;
-                    this.limit = limit + 1;
+                    this.page = page + 1;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -48,12 +48,14 @@ export default {
                     document.documentElement.offsetHeight;
                 if (bottomOfWindow) {
                     axios
-                        .get(`/api/instructions?tab=completed&page=${this.page}`)
+                        .get(
+                            `/api/instructions?tab=completed&page=${this.page}`
+                        )
                         .then((response) => {
                             this.instructions = this.instructions.concat(
                                 response.data.data
                             );
-                            this.limit = limit + 1;
+                            this.page = page + 1;
                         })
                         .catch((error) => {
                             console.log(error);
