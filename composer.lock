@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
+<<<<<<< HEAD
+    "content-hash": "1adffd866691b33bb57ecd4c5362dfc1",
+=======
     "content-hash": "c1f49779a5ed277df1a28c1c531c5e50",
+>>>>>>> 9e7b8c84205d7331e5366d65b77dad4267eaed28
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2566,10 +2570,21 @@
                 "psr-4": {
                     "MyCLabs\\Enum\\": "src/"
                 },
+<<<<<<< HEAD
+                "classmap": [
+                    "stubs/Stringable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+=======
                 "classmap": ["stubs/Stringable.php"]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": ["MIT"],
+>>>>>>> 9e7b8c84205d7331e5366d65b77dad4267eaed28
             "authors": [
                 {
                     "name": "PHP Enum contributors",
@@ -2578,7 +2593,13 @@
             ],
             "description": "PHP Enum implementation",
             "homepage": "http://github.com/myclabs/php-enum",
+<<<<<<< HEAD
+            "keywords": [
+                "enum"
+            ],
+=======
             "keywords": ["enum"],
+>>>>>>> 9e7b8c84205d7331e5366d65b77dad4267eaed28
             "support": {
                 "issues": "https://github.com/myclabs/php-enum/issues",
                 "source": "https://github.com/myclabs/php-enum/tree/1.8.4"
@@ -3273,7 +3294,13 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
+<<<<<<< HEAD
+            "license": [
+                "MIT"
+            ],
+=======
             "license": ["MIT"],
+>>>>>>> 9e7b8c84205d7331e5366d65b77dad4267eaed28
             "authors": [
                 {
                     "name": "PHP-FIG",
@@ -3282,7 +3309,17 @@
             ],
             "description": "Common interface for reading the clock.",
             "homepage": "https://github.com/php-fig/clock",
+<<<<<<< HEAD
+            "keywords": [
+                "clock",
+                "now",
+                "psr",
+                "psr-20",
+                "time"
+            ],
+=======
             "keywords": ["clock", "now", "psr", "psr-20", "time"],
+>>>>>>> 9e7b8c84205d7331e5366d65b77dad4267eaed28
             "support": {
                 "issues": "https://github.com/php-fig/clock/issues",
                 "source": "https://github.com/php-fig/clock/tree/1.0.0"
@@ -5807,16 +5844,16 @@
         },
         {
             "name": "symfony/string",
-            "version": "v6.1.7",
+            "version": "v6.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "823f143370880efcbdfa2dbca946b3358c4707e5"
+                "reference": "51ac0fa0ccf132a00519b87c97e8f775fa14e771"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/823f143370880efcbdfa2dbca946b3358c4707e5",
-                "reference": "823f143370880efcbdfa2dbca946b3358c4707e5",
+                "url": "https://api.github.com/repos/symfony/string/zipball/51ac0fa0ccf132a00519b87c97e8f775fa14e771",
+                "reference": "51ac0fa0ccf132a00519b87c97e8f775fa14e771",
                 "shasum": ""
             },
             "require": {
@@ -5866,7 +5903,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v6.1.7"
+                "source": "https://github.com/symfony/string/tree/v6.0.15"
             },
             "funding": [
                 {
