@@ -19,15 +19,6 @@ class InternalNoteResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($request->routeIs('instructions.internal-note.destroy') ){
-            return [
-                'message' => $this->message,
-                'data' => [
-
-                ]
-            ];
-        }
-
         return [
             'message' => $this->message,
             'data' => [

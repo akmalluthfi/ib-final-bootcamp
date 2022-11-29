@@ -100,14 +100,14 @@ Route::apiResource('/recipients', RecipientController::class)->except([
     'update'
 ]);
 
+
+// Route Internal Note
+Route::apiResource('instructions.internal-notes', InternalNoteController::class)->except([
+    'index', 'show'
+]);
 // activate this to
 // });
 
-
-// Route Internal Note
-Route::apiResource('instructions.internal-note', InternalNoteController::class)->except([
-    'index', 'show'
-]);
 
 // Handle route api doesn't exists
 Route::get('/{any}', function (Request $request) {

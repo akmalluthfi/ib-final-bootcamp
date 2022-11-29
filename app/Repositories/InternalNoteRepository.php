@@ -6,42 +6,37 @@ use App\Models\Instruction;
 
 class InternalNoteRepository
 {
-    public function create($note, Instruction $instruction)
+    public function create($note, $internal)
     {
         $noteSaved = [
 			'_id'=> (string) new \MongoDB\BSON\ObjectId(),
             'note' => $note['note'],
-            'noted_by' => 'whisnoo',
-            'user_id' => '6383898895512a62ee06d389'
-            // 'noted_by' => auth()->user()->name,
-            // 'user_id' => auth()->user()->id
+            'noted_by' => auth()->user()->name ?? "Whisnoo",
+            'user_id' => auth()->user()->id ?? "6383898895512a62ee06d389"
         ];
 
-        $internal = $instruction->internal;
         return $internal->notes()->create($noteSaved);
     }
 
-    public function getById(Instruction $instruction, $noteId)
+    public function getById($internal, $id)
     {
-        $internal = $instruction->internal;
-        $note = $internal->notes->firstOrFail(function ($value) use ($noteId) {
-            return $value->id == $noteId;
+        $note = $internal->notes->firstOrFail(function ($value) use ($id) {
+            return $value->id == $id;
         });
 
         return $note;
     }
 
-    public function update($newNote, Instruction $instruction, $noteId)
+    public function update($newNote, $internal, $id)
     {
-        $note = $this->getById($instruction, $noteId);
-        $note->note = $newNote['note'];
-        $note->save();
+        $note = $this->getById($internal, $id);
+        $note->update($newNote);
         return $note;
     }
 
-    public function delete(Instruction $instruction, $id)
+    public function delete($internal, $id)
     {
-        $note = $this->getById($instruction, $id);
+        $note = $this->getById($internal, $id);
         return $note->delete();
     }
 }

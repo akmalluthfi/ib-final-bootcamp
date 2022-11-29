@@ -14,14 +14,13 @@ class InternalNoteRequest extends FormRequest
      */
     public function authorize()
     {
-        // $user_id = auth()->user()->id;
-        $user_id = '6383898895512a62ee06d389';
-        if( $this->routeIs('instruction.internal-note.store') ) {
+        if( $this->routeIs('instructions.internal-notes.store') ) {
             return true;
         }
         $internal = $this->instruction->internal;
         $note = $internal->notes()->find($this->route('internal_note'));
-        return $note->user_id === $user_id;
+        return $note->user_id === (auth()->user()->id ?? '6383898895512a62ee06d389');
+
     }
 
     /**
@@ -31,8 +30,16 @@ class InternalNoteRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        if( $this->routeIs('instructions.internal-notes.destroy') ) {
+            return [
 
+            ];
+        }
+
+        return [
+            'note' => 'required | string'
         ];
+
+
     }
 }

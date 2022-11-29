@@ -37,8 +37,9 @@ class InternalNoteController extends Controller
     public function store(InternalNoteRequest $request, Instruction $instruction)
     {
         try {
-            $note = $request->only('note');
-            $internalNote = $this->internalNoteService->storeInternalNote($note, $instruction);
+            $note = $request->validated();
+            $internalNote = $this->internalNoteService->storeInternalNote($note, $instruction->internal);
+            return $internalNote;
             return (new InternalNoteResource($internalNote, 'Sucessfully created internal note'))->response()->setStatusCode(201);
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -63,11 +64,12 @@ class InternalNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(InternalNoteRequest $request, Instruction $instruction, $noteId)
+    public function update(InternalNoteRequest $request, Instruction $instruction, $id)
     {
+        // $this->authorize('update', $instruction, $request);
         try {
-            $newNote = $request->only('note');
-            $internalNote = $this->internalNoteService->updateInternalNote($newNote, $instruction, $noteId);
+            $newNote = $request->validated();
+            $internalNote = $this->internalNoteService->updateInternalNote($newNote, $instruction->internal, $id);
             if(is_object($internalNote))
             {
                 return (new InternalNoteResource($internalNote, 'Successfully updated internal note'))->response()->setStatusCode(200);
@@ -85,14 +87,15 @@ class InternalNoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Instruction $instruction, $noteId)
+    public function destroy(InternalNoteRequest $request, Instruction $instruction, $id)
     {
+        $this->authorize('delete', $instruction->internal);
         try {
-            $result = $this->internalNoteService->deleteInternalNote($instruction, $noteId);
+            $result = $this->internalNoteService->deleteInternalNote($instruction->internal, $id);
             if($result == 1) {
-                return (new InternalNoteResource($result, 'Successfully deleted internal note'))->response()->setStatusCode(202);
+                return response()->json(['message' => 'Successfully deleted internal note'], 200);
             }
-            return $result;
+            return response()->json(['message' => 'Oops, something went wroong'], 202);
         }
         catch (Exception $e){
             return $e->getMessage();

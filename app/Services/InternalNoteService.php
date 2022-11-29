@@ -14,30 +14,24 @@ class InternalNoteService
         $this->internalNoteRepository = $internalNoteRepository;
     }
 
-    public function getNote(Instruction $instruction, $noteId)
+    public function getNote($internal, $id)
     {
-        return $this->internalNoteRepository->getById($instruction, $noteId);
+        return $this->internalNoteRepository->getById($internal, $id);
     }
 
-    public function storeInternalNote($note, Instruction $instruction)
+    public function storeInternalNote($note, $internal)
     {
-        return $this->internalNoteRepository->create($note, $instruction);
+        return $this->internalNoteRepository->create($note, $internal);
     }
 
-    public function updateInternalNote($newNote, Instruction $instruction, $noteId)
+    public function updateInternalNote($newNote, $internal, $id)
     {
-        return $this->internalNoteRepository->update($newNote, $instruction, $noteId);
+        return $this->internalNoteRepository->update($newNote, $internal, $id);
     }
 
-    public function deleteInternalNote(Instruction $instruction,  $noteId)
+    public function deleteInternalNote($internal,  $id)
     {
-        $note = $this->internalNoteRepository->getById($instruction, $noteId);
-        // $user = auth()->user()->id;
-        $user = '6383898895512a62ee06d389-tes';
+        return $this->internalNoteRepository->delete($internal,  $id);
 
-        if($user == $note->user_id) {
-            return $this->internalNoteRepository->delete($instruction,  $noteId);
-        }
-        return 'Failed, the note is not yours';
     }
 }
