@@ -89,7 +89,7 @@ class InternalNoteController extends Controller
      */
     public function destroy(InternalNoteRequest $request, Instruction $instruction, $id)
     {
-        $this->authorize('delete', $instruction->internal);
+        // $this->authorize('delete', $instruction->internal);
         try {
             $result = $this->internalNoteService->deleteInternalNote($instruction->internal, $id);
             if($result == 1) {
