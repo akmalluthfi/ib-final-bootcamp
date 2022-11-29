@@ -42,7 +42,7 @@ class InstructionSeeder extends Seeder
                 'date' => now()->format('d/m/y h:i A')
             ];
 
-            if($status === 'Draft'){
+            if ($status === 'Draft') {
                 $activityNotes[] = [
                     'note' => 'Create Draft ' . ucwords($type),
                     'performed_by' => 'Ricko',
@@ -50,7 +50,7 @@ class InstructionSeeder extends Seeder
                 ];
             }
 
-            if($status === 'Completed'){
+            if ($status === 'Completed') {
                 $activityNotes[] = [
                     'note' => 'Received All Invoice 3rd Party Instruction',
                     'performed_by' => 'Ricko',
@@ -58,11 +58,17 @@ class InstructionSeeder extends Seeder
                 ];
             }
 
-            if($status === 'Cancelled'){
+            if ($status === 'Cancelled') {
                 $activityNotes[] = [
                     'note' => 'Cancel 3rd Party Instruction',
                     'performed_by' => 'Ricko',
                     'date' => now()->format('d/m/y h:i A')
+                ];
+
+                $cancellation = [
+                    'reason' => $this->faker->sentence(),
+                    'attachments' => null,
+                    'cancelled_by' => 'Ricko'
                 ];
             }
 
@@ -86,7 +92,7 @@ class InstructionSeeder extends Seeder
                     'notes' => $this->createInternalNote(mt_rand(1, 3))
                 ],
                 'link_to' => null,
-                'cancellation' => null,
+                'cancellation' => $cancellation ?? null,
                 'activity_notes' => $activityNotes
             ]);
         }
@@ -128,8 +134,9 @@ class InstructionSeeder extends Seeder
         $price = mt_rand(100, 500);
         $discount = mt_rand(5, 15);
         $total_barang = $qty * $price;
-        $sub_total = $total_barang - ($total_barang * $discount / 100);
+        $sub_total = $total_barang - ($total_barang * ($discount / 100));
         $vat = mt_rand(5, 10);
+        $vat_ammount = $sub_total * ($vat/100);
 
         $rows = [];
         for ($i = 0; $i < $count; $i++) {
@@ -140,8 +147,9 @@ class InstructionSeeder extends Seeder
                 'unit_price' => $price,
                 'discount' => $discount,
                 'vat' => $vat,
+                'vat_amount' => $vat_ammount,
                 'sub_total' =>  $sub_total,
-                'total' => $sub_total + ($sub_total * $vat / 100),
+                'total' => $sub_total + $vat_ammount,
                 'charge_to' => $this->faker->randomElement(['Customer', 'Inosoft'])
             ];
         }

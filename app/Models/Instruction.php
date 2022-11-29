@@ -34,6 +34,7 @@ class Instruction extends Model
         'costs',
         'attachments',
         'note',
+        'internal',
         'link_to',
         'activity_notes',
         'cancellation'

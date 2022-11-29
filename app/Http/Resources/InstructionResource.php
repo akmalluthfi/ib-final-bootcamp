@@ -32,8 +32,13 @@ class InstructionResource extends JsonResource
                 'assigned_vendor' => $this->assigned_vendor,
                 'attention_of' => $this->attention_of,
                 'quotation_no' => $this->quotation_no,
+                'vendor_invoices' => $this->when($this->status === 'Completed' || $this->status === 'Cancelled', [
+                    'count' => count($this->vendorInvoices),
+                    'data' => $this->vendorInvoices,
+                ]),
                 'customer_po_no' => $this->customer_po_no,
                 'status' => $this->status,
+                'cancelation' => $this->when($this->status === 'Cancelled', $this->cancellation)
             ];
         } else {
             return $this->toArrayAll();
