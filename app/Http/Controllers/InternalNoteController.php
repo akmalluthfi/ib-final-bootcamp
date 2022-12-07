@@ -39,22 +39,10 @@ class InternalNoteController extends Controller
         try {
             $note = $request->validated();
             $internalNote = $this->internalNoteService->storeInternalNote($note, $instruction->internal);
-            return $internalNote;
             return (new InternalNoteResource($internalNote, 'Sucessfully created internal note'))->response()->setStatusCode(201);
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -66,7 +54,7 @@ class InternalNoteController extends Controller
      */
     public function update(InternalNoteRequest $request, Instruction $instruction, $id)
     {
-        // $this->authorize('update', $instruction, $request);
+        
         try {
             $newNote = $request->validated();
             $internalNote = $this->internalNoteService->updateInternalNote($newNote, $instruction->internal, $id);

@@ -64,14 +64,6 @@ Route::post('auth/logout', [UserController::class, 'logout'])->name('auth.logout
 
     Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
-
-    // Report route
-    Route::get('/reports/excel', [ReportController::class, 'exportToExcel']);
-    Route::get('/reports/pdf/{instruction}', [ReportController::class, 'exportToPdf']);
-Route::apiResource('instructions', InstructionController::class)->except([
-    'destroy'
-]);
 
 Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive'])->name('instructions.receive');
 

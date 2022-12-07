@@ -25,7 +25,7 @@ class InternalNoteResource extends JsonResource
                 'id' => $this->_id,
                 'note' => $this->note,
                 'noted_by' => $this->noted_by,
-                'user_id' => $this->user_id,
+                'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at
             ],
         ];

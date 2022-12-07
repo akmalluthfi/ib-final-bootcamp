@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\Handler;
 use App\Models\Instruction;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class InternalNoteRequest extends FormRequest
 {
@@ -17,11 +20,17 @@ class InternalNoteRequest extends FormRequest
         if( $this->routeIs('instructions.internal-notes.store') ) {
             return true;
         }
-        $internal = $this->instruction->internal;
-        $note = $internal->notes()->find($this->route('internal_note'));
-        return $note->user_id === (auth()->user()->id ?? '6383898895512a62ee06d389');
 
+        $note = $this->instruction->internal->notes->find($this->route('internal_note'));
+        if (is_null($note)) throw new ModelNotFoundException();
+
+        if( $note->user_id === (auth()->user()->id ?? '6383898895512a62ee06d389-tes') ) {
+            return true;
+        } else {
+            throw new AccessDeniedException();
+        }
     }
+
 
     /**
      * Get the validation rules that apply to the request.
