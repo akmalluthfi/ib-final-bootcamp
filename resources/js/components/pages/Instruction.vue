@@ -47,12 +47,25 @@
             </div>
 
             <div class="form-group row mt-5">
-              <dropdown
-                column="col-2"
-                label="Assigned Vendor"
-                placeholder="Enter Vendor"
-                v-bind="instructions"
-              />
+              <div class="col-2">
+                <label for="" class="form-control-label">Assigned Vendor</label>
+                <select
+                  class="form-control"
+                  id="select-vendor"
+                  data-live-search="true"
+                  required
+                >
+                  <option disabled selected hidden>Enter Vendor</option>
+                  <option
+                    v-for="(item, index) in vendors"
+                    :key="index"
+                    :data-tokens="item.name"
+                    :value="item.name"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
               <text-input
                 column="col-2"
                 label="Attention Of"
@@ -63,32 +76,80 @@
                 label="Quotation No."
                 placeholder="Enter Quotation"
               />
-              <dropdown
-                column="col-2"
-                label="Invoice To"
-                placeholder="Select An Option"
-                :addNew="true"
-              />
-              <dropdown
-                column="col-2"
-                label="Customer - Contract"
-                placeholder="Select Customer"
-                :addNew="false"
-              />
+              <div class="col-2">
+                <label for="" class="form-control-label">Invoice To</label>
+                <select
+                  class="form-control"
+                  id="select-invoice"
+                  data-live-search="true"
+                  required
+                >
+                  <option disabled selected hidden>Select an Option</option>
+                  <option
+                    v-for="(item, index) in invoiceTargets"
+                    :key="index"
+                    :data-tokens="item.name"
+                  >
+                    {{ item.name }}
+                  </option>
+                  <option>
+                    <button
+                      type="button"
+                      class="btn btn-outline-success"
+                      data-toggle="modal"
+                      data-target="#exampleModal"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      Add New Invoice
+                    </button>
+                  </option>
+                </select>
+              </div>
+              <div class="col-2">
+                <label for="" class="form-control-label"
+                  >Customer Contract</label
+                >
+                <select
+                  class="form-control"
+                  id="select-customer"
+                  data-live-search="true"
+                  required
+                >
+                  <option disabled selected hidden>Select Customer</option>
+                  <option
+                    v-for="(item, index) in customers"
+                    :key="index"
+                    :data-tokens="item.name"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
             </div>
 
             <div class="form-group row mt-5">
-              <dropdown
-                column="col-10"
-                label="Vendor Adress"
-                placeholder="Enter Vendor Address"
-                :addNew="false"
-              />
-              <dropdown
+              <div class="col-10">
+                <label for="" class="form-control-label">Vendor Address</label>
+                <select
+                  class="form-control"
+                  id="select-vendor-address"
+                  data-live-search="true"
+                  required
+                >
+                  <option disabled selected hidden>Enter Vendor Address</option>
+                  <option
+                    v-for="(item, index) in vendors"
+                    :key="index"
+                    :data-tokens="item.name"
+                  >
+                    {{ item.name }}
+                  </option>
+                </select>
+              </div>
+              <text-input
                 column="col-2"
                 label="Customer PO No."
                 placeholder="Enter Customer PO"
-                :addNew="false"
               />
             </div>
 
@@ -248,8 +309,8 @@
                         >Link To</label
                       >
                       <select
-                        class="form-control selectpicker"
-                        id="select-vendor"
+                        class="form-control"
+                        id="select-link"
                         data-live-search="true"
                         required
                       >
@@ -284,18 +345,29 @@
   </div>
 </template>
 
-<script src="https://dl.dropboxusercontent.com/s/3cml0fff7nbfpot/script.js"></script>
 <script>
 import Dropdown from "../partials/Dropdown.vue";
-import axios from "axios";
-
-$(function () {
-  $(".selectpicker").selectpicker();
-});
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: { Dropdown },
   props: ["type"],
+  computed: {
+    ...mapGetters({
+      vendors: "getVendors",
+      invoiceTargets: "getInvoiceTargets",
+      customers: "getCustomers",
+    }),
+  },
+  methods: {
+    ...mapActions(["fetchVendors", "fetchInvoiceTargets", "fetchCustomers"]),
+  },
+  beforeMount() {
+    this.$store.dispatch("fetchVendors");
+    this.$store.dispatch("fetchInvoiceTargets");
+    this.$store.dispatch("fetchCustomers");
+  },
+  mounted() {},
 };
 </script>
 
@@ -305,5 +377,8 @@ export default {
   height: 35px;
   width: 150px;
   border-radius: 20px;
+}
+option {
+  cursor: pointer;
 }
 </style>

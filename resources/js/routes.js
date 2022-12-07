@@ -2,6 +2,7 @@
 import Open from "./components/pages/Open.vue";
 import Instruction from "./components/pages/Instruction.vue";
 import Completed from "./components/pages/Completed.vue";
+import Login from "./components/pages/Login.vue";
 
 export const routes = [
     {
@@ -18,5 +19,10 @@ export const routes = [
         path: "/completed",
         name: "Completed",
         component: Completed,
+    },
+    {
+        path: "/login",
+        name: "Login",
+        component: Login,
     },
 ];
