@@ -56,6 +56,9 @@ Route::post('auth/logout', [UserController::class, 'logout'])->name('auth.logout
         'vendor-invoices' => 'id'
     ]);
 
+    Route::post('/instructions/{instruction}/internal/attachments', [InternalController::class, 'store']);
+    Route::delete('/instructions/{instruction}/internal/attachments', [InternalController::class, 'destroy']);
+
     Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
     Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
 
@@ -65,38 +68,18 @@ Route::post('auth/logout', [UserController::class, 'logout'])->name('auth.logout
     Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
 
 
-Route::patch('/instructions/{instruction}/receive', [InstructionController::class, 'receive'])->name('instructions.receive');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
 
-Route::patch('/instructions/{instruction}/terminate', [InstructionController::class, 'terminate'])->name('instructions.terminate');
-
-Route::apiResource('instructions.vendor-invoices', VendorInvoiceController::class)->except([
-    'index'
-])->parameters([
-    'vendor-invoices' => 'id'
-]);
-
-Route::get('/vendors', [VendorController::class, 'index'])->name('vendor.index');
-
-Route::post('/vendors/{vendor}/addresses', [VendorController::class, 'addAddress'])->name('vendor.add-address');
-
-Route::get('/invoice-targets', [InvoiceTargetController::class, 'index'])->name('invoice-target.index');
-
-Route::post('/invoice-targets', [InvoiceTargetController::class, 'store'])->name('invoice-target.store');
-
-Route::get('/customers', [CustomerController::class, 'index'])->name('customer.index');
-
-Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
-
-Route::apiResource('/recipients', RecipientController::class)->except([
-    'destroy',
-    'update'
-]);
+    Route::apiResource('/recipients', RecipientController::class)->except([
+        'destroy',
+        'update'
+    ]);
 
 
-// Route Internal Note
-Route::apiResource('instructions.internal-notes', InternalNoteController::class)->except([
-    'index', 'show'
-]);
+    // Route Internal Note
+    Route::apiResource('instructions.internal-notes', InternalNoteController::class)->except([
+        'index', 'show'
+    ]);
 // activate this to
 // });
 

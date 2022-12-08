@@ -19,16 +19,6 @@ class InternalNoteController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -54,7 +44,6 @@ class InternalNoteController extends Controller
      */
     public function update(InternalNoteRequest $request, Instruction $instruction, $id)
     {
-        
         try {
             $newNote = $request->validated();
             $internalNote = $this->internalNoteService->updateInternalNote($newNote, $instruction->internal, $id);
@@ -77,7 +66,6 @@ class InternalNoteController extends Controller
      */
     public function destroy(InternalNoteRequest $request, Instruction $instruction, $id)
     {
-        // $this->authorize('delete', $instruction->internal);
         try {
             $result = $this->internalNoteService->deleteInternalNote($instruction->internal, $id);
             if($result == 1) {

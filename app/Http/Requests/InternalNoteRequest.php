@@ -41,7 +41,7 @@ class InternalNoteRequest extends FormRequest
     {
         if( $this->routeIs('instructions.internal-notes.destroy') ) {
             return [
-
+                
             ];
         }
 
