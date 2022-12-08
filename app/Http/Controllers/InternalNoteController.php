@@ -17,7 +17,7 @@ class InternalNoteController extends Controller
     {
         $this->internalNoteService = $internalNoteService;
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      *
