@@ -9,11 +9,13 @@ export default new Vuex.Store({
         vendors: null,
         invoiceTargets: null,
         customers: null,
+        details: null,
     },
     getters: {
         getVendors: (state) => state.vendors,
         getInvoiceTargets: (state) => state.invoiceTargets,
         getCustomers: (state) => state.customers,
+        getDetails: (state) => state.details,
     },
     actions: {
         async fetchVendors({ commit }) {
@@ -43,6 +45,15 @@ export default new Vuex.Store({
                 console.log(error);
             }
         },
+        async fetchDetails({ commit }, id) {
+            try {
+                const data = await axios.get("api/instructions/" + id);
+                commit("SET_DETAILS", data.data.data);
+            } catch (error) {
+                alert(error);
+                console.log(error);
+            }
+        },
     },
     mutations: {
         SET_VENDORS(state, vendors) {
@@ -53,6 +64,9 @@ export default new Vuex.Store({
         },
         SET_CUSTOMERS(state, customers) {
             state.customers = customers;
+        },
+        SET_DETAILS(state, details) {
+            state.details = details;
         },
     },
     modules: {},
