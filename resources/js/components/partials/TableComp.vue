@@ -9,7 +9,7 @@
         <th class="fw-bolder fs-4" scope="col">Assigned Vendor</th>
         <th class="fw-bolder fs-4" scope="col">Attention Of</th>
         <th class="fw-bolder fs-4" scope="col">Quotation No.</th>
-        <th class="fw-bolder fs-4" scope="col">Invoice</th>
+        <th v-if="instructions[0].vendor_invoices !== undefined" class="fw-bolder fs-4" scope="col">Invoice</th>
         <th class="fw-bolder fs-4" scope="col">Customer PO</th>
         <th class="fw-bolder fs-4" scope="col">Status</th>
       </tr>
@@ -26,35 +26,30 @@
         <td>{{ item.assigned_vendor }}</td>
         <td>{{ item.attention_of }}</td>
         <td>{{ item.quotation_no }}</td>
-        <td>
-          <span class="py-2 px-3 bg-info text-white rounded-circle">1</span>
+        <td v-if="item.vendor_invoices !== undefined">
+          <span class="py-2 px-3 bg-info text-white rounded-circle">{{ item.vendor_invoices.count }}</span>
         </td>
         <td>{{ item.customer_po_no }}</td>
-        <td v-switch="item.status">
+        <td>
           <span
-            v-case="'Completed'"
+            v-if="item.status === 'Completed'"
             class="py-2 px-3 bg-success text-white rounded-pill fs-5"
             >Completed</span
           >
           <span
-            v-case="'Cancelled'"
+            v-if="item.status === 'Cancelled'"
             class="py-2 px-3 bg-danger text-white rounded-pill fs-5"
             >Cancelled</span
           >
           <span
-            v-case="'In Progress'"
+            v-if="item.status === 'In Progress'"
             class="py-2 px-3 bg-muted text-primary rounded-pill fs-5"
             >In Progress</span
           >
           <span
-            v-case="'Draft'"
+            v-if="item.status === 'Draft'"
             class="py-2 px-3 bg-muted text-primary rounded-pill fs-5"
             ><font-awesome-icon icon="fa-solid fa-circle-info" />Draft</span
-          >
-          <span
-            v-default
-            class="py-2 px-3 bg-warning text-white rounded-pill fs-5"
-            >Unknown</span
           >
         </td>
       </tr>
@@ -63,15 +58,8 @@
 </template>
 
 <script>
-import { vSwitch, vCase, vDefault } from "v-switch-case";
-
 export default {
   mounted() {},
-  directives: {
-    switch: vSwitch,
-    case: vCase,
-    default: vDefault,
-  },
   props: {
     instructions: {
       type: Array,
