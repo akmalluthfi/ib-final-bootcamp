@@ -2,6 +2,10 @@
 # About Project
 Project ini merupakan project kolaborasi dari inosoft bootcamp.
 
+# Tech Stack
+* [![Laravel][Laravel.com]][Laravel-url]
+* [![Vue][Vue.js]][Vue-url]
+
 ## Members
 - [Bintang Prayoga](https://github.com/bintang-prayoga) (Frontend)
 - [Nando Septian](https://github.com/NandoCraz) (Frontend)
