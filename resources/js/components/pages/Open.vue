@@ -32,10 +32,9 @@ export default {
     },
 
     methods: {
-        // infinite scroll methods
         getInitialInstructions() {
             axios
-                .get("/api/instructions?tab=open&page=1")
+                .get(`/api/instructions?tab=open&page=${this.page}`)
                 .then((response) => {
                     this.instructions = response.data.data;
                     this.page = this.page + 1;
@@ -45,10 +44,12 @@ export default {
                     console.log(error);
                 });
         },
+
+        // infinite scroll methods
         getNextInstruction() {
             window.onscroll = () => {
                 let bottomOfWindow =
-                    document.documentElement.scrollTop + window.innerHeight ===
+                    Math.ceil(document.documentElement.scrollTop + window.innerHeight) ===
                     document.documentElement.offsetHeight;
                 if (bottomOfWindow) {
                     if (this.page > this.lastPage) {

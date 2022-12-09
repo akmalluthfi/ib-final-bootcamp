@@ -26,6 +26,7 @@ export default {
         return {
             instructions: null,
             page: 1,
+            lastPage: null,
         };
     },
 
@@ -35,27 +36,31 @@ export default {
                 .get("/api/instructions?tab=completed&page=1")
                 .then((response) => {
                     this.instructions = response.data.data;
-                    this.page = page + 1;
+                    this.page = this.page + 1;
+                    this.lastPage = response.data.meta.last_page;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
+
+        // infinite scroll methods
         getNextInstruction() {
             window.onscroll = () => {
                 let bottomOfWindow =
-                    document.documentElement.scrollTop + window.innerHeight ===
+                    Math.ceil(document.documentElement.scrollTop + window.innerHeight) ===
                     document.documentElement.offsetHeight;
                 if (bottomOfWindow) {
+                    if (this.page > this.lastPage) {
+                        return;
+                    }
                     axios
-                        .get(
-                            `/api/instructions?tab=completed&page=${this.page}`
-                        )
+                        .get(`/api/instructions?tab=completed&page=${this.page}`)
                         .then((response) => {
                             this.instructions = this.instructions.concat(
                                 response.data.data
                             );
-                            this.page = page + 1;
+                            this.page = this.page + 1;
                         })
                         .catch((error) => {
                             console.log(error);
@@ -65,7 +70,7 @@ export default {
         },
     },
     mounted() {
-        this.getInitialInstructions();
+        this.getNextInstruction();
     },
     beforeMount() {
         this.getInitialInstructions();
