@@ -3,7 +3,7 @@
 Project ini merupakan project kolaborasi dari inosoft bootcamp.
 
 # Tech Stack
-* [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+* [![Laravel][Laravel.com]][Laravel-url]
 * [![Vue][Vue.js]][Vue-url]
 
 ## Members
@@ -54,3 +54,8 @@ Run the project
 ```bash
   php artisan serve
 ```
+
+[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
+[Laravel-url]: https://laravel.com
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
