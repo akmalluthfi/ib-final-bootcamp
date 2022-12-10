@@ -9,6 +9,7 @@
         <th class="fw-bolder fs-4" scope="col">Assigned Vendor</th>
         <th class="fw-bolder fs-4" scope="col">Attention Of</th>
         <th class="fw-bolder fs-4" scope="col">Quotation No.</th>
+
         <th
           v-if="instructions[0].vendor_invoices !== undefined"
           class="fw-bolder fs-4"
@@ -16,6 +17,7 @@
         >
           Invoice
         </th>
+
         <th class="fw-bolder fs-4" scope="col">Customer PO</th>
         <th class="fw-bolder fs-4" scope="col">Status</th>
       </tr>
@@ -139,7 +141,6 @@
 
 <script>
 import StatusBadge from "./StatusBadge.vue";
-
 export default {
   components: { StatusBadge },
   mounted() {},

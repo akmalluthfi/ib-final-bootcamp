@@ -45,7 +45,7 @@ export default {
     },
 
     // infinite scroll methods
-    getNextInstruction() {
+    getNextInstructions() {
       window.onscroll = () => {
         let bottomOfWindow =
           Math.ceil(document.documentElement.scrollTop + window.innerHeight) ===
@@ -65,16 +65,17 @@ export default {
             });
         }
       };
-    },
+    }
   },
   mounted() {
-    this.getNextInstruction();
+    this.getNextInstructions();
   },
   beforeMount() {
     this.getInitialInstructions();
   },
 };
 </script>
+
 <style>
 a {
   color: rgb(34, 34, 34) !important;

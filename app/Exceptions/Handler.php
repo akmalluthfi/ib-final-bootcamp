@@ -6,6 +6,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\ItemNotFoundException;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -46,13 +47,13 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage()
                 ]);
             });
-            
+
             $this->renderable(function (AuthenticationException $e, $request){
                 return response()->json([
                     'message' => $e->getMessage()
                 ], 401);
             });
-            
+
             $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
                 return response()->json([
                     'message' => 'Method Not Allowed'
@@ -71,10 +72,16 @@ class Handler extends ExceptionHandler
                     'errors' => $e->errors()
                 ], 422);
             });
-
+ 
             // handle exception when embedded/nested document not found using firstOrFail
             $this->renderable(function (ItemNotFoundException $e, $request) {
                 throw new NotFoundHttpException;
+            });
+
+            $this->renderable(function (AccessDeniedException $e) {
+                return response()->json([
+                    'message' => 'you are not allowed to perform this action'
+                ], 401);
             });
         }
 

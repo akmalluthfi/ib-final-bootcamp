@@ -18,6 +18,8 @@ class InstructionService
     public function storeInstruction($instruction, $attachments)
     {
         $instruction['no'] = $this->generateNo($instruction['type']);
+        $instruction['quotation_no'] = strtoupper($instruction['quotation_no']);
+        $instruction['customer_po_no'] = strtoupper($instruction['customer_po_no']);
 
         $instruction = $this->bindInstructionCosts($instruction);
 
@@ -93,6 +95,8 @@ class InstructionService
 
         unset($validatedData['deleted_attachments']);
         $validatedData['no'] = $this->generateNoRev($instruction->no);
+        $validatedData['quotation_no'] = strtoupper($validatedData['quotation_no']);
+        $validatedData['customer_po_no'] = strtoupper($validatedData['customer_po_no']);
         $validatedData = $this->bindInstructionCosts($validatedData);
 
         return $this->instructionRepository->updateInstruction($instruction, $validatedData);
