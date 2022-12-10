@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Jenssegers\Mongodb\Eloquent\Model;
 
 class Instruction extends Model
 {
-    use HasFactory;
-
     /**
      * The model's default values for attributes.
      *
@@ -16,14 +13,62 @@ class Instruction extends Model
      */
     protected $attributes = [
         'status' => 'In Progress',
-        'rev_count' => 0,
-        'is_draft' => false,
     ];
 
     /**
-     * The storage format of the model's date columns.
+     * The attributes that are mass assignable.
      *
-     * @var string
+     * @var array
      */
-    protected $dateFormat = 'Y-m-d H:i:s';
+    protected $fillable = [
+        'status',
+        'no',
+        'type',
+        'assigned_vendor',
+        'attention_of',
+        'quotation_no',
+        'vendor_address',
+        'invoice_to',
+        'customer',
+        'customer_po_no',
+        'costs',
+        'attachments',
+        'note',
+        'internal',
+        'link_to',
+        'activity_notes',
+        'cancellation'
+    ];
+
+    public function internal()
+    {
+        return $this->embedsOne(Internal::class);
+    }
+
+    public function vendorInvoices()
+    {
+        return $this->embedsMany(VendorInvoice::class, 'vendor_invoices');
+    }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('no', 'like', "%$keyword%")
+            ->orWhere('type', 'like', "%$keyword%")
+            ->orWhere('link_to', 'like', "%$keyword%")
+            ->orWhere('assigned_vendor', 'like', "%$keyword%")
+            ->orWhere('attention_of', 'like', "%$keyword%")
+            ->orWhere('quotation_no', 'like', "%$keyword%")
+            ->orWhere('status', 'like', "%$keyword%")
+            ->orWhere('customer_po_no', 'like', "%$keyword%");
+    }
+
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'In Progress')->orWhere('status', 'Draft');
+    }
+
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'Completed')->orWhere('status', 'Cancelled');
+    }
 }

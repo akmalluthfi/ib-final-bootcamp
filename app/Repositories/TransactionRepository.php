@@ -6,19 +6,33 @@ use App\Models\Transaction;
 
 class TransactionRepository
 {
-    public function SearchAndFilter($instructionType, $search)
+    public function getForLogisticInstruction()
     {
-        $transactions = Transaction::query();
+        return Transaction::latest()
+            ->forLogisticInstruction()
+            ->limit(10)
+            ->get(['type', 'no']);
+    }
 
-        if ($instructionType == 'LI') {
-            $transactions->where('transaction_type', 'Transfer')
-                ->orWhere('transaction_type', 'Call Of');
-        }
+    public function searchForLogisticInstruction($search)
+    {
+        return Transaction::latest()
+            ->forLogisticInstruction()
+            ->where('no', 'like', "%$search%")
+            ->limit(10)
+            ->get(['type', 'no']);
+    }
 
-        if (!is_null($search)) {
-            $transactions->where('transaction_id', 'like', "%$search%");
-        }
+    public function getAll()
+    {
+        return Transaction::latest()->limit(10)->get();
+    }
 
-        return $transactions->get(['transaction_type', 'transaction_id']);
+    public function searchAndFind($search)
+    {
+        return Transaction::latest()
+            ->where('no', 'like', "%$search%")
+            ->limit(10)
+            ->get(['type', 'no']);
     }
 }

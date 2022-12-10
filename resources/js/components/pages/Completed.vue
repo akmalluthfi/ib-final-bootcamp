@@ -1,7 +1,7 @@
 <template>
   <div>
     <navbar></navbar>
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
       <h2>3rd Party Instruction</h2>
       <p>
         Vendor Management
@@ -12,21 +12,78 @@
           <Tabs setActive="completed"></Tabs>
         </div>
       </div>
-      <table-comp statusMsg="completed"></table-comp>
+      <table-comp
+        v-if="!!instructions"
+        :instructions="instructions"
+      ></table-comp>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      instructions: null,
+      page: 1,
+      lastPage: null,
+    };
+  },
+
+  methods: {
+    getInitialInstructions() {
+      axios
+        .get("/api/instructions?tab=completed&page=1")
+        .then((response) => {
+          this.instructions = response.data.data;
+          this.page = this.page + 1;
+          this.lastPage = response.data.meta.last_page;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    // infinite scroll methods
+    getNextInstructions() {
+      window.onscroll = () => {
+        let bottomOfWindow =
+          Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
+          document.documentElement.offsetHeight;
+        if (bottomOfWindow) {
+          if (this.page > this.lastPage) {
+            return;
+          }
+          axios
+            .get(`/api/instructions?tab=completed&page=${this.page}`)
+            .then((response) => {
+              this.instructions = this.instructions.concat(response.data.data);
+              this.page = this.page + 1;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+      };
+    }
+  },
+  mounted() {
+    this.getNextInstructions();
+  },
+  beforeMount() {
+    this.getInitialInstructions();
+  },
+};
 </script>
+
 <style>
 a {
   color: rgb(34, 34, 34) !important;
 }
 
 .active {
-  color: #28a745 !important;
-  border-bottom: 3px solid #28a745 !important;
+  color: cyan !important;
+  border-bottom: 3px solid cyan !important;
 }
 </style>

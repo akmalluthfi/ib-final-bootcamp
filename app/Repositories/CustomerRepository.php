@@ -6,14 +6,16 @@ use App\Models\Customer;
 
 class CustomerRepository
 {
+    public function getAll()
+    {
+        return Customer::latest()->limit(10)->get(['name']);
+    }
+
     public function searchAndFind($search)
     {
-        $vendors = Customer::query();
-
-        if (!is_null($search)) {
-            $vendors->where('name', 'like', "%$search%");
-        }
-
-        return $vendors->get(['name']);
+        return Customer::latest()
+            ->where('name', 'like', "%$search%")
+            ->limit(10)
+            ->get(['name']);
     }
 }

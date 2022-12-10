@@ -1,77 +1,163 @@
 <template>
-  <table class="table table-success table-hover">
+  <table class="table fs-4">
     <thead>
-      <tr>
+      <tr class="bg-secondary text-white">
         <th scope="col" class="hidden"></th>
-        <th scope="col">Instruction ID</th>
-        <th scope="col">Link To</th>
-        <th scope="col">Instruction Type</th>
-        <th scope="col">Assigned Vendor</th>
-        <th scope="col">Attention Of</th>
-        <th scope="col">Quotation No.</th>
-        <th scope="col">Invoice</th>
-        <th scope="col">Customer PO</th>
-        <th scope="col">Status</th>
+        <th class="fw-bolder fs-4" scope="col">Instruction ID</th>
+        <th class="fw-bolder fs-4" scope="col">Link To</th>
+        <th class="fw-bolder fs-4" scope="col">Instruction Type</th>
+        <th class="fw-bolder fs-4" scope="col">Assigned Vendor</th>
+        <th class="fw-bolder fs-4" scope="col">Attention Of</th>
+        <th class="fw-bolder fs-4" scope="col">Quotation No.</th>
+
+        <th
+          v-if="instructions[0].vendor_invoices !== undefined"
+          class="fw-bolder fs-4"
+          scope="col"
+        >
+          Invoice
+        </th>
+
+        <th class="fw-bolder fs-4" scope="col">Customer PO</th>
+        <th class="fw-bolder fs-4" scope="col">Status</th>
       </tr>
     </thead>
-    <tbody class="cursor-pointer">
+    <tbody v-for="(item, index) in instructions" :key="index">
       <tr>
         <th scope="row" class="hidden"></th>
-        <td>LI-2022-0003</td>
-        <td>TRF-2022-0141</td>
         <td>
-          <font-awesome-icon icon="fa-solid fa-truck" class="text-muted" />
-          LI
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.no }}
+          </router-link>
         </td>
-        <td>Centurion Transport</td>
-        <td>Operations</td>
-        <td></td>
         <td>
-          <span class="py-2 px-3 bg-info text-white rounded-circle">1</span>
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.link_to }}
+          </router-link>
         </td>
-        <td>Otto</td>
-        <td v-switch="statusMsg">
-          <span
-            v-case="'completed'"
-            class="py-2 px-3 bg-success text-white rounded-pill"
-            >Completed</span
+        <td class="text-center">
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none ms-auto"
+            :disabled="true"
           >
-          <span
-            v-case="'cancelled'"
-            class="py-2 px-3 bg-warning text-white rounded-pill"
-            >Cancelled</span
-          >
-          <span
-            v-case="'progress'"
-            class="py-2 px-3 bg-info text-white rounded-pill"
-            >On Progress</span
-          >
-          <span v-default class="py-2 px-3 bg-info text-white rounded-pill"
-            >On Progress</span
-          >
+            <font-awesome-icon icon="fa-solid fa-truck" class="text-muted" />
+            {{ item.type }}
+          </router-link>
         </td>
+        <td>
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.assigned_vendor }}
+          </router-link>
+        </td>
+        <td>
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.attention_of }}
+          </router-link>
+        </td>
+        <td>
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.quotation_no }}
+          </router-link>
+        </td>
+        <td v-if="item.vendor_invoices !== undefined">
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            <span class="py-2 px-3 bg-info text-white rounded-circle">
+              {{ item.vendor_invoices.count }}
+            </span>
+          </router-link>
+        </td>
+        <td>
+          <router-link
+            :to="{
+              name: 'Details',
+              params: { id: item.id },
+            }"
+            class="text-decoration-none"
+            :disabled="true"
+          >
+            {{ item.customer_po_no }}
+          </router-link>
+        </td>
+        <router-link
+          :to="{
+            name: 'Details',
+            params: { id: item.id },
+          }"
+          class="text-decoration-none mt-5"
+          :disabled="true"
+        >
+          <status-badge :status="item.status" />
+        </router-link>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
-import { vSwitch, vCase, vDefault } from "v-switch-case";
-
+import StatusBadge from "./StatusBadge.vue";
 export default {
-  directives: {
-    switch: vSwitch,
-    case: vCase,
-    default: vDefault,
-  },
+  components: { StatusBadge },
+  mounted() {},
   props: {
-    statusMsg: {
-      type: String,
-      default: "progress",
+    instructions: {
+      type: Array,
     },
   },
 };
 </script>
-
 <style>
+tr:hover {
+  color: aqua;
+  cursor: pointer;
+}
+.bg-muted {
+  background-color: #dddddd !important;
+}
 </style>
+
