@@ -15,10 +15,9 @@
 <body>
 
   <div id="app">
-    <example-component></example-component>
+    <router-view></router-view>
   </div>
 
-  <script src="/js/app.js"></script>
   <script src="{{ mix('js/app.js') }}" type="text/javascript"></script>
 </body>
 
