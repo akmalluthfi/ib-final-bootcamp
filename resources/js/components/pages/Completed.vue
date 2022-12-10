@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -48,7 +49,7 @@ export default {
     getNextInstructions() {
       window.onscroll = () => {
         let bottomOfWindow =
-          Math.ceil(document.documentElement.scrollTop + window.innerHeight) ===
+          Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
           document.documentElement.offsetHeight;
         if (bottomOfWindow) {
           if (this.page > this.lastPage) {

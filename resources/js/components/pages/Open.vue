@@ -31,8 +31,7 @@ export default {
     };
   },
 
-  methods: {
-    // infinite scroll methods
+methods: {
     getInitialInstructions() {
       axios
         .get("/api/instructions?tab=open&page=1")
@@ -45,10 +44,12 @@ export default {
           console.log(error);
         });
     },
+
+    // infinite scroll methods
     getNextInstructions() {
       window.onscroll = () => {
         let bottomOfWindow =
-          document.documentElement.scrollTop + window.innerHeight ===
+          Math.ceil(document.documentElement.scrollTop + window.innerHeight) >=
           document.documentElement.offsetHeight;
         if (bottomOfWindow) {
           if (this.page > this.lastPage) {
@@ -60,12 +61,9 @@ export default {
               this.instructions = this.instructions.concat(response.data.data);
               this.page = this.page + 1;
             })
-            .catch((error) => {
-              console.log(error);
-            });
         }
       };
-    },
+    }
   },
   mounted() {
     this.getNextInstructions();
