@@ -3,63 +3,53 @@
     <h1 class="fs-2 mt-4 mb-5 fw-normal text-black">3rd Party Instruction</h1>
 
     <div class="full-shadow rounded">
-      <div
-        class="
-          d-flex
-          justify-content-between
-          align-items-center
-          border-bottom border-2 border-secondary border-opacity-10
-          px-4
-          pt-2
-        "
-      >
-        <ul class="nav">
-          <li class="nav-item">
-            <a
-              class="nav-link py-3 text-black-50 fw-semibold fs-5 active"
-              aria-current="page"
-              href="#"
-              >Open</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link py-3 text-black-50 fw-semibold fs-5" href="#"
-              >Completed</a
-            >
-          </li>
-        </ul>
-        <div class="col-auto">
-          <button class="btn border border-1 me-2">
-            <fa icon="fa-magnifying-glass" class="text-info" />
-          </button>
-          <a class="btn border border-1 fw-semibold">
-            <fa icon="fa-file-arrow-down" class="text-info" />
-            Export
-          </a>
-        </div>
-      </div>
-
+      <InstructionTab :active="isOpen" :tabs="tabs" @handleTab="handleTab" />
       <section class="px-4 py-4">
-        <div class="text-end">
-          <button class="btn btn-info text-white">
-            <fa icon="fa-plus" />
-            Create 3rd Party Instruction
-          </button>
-        </div>
+        <component v-bind:is="currentTabComponent"></component>
       </section>
     </div>
   </MainLayout>
 </template>
 
 <script>
-export default {};
+import InstructionOpen from "../Components/InstructionIndexOpen.vue";
+import InstructionCompleted from "../Components/InstructionIndexCompleted.vue";
+import InstructionTab from "../Components/InstructionIndexTab.vue";
+
+export default {
+  components: {
+    InstructionOpen,
+    InstructionCompleted,
+    InstructionTab,
+  },
+  data() {
+    return {
+      isOpen: true,
+      tabs: ["Open", "Completed"],
+    };
+  },
+  computed: {
+    currentTabComponent: function () {
+      return this.isOpen ? InstructionOpen : InstructionCompleted;
+    },
+  },
+  beforeMount() {
+    this.handleTab(this.$route.query.tab);
+  },
+  watch: {
+    $route(to, from) {
+      this.handleTab(to.query.tab);
+    },
+  },
+  methods: {
+    handleTab(tab = "open") {
+      this.isOpen = tab === "open";
+    },
+  },
+};
 </script>
 
 <style scoped>
-.nav-link.active {
-  color: var(--bs-info) !important;
-  border-bottom: 4px solid var(--bs-info) !important;
-}
 .full-shadow {
   box-shadow: 0 0 0.5rem rgb(0 0 0 / 10%) !important;
 }
