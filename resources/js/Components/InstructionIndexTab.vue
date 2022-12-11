@@ -4,7 +4,7 @@
       d-flex
       justify-content-between
       align-items-center
-      border-bottom border-2 border-secondary border-opacity-10
+      border-bottom border-2 border-secondary border-opacity-25
       px-4
       pt-2
     "
@@ -22,20 +22,28 @@
       </li>
     </ul>
     <div class="col-auto d-flex">
-      <!-- <input type="email" class="form-control me-3" /> -->
-      <div class="search-bar">
-        <form class="search-form" method="POST" action="#">
+      <div class="search-bar" v-show="showSearch">
+        <div class="search-form">
           <input
             type="text"
             name="query"
             placeholder="Search"
             title="Enter search keyword"
+            :value="value"
+            @input="$emit('handleInputSearch', $event.target.value)"
           />
-          <button type="submit" title="Search">
+          <div class="icon" title="Search">
             <fa icon="fa-magnifying-glass" class="text-info" />
-          </button>
-        </form>
+          </div>
+        </div>
       </div>
+      <button
+        class="btn border border-1 me-3"
+        v-show="!showSearch"
+        @click="showSearch = !showSearch"
+      >
+        <fa icon="fa-magnifying-glass" class="text-info" />
+      </button>
       <a class="btn border border-1 fw-semibold text-nowrap">
         <fa icon="fa-file-arrow-down" class="text-info" />
         Export
@@ -49,12 +57,17 @@ export default {
   props: {
     active: Boolean,
     tabs: Array,
+    value: String,
+  },
+  data() {
+    return {
+      showSearch: false,
+    };
   },
   methods: {
     setActive: function (tab) {
       if (tab === "Open" && this.active) return true;
       if (tab === "Completed" && !this.active) return true;
-
       return false;
     },
   },
@@ -65,6 +78,9 @@ export default {
 .nav-link.active {
   color: var(--bs-info) !important;
   border-bottom: 4px solid var(--bs-info) !important;
+}
+.nav-item {
+  margin-bottom: -1px;
 }
 
 .search-bar {
@@ -82,7 +98,7 @@ export default {
 .search-form input {
   border: 0;
   font-size: 14px;
-  border: 1px solid rgb(206, 212, 218);
+  border: 1px solid #dee2e6;
   padding: 6px 7px 6px 30px;
   border-radius: 3px;
   transition: 0.3s;
@@ -90,6 +106,7 @@ export default {
   position: absolute;
   top: 0;
   right: 0;
+  background-color: inherit;
 }
 
 .search-form input:focus,
@@ -97,7 +114,7 @@ export default {
   outline: none;
 }
 
-.search-form button {
+.search-form .icon {
   border: 0;
   padding: 0;
   background: none;

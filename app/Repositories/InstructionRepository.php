@@ -101,7 +101,7 @@ class InstructionRepository
             $query->search($search);
         }
 
-        $instruction = $query->paginate(10);
+        $instruction = $query->paginate(20);
 
         return $instruction;
     }
@@ -114,7 +114,7 @@ class InstructionRepository
             $query->search($search);
         }
 
-        $instruction = $query->paginate(10);
+        $instruction = $query->paginate(20);
 
         return $instruction;
     }
