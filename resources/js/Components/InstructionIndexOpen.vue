@@ -9,7 +9,7 @@
 
     <!-- tabel -->
     <div class="table-responsive">
-      <table class="table table-hover table-sm">
+      <table class="table table-hover table-instructions">
         <thead>
           <tr class="bg-secondary text-white text-nowrap">
             <th scope="col">Instruction ID</th>
@@ -18,8 +18,8 @@
             <th scope="col">Assigned Vendor</th>
             <th scope="col">Attention of</th>
             <th scope="col">Quotation No.</th>
-            <th scope="col">Customer PO</th>
-            <th scope="col">Status</th>
+            <th class="text-center" scope="col">Customer PO</th>
+            <th class="text-center" scope="col">Status</th>
           </tr>
         </thead>
         <tbody v-if="instructions.length">
@@ -27,16 +27,30 @@
             v-for="instruction in instructions"
             :key="instruction.id"
             class="text-nowrap"
-            @click="getDetail(instruction.id)"
+            @click="$emit('handleDetail', instruction.id)"
           >
             <th>{{ instruction.no }}</th>
             <th>{{ instruction.link_to }}</th>
-            <th>{{ instruction.type }}</th>
+            <th class="texx-center">
+              <fa
+                icon="fa-truck"
+                class="me-2"
+                style="color: var(--bs-secondary)"
+              />
+              {{ instruction.type }}
+            </th>
             <th>{{ instruction.assigned_vendor }}</th>
             <th>{{ instruction.attention_of }}</th>
             <th>{{ instruction.quotation_no }}</th>
             <th>{{ instruction.customer_po_no }}</th>
-            <th>{{ instruction.status }}</th>
+            <th>
+              <span
+                class="badge rounded-pill"
+                :class="badgeClass(instruction.status)"
+              >
+                {{ instruction.status }}
+              </span>
+            </th>
           </tr>
 
           <div v-observe-visibility="handleScrolledToBottom"></div>
@@ -59,13 +73,18 @@ export default {
     instructions: Array,
   },
   methods: {
-    getDetail(id) {
-      console.log(id);
-    },
     handleScrolledToBottom(isVisible) {
       if (!isVisible) return;
 
       this.$emit("fetch");
+    },
+    badgeClass(status) {
+      return {
+        "in-progress": status === "In Progress",
+        draft: status === "Draft",
+        completed: status === "Completed",
+        cancelled: status === "Cancelled",
+      };
     },
   },
 };

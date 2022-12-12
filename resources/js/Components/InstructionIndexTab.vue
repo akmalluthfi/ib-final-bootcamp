@@ -44,7 +44,11 @@
       >
         <fa icon="fa-magnifying-glass" class="text-info" />
       </button>
-      <a class="btn border border-1 fw-semibold text-nowrap">
+      <a
+        href="/api/instructions/exported-excel"
+        target="blank"
+        class="btn border border-1 fw-semibold text-nowrap"
+      >
         <fa icon="fa-file-arrow-down" class="text-info" />
         Export
       </a>

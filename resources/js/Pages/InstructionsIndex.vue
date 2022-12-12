@@ -12,14 +12,15 @@
       />
       <section class="px-4 py-4">
         <component
-          v-show="!isLoading"
+          v-show="!isLoading || instructions.data.length"
           v-bind:is="currentTabComponent"
           :instructions="instructions.data"
           @fetch="getNextInstructions"
+          @handleDetail="handleDetail"
         ></component>
 
         <!-- isLoading -->
-        <div class="text-center text-info" v-show="isLoading">
+        <div class="text-center text-info py-3" v-show="isLoading">
           <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
@@ -74,6 +75,7 @@ export default {
       this.getInitialInstructions();
     },
     isOpen() {
+      this.instructions.data = [];
       this.getInitialInstructions();
     },
   },
@@ -85,6 +87,9 @@ export default {
     handleInputSearch(value) {
       this.search = value;
     },
+    handleDetail(id) {
+      console.log(id);
+    },
     async getInitialInstructions() {
       // for after search, for after change tab, & first render
       this.isLoading = true;
@@ -95,15 +100,16 @@ export default {
             search: this.search.length <= 0 ? null : this.search,
           },
         });
-        this.isLoading = false;
         this.instructions.data = response.data.data;
 
         this.instructions.page.last = response.data.meta.last_page;
         this.instructions.page.current = response.data.meta.current_page;
       } catch (error) {
-        this.isLoading = false;
+        console.error(error);
         this.instructions.data = [];
       }
+
+      this.isLoading = false;
     },
     async getNextInstructions() {
       // for infinite scroll
@@ -111,6 +117,7 @@ export default {
 
       this.instructions.page.current++;
 
+      this.isLoading = true;
       try {
         const response = await axios.get("/api/instructions", {
           params: {
@@ -119,14 +126,16 @@ export default {
             page: this.instructions.page.current,
           },
         });
+
         this.instructions.data.push(...response.data.data);
 
         this.instructions.page.last = response.data.meta.last_page;
       } catch (error) {
+        console.error(error);
         this.instructions.data = [];
       }
 
-      console.log(this.instructions.page.last, this.instructions.page.current);
+      this.isLoading = false;
     },
   },
   mounted() {
@@ -135,8 +144,42 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .full-shadow {
   box-shadow: 0 0 0.25rem rgb(0 0 0 / 10%) !important;
+}
+
+.table-instructions > tbody * {
+  font-weight: 400;
+}
+
+.table-instructions > tbody > tr:hover *:not(span) {
+  color: var(--bs-info) !important;
+  cursor: pointer;
+}
+
+.table-instructions .badge {
+  padding: 0.5rem 1.25rem;
+  background-color: var(--bs-body-color);
+}
+
+.table-instructions .badge.in-progress {
+  background-color: #e2ebf9;
+  color: #637ca0;
+}
+
+.table-instructions .badge.draft {
+  background-color: #f5f6f8;
+  color: #58595b;
+}
+
+.table-instructions .badge.completed {
+  background-color: #00c060;
+  color: #fff;
+}
+
+.table-instructions .badge.cancelled {
+  background-color: #a6afb7;
+  color: #fff;
 }
 </style>
