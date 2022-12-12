@@ -16,7 +16,6 @@
           v-bind:is="currentTabComponent"
           :instructions="instructions.data"
           @fetch="getNextInstructions"
-          @handleDetail="handleDetail"
         ></component>
 
         <!-- isLoading -->
@@ -87,9 +86,6 @@ export default {
     handleInputSearch(value) {
       this.search = value;
     },
-    handleDetail(id) {
-      console.log(id);
-    },
     async getInitialInstructions() {
       // for after search, for after change tab, & first render
       this.isLoading = true;
@@ -149,18 +145,13 @@ export default {
   box-shadow: 0 0 0.25rem rgb(0 0 0 / 10%) !important;
 }
 
-.table-instructions > tbody * {
-  font-weight: 400;
-}
-
-.table-instructions > tbody > tr:hover *:not(span) {
-  color: var(--bs-info) !important;
+.table-instructions > tbody > tr:hover *:not(td.no-effect *) {
+  color: var(--bs-info);
   cursor: pointer;
 }
 
-.table-instructions .badge {
-  padding: 0.5rem 1.25rem;
-  background-color: var(--bs-body-color);
+.table-instructions .badge:not(.badge.rounded-circle) {
+  padding: 0.5rem 1.75rem;
 }
 
 .table-instructions .badge.in-progress {

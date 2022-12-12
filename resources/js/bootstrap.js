@@ -2,6 +2,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {
     faBell,
     faTruck,
+    faInfo,
     faInfoCircle,
     faPlus,
     faPaperclip,
@@ -23,6 +24,7 @@ window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 library.add(
     faBell,
     faTruck,
+    faInfo,
     faInfoCircle,
     faPlus,
     faPaperclip,
